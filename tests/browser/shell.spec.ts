@@ -4,14 +4,17 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { openShowcase } from './openShowcase';
 import { SECTIONS } from '../../src/sections';
 
 test('mobile disclosure supports keyboard navigation and escape', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await page.keyboard.press('Tab');
+  await openShowcase(page);
+  // Loading continuation deliberately focuses main; start header traversal from the brand.
+  await page.getByRole('link', { name: 'Dripperz home' }).focus();
+  await page.keyboard.press('Shift+Tab');
   await expect(
     page.getByRole('link', { name: 'Skip to content' }),
   ).toBeFocused();
@@ -53,21 +56,33 @@ test('mobile disclosure supports keyboard navigation and escape', async ({
 test('effects can pause and stop offscreen; reduced motion removes animations', async ({
   page,
 }) => {
-  await page.goto('/');
+  await openShowcase(page);
   const marquee = page.locator('.marquee-track');
+  const rain = page.locator('canvas.matrix');
   await expect(marquee).toHaveCSS('animation-play-state', 'running');
+  await expect(rain).toHaveAttribute('data-running', 'true');
   await page.getByRole('button', { name: 'Pause effects' }).click();
   await expect(marquee).toHaveCSS('animation-play-state', 'paused');
+  await expect(rain).toHaveAttribute('data-running', 'false');
   await page.getByRole('button', { name: 'Resume effects' }).click();
   await expect(marquee).toHaveCSS('animation-play-state', 'running');
+  await expect(rain).toHaveAttribute('data-running', 'true');
   await page.locator('#faq').scrollIntoViewIfNeeded();
   await expect(page.locator('.atmosphere')).toHaveAttribute(
     'data-active',
     'false',
   );
   await expect(marquee).toHaveCSS('animation-play-state', 'paused');
+  await expect(rain).toHaveAttribute('data-running', 'false');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(marquee).toHaveCSS('animation-name', 'none');
+  await expect(rain).toHaveAttribute('data-running', 'false');
+  await page.locator('#home').scrollIntoViewIfNeeded();
+  await expect(page.locator('.atmosphere')).toHaveAttribute(
+    'data-active',
+    'true',
+  );
+  await expect(rain).toHaveAttribute('data-running', 'false');
   await expect(page.locator('.glitch')).toHaveCSS('animation-name', 'none');
 });
 
@@ -80,7 +95,7 @@ test('shell assets load locally without remote integrations', async ({
     if (new URL(request.url()).origin !== new URL(baseURL!).origin)
       externalRequests.push(request.url());
   });
-  await page.goto('/');
+  await openShowcase(page);
   await page.evaluate(() => document.fonts.ready.then(() => undefined));
   expect(await page.evaluate(() => document.fonts.check('16px Goldman'))).toBe(
     true,

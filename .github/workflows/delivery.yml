@@ -78,6 +78,13 @@ jobs:
         working-directory: candidate
       - run: npm run test:browser
         working-directory: candidate
+      - name: Detect hero verification requirement (historical recovery compatible)
+        id: hero
+        run: node ../control/scripts/delivery.mjs hero-required
+        working-directory: candidate
+      - run: npm run test:hero
+        if: steps.hero.outputs.required == 'true'
+        working-directory: candidate
       - name: Prepare tested static output with trusted controller
         run: node ../control/scripts/delivery.mjs prepare
         working-directory: candidate

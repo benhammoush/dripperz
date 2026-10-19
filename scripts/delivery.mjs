@@ -1,14 +1,21 @@
 /**
  * Trusted delivery controller: exact-source selection, static bundle preparation,
- * read-only preflight and a single provider mutation followed by identity smoke.
+ * read-only preflight, bounded file uploads and one deployment followed by identity smoke.
  * Not invoked locally for deployment during PR 2 implementation.
  * @file
  */
 
-import { readFile, readdir, writeFile, appendFile } from 'node:fs/promises';
+import {
+  readFile,
+  readdir,
+  writeFile,
+  appendFile,
+  lstat,
+} from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { setTimeout } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
 import {
   REPOSITORY,
   requireDelivery,
@@ -63,6 +70,32 @@ async function api(service, path, body) {
     `${service} API failed (${response.status}); inspect before retry`,
   );
   return response.json();
+}
+
+/**
+ * Upload one content-addressed file without retries or interpreting optional response URLs.
+ * @param suffix - Verified team query shared with the selected project deployment.
+ * @param file - Captured file bytes and their SHA-1 provider reference.
+ */
+async function uploadFile(suffix, file) {
+  const response = await fetch(`https://api.vercel.com/v2/files${suffix}`, {
+    method: 'POST',
+    redirect: 'error',
+    signal: AbortSignal.timeout(120_000),
+    headers: {
+      Authorization: `Bearer ${required('VERCEL_TOKEN')}`,
+      'Content-Type': 'application/octet-stream',
+      'Content-Length': String(file.bytes.length),
+      'x-vercel-digest': file.sha,
+    },
+    body: file.bytes,
+  });
+  requireDelivery(
+    response.status === 200,
+    `File upload failed (${response.status}); inspect before retry`,
+  );
+  // The documented successful response may be empty. Never follow response-provided URLs.
+  await response.arrayBuffer();
 }
 
 /**
@@ -155,12 +188,58 @@ async function files(directory) {
 }
 
 /**
+ * Reject oversized static outputs before reading or base64-encoding their contents.
+ * @returns Sorted regular static file paths within the transport bounds.
+ */
+async function boundedFiles() {
+  const paths = await files('dist');
+  let totalBytes = 0;
+  for (const path of paths) {
+    const info = await lstat(path);
+    totalBytes += info.size;
+    requireDelivery(
+      info.isFile() && info.size <= 100_000_000 && totalBytes <= 200_000_000,
+      'Static files exceed approved 100 MB file / 200 MB bundle transport bounds',
+    );
+  }
+  return paths;
+}
+
+/**
+ * Require GPU verification for hero-capable candidates, while allowing pre-hero recovery sources.
+ * @returns Whether this candidate must run the exact built-hero test command.
+ */
+export async function heroRequired() {
+  const metadata = JSON.parse(await readFile('package.json', 'utf8'));
+  let present = Boolean(metadata.scripts?.['test:hero']);
+  for (const path of [
+    'src/LocalHero.tsx',
+    'public/hero/wattson.glb',
+    'playwright.hero.config.ts',
+  ]) {
+    try {
+      await lstat(path);
+      present = true;
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+  }
+  if (present)
+    requireDelivery(
+      metadata.scripts?.['test:hero'] ===
+        'playwright test --config playwright.hero.config.ts',
+      'Hero candidate must retain the built-hero verification command',
+    );
+  return present;
+}
+
+/**
  * Compute build content identity independently of run/target delivery metadata.
  * @returns Hash of file names and bytes, excluding only the identity document.
  */
 async function bundleDigest() {
   const manifest = [];
-  for (const path of await files('dist')) {
+  for (const path of await boundedFiles()) {
     if (path === 'dist/delivery.json') continue;
     manifest.push([path.slice(5), (await readFile(path)).toString('base64')]);
   }
@@ -331,13 +410,31 @@ export async function deploy() {
   const productionBootstrap =
     target === 'production' && priorDeploymentId === null;
   const upload = [];
-  for (const path of await files('dist')) {
-    upload.push({
-      file: path.slice(5),
-      data: (await readFile(path)).toString('base64'),
-      encoding: 'base64',
-    });
+  const largeFiles = [];
+  const snapshot = [];
+  let totalBytes = 0;
+  for (const path of await boundedFiles()) {
+    const bytes = await readFile(path);
+    totalBytes += bytes.length;
+    requireDelivery(
+      bytes.length <= 100_000_000 && totalBytes <= 200_000_000,
+      'Static files exceed approved 100 MB file / 200 MB bundle transport bounds',
+    );
+    const file = path.slice(5);
+    if (path !== 'dist/delivery.json')
+      snapshot.push([file, bytes.toString('base64')]);
+    if (bytes.length > 1_000_000) {
+      const sha = createHash('sha1').update(bytes).digest('hex');
+      largeFiles.push({ file, bytes, sha });
+      upload.push({ file, sha, size: bytes.length });
+    } else {
+      upload.push({ file, data: bytes.toString('base64'), encoding: 'base64' });
+    }
   }
+  requireDelivery(
+    fingerprint(snapshot) === identity.bundleDigest,
+    'Captured upload bytes differ from tested bundle',
+  );
   const body = {
     name,
     project: projectId,
@@ -359,34 +456,41 @@ export async function deploy() {
       runId: identity.runId,
     },
   };
-  // This bounded inline uploader is for the source foundation, not future 3D assets.
+  // Large bytes are uploaded separately; the deployment JSON remains strictly bounded.
   requireDelivery(
     Buffer.byteLength(JSON.stringify(body)) <= 4_000_000,
-    'Bundle exceeds foundation inline-upload limit',
+    'Bundle exceeds deployment JSON limit',
   );
-  await mergedSource(revision, env.DELIVERY_AUTOMATIC === 'true');
-  const latestProject = await api(
-    'vercel',
-    `/v9/projects/${projectId}${suffix}`,
-  );
-  const latestDomains = await api(
-    'vercel',
-    `/v9/projects/${projectId}/domains${suffix}`,
-  );
-  requireDelivery(
-    projectConfiguration(
-      latestProject,
-      latestDomains,
-      target,
-      teamId,
-      projectId,
-    ) === configDigest &&
-      (target !== 'production' ||
-        latestProject.targets?.production == null ||
-        /^dpl_[a-zA-Z0-9]+$/.test(latestProject.targets.production.id ?? '')) &&
-      latestProject.targets?.production?.id === project.targets?.production?.id,
-    'Target configuration or recovery identity changed during preflight',
-  );
+  /** Recheck freshness, target configuration and recovery identity around file uploads. */
+  async function recheckTarget() {
+    await mergedSource(revision, env.DELIVERY_AUTOMATIC === 'true');
+    const latestProject = await api(
+      'vercel',
+      `/v9/projects/${projectId}${suffix}`,
+    );
+    const latestDomains = await api(
+      'vercel',
+      `/v9/projects/${projectId}/domains${suffix}`,
+    );
+    requireDelivery(
+      projectConfiguration(
+        latestProject,
+        latestDomains,
+        target,
+        teamId,
+        projectId,
+      ) === configDigest &&
+        (target !== 'production' ||
+          latestProject.targets?.production == null ||
+          /^dpl_[a-zA-Z0-9]+$/.test(
+            latestProject.targets.production.id ?? '',
+          )) &&
+        latestProject.targets?.production?.id ===
+          project.targets?.production?.id,
+      'Target configuration or recovery identity changed during preflight',
+    );
+  }
+  await recheckTarget();
   const record = {
     ...identity,
     configDigest,
@@ -395,12 +499,39 @@ export async function deploy() {
     priorDeploymentId,
     productionBootstrap,
     startedAt: new Date().toISOString(),
-    status: 'mutation-requested',
+    status: largeFiles.length ? 'file-upload-pending' : 'mutation-requested',
+    assetUploads: [],
   };
   await writeFile(
     'delivery-record.json',
     `${JSON.stringify(record, null, 2)}\n`,
   );
+  for (const file of largeFiles) {
+    record.assetUploads.push({
+      file: file.file,
+      sha: file.sha,
+      size: file.bytes.length,
+      status: 'upload-requested',
+    });
+    await writeFile(
+      'delivery-record.json',
+      `${JSON.stringify(record, null, 2)}\n`,
+    );
+    await uploadFile(suffix, file);
+    record.assetUploads.at(-1).status = 'uploaded';
+    await writeFile(
+      'delivery-record.json',
+      `${JSON.stringify(record, null, 2)}\n`,
+    );
+  }
+  if (largeFiles.length) {
+    await recheckTarget();
+    record.status = 'mutation-requested';
+    await writeFile(
+      'delivery-record.json',
+      `${JSON.stringify(record, null, 2)}\n`,
+    );
+  }
   let deployment = await api('vercel', `/v13/deployments${suffix}`, body);
   record.deploymentId = deployment.id;
   record.status = 'verification-pending';
@@ -449,10 +580,15 @@ if (
 ) {
   const command = process.argv[2];
   requireDelivery(
-    ['select', 'prepare', 'deploy'].includes(command),
-    'Expected select, prepare or deploy',
+    ['select', 'prepare', 'deploy', 'hero-required'].includes(command),
+    'Expected select, prepare, deploy or hero-required',
   );
   if (command === 'select') await select();
   if (command === 'prepare') await prepare();
   if (command === 'deploy') await deploy();
+  if (command === 'hero-required')
+    await appendFile(
+      required('GITHUB_OUTPUT'),
+      `required=${await heroRequired()}\n`,
+    );
 }

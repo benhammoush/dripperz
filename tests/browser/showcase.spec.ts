@@ -4,6 +4,7 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { openShowcase } from './openShowcase';
 import {
   CHARACTER_SLIDES,
   PUBLIC_LINKS,
@@ -25,7 +26,7 @@ for (const viewport of [
         externalRequests.push(request.url());
     });
     await page.setViewportSize(viewport);
-    await page.goto('/');
+    await openShowcase(page);
     const portraits = page.getByRole('region', {
       name: 'Collection portraits',
     });
@@ -109,7 +110,7 @@ test('optional autoplay pauses for hover, focus, reduced motion and offscreen', 
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.clock.install();
-  await page.goto('/');
+  await openShowcase(page);
   const gallery = page.getByRole('region', { name: 'Collection portraits' });
   const title = gallery.locator('h4');
   await gallery.scrollIntoViewIfNeeded();
@@ -160,7 +161,7 @@ test('failed artwork does not block captions, controls or FAQ', async ({
   page,
 }) => {
   await page.route('**/artwork/showcase-01.jpg', (route) => route.abort());
-  await page.goto('/');
+  await openShowcase(page);
   const gallery = page.getByRole('region', { name: 'Collection portraits' });
   await gallery.scrollIntoViewIfNeeded();
   await expect(

@@ -6,10 +6,18 @@
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
+import {
+  mkdtemp,
+  mkdir,
+  writeFile,
+  readFile,
+  rm,
+  truncate,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { deploy, select } from '../../scripts/delivery.mjs';
+import { createHash } from 'node:crypto';
+import { deploy, select, heroRequired } from '../../scripts/delivery.mjs';
 import {
   sourceRevision,
   projectName,
@@ -67,6 +75,18 @@ async function withController(scenario, run) {
     ['robots.txt', 'User-agent: *\nDisallow: /\n'],
     ['vercel.json', JSON.stringify(staticHostingConfiguration())],
   ];
+  if (
+    scenario.startsWith('large-') ||
+    scenario.startsWith('production-large-')
+  ) {
+    staticFiles.push(['model.glb', Buffer.alloc(1_000_001, 7)]);
+    staticFiles.sort(([a], [b]) => a.localeCompare(b));
+  }
+  if (scenario === 'inline-json-limit') {
+    for (let index = 0; index < 4; index++)
+      staticFiles.push([`small-${index}.bin`, Buffer.alloc(900_000)]);
+    staticFiles.sort(([a], [b]) => a.localeCompare(b));
+  }
   const identity = {
     schema: 1,
     revision: settings.DELIVERY_REVISION,
@@ -123,6 +143,7 @@ async function withController(scenario, run) {
   );
   let projectReads = 0;
   let created;
+  let uploaded = false;
   try {
     process.chdir(directory);
     Object.assign(process.env, settings);
@@ -148,7 +169,12 @@ async function withController(scenario, run) {
       requests.push({
         url: url.href,
         method: options.method ?? 'GET',
-        body: options.body ? JSON.parse(options.body) : undefined,
+        body: Buffer.isBuffer(options.body)
+          ? options.body
+          : options.body
+            ? JSON.parse(options.body)
+            : undefined,
+        headers: options.headers,
       });
       let result;
       if (url.hostname === 'api.github.com') {
@@ -180,8 +206,13 @@ async function withController(scenario, run) {
           result = fixture.domains;
         else if (url.pathname === '/v9/projects/prj_dev') {
           projectReads++;
+          if (scenario === 'large-snapshot-tamper' && projectReads === 1)
+            await writeFile('dist/model.glb', Buffer.alloc(1_000_001, 8));
           result = structuredClone(fixture.project);
-          if (scenario === 'drift' && projectReads > 1)
+          if (
+            (scenario === 'drift' && projectReads > 1) ||
+            (scenario === 'large-late-drift' && uploaded)
+          )
             result.nodeVersion = '22.x';
           if (production)
             result.targets = { production: { id: 'dpl_candidate' } };
@@ -212,6 +243,28 @@ async function withController(scenario, run) {
             result.targets.production.id = 'invalid';
           if (scenario === 'production-missing-prior-id')
             result.targets.production = {};
+        } else if (url.pathname === '/v2/files') {
+          assert.equal(url.searchParams.get('teamId'), 'team_test');
+          assert.equal(options.method, 'POST');
+          assert.equal(options.redirect, 'error');
+          assert.equal(
+            options.headers['Content-Type'],
+            'application/octet-stream',
+          );
+          assert.equal(
+            options.headers['Content-Length'],
+            String(options.body.length),
+          );
+          assert.equal(
+            options.headers['x-vercel-digest'],
+            createHash('sha1').update(options.body).digest('hex'),
+          );
+          if (scenario === 'large-ambiguous-upload')
+            throw new Error('Synthetic lost file response');
+          if (scenario === 'large-rejected-upload')
+            return new Response('', { status: 403 });
+          uploaded = true;
+          return new Response(null, { status: 200 });
         } else if (url.pathname.startsWith('/v13/deployments/')) {
           result = structuredClone(existing[url.pathname.split('/').at(-1)]);
           if (
@@ -484,6 +537,152 @@ test('successful controller uses one POST and retains exact immutable and prior 
       ).toString(),
       'User-agent: *\nDisallow: /\n',
     );
+  });
+});
+
+test('large files use binary uploads and SHA references without raising the JSON limit', async () => {
+  for (const scenario of ['large-success', 'production-large-success']) {
+    await withController(scenario, async ({ requests, directory }) => {
+      await deploy();
+      const uploads = requests.filter((request) =>
+        request.url.includes('/v2/files'),
+      );
+      const deployments = requests.filter(
+        (request) =>
+          request.url.includes('/v13/deployments?') &&
+          request.method === 'POST',
+      );
+      assert.equal(uploads.length, 1);
+      assert.equal(deployments.length, 1);
+      assert.ok(
+        requests.indexOf(uploads[0]) < requests.indexOf(deployments[0]),
+      );
+      assert.equal(uploads[0].body.length, 1_000_001);
+      const reference = deployments[0].body.files.find(
+        (file) => file.file === 'model.glb',
+      );
+      assert.deepEqual(reference, {
+        file: 'model.glb',
+        sha: createHash('sha1').update(uploads[0].body).digest('hex'),
+        size: 1_000_001,
+      });
+      assert.ok(
+        Buffer.byteLength(JSON.stringify(deployments[0].body)) < 4_000_000,
+      );
+      const record = JSON.parse(
+        await readFile(join(directory, 'delivery-record.json'), 'utf8'),
+      );
+      assert.deepEqual(record.assetUploads, [
+        { ...reference, status: 'uploaded' },
+      ]);
+      assert.equal(record.status, 'smoke-verified-not-user-accepted');
+    });
+  }
+});
+
+test('failed or ambiguous file uploads and post-upload drift never create a deployment or retry', async () => {
+  for (const scenario of [
+    'large-ambiguous-upload',
+    'large-rejected-upload',
+    'large-late-drift',
+  ]) {
+    await withController(scenario, async ({ requests, directory }) => {
+      await assert.rejects(deploy);
+      assert.equal(
+        requests.filter((request) => request.url.includes('/v2/files')).length,
+        1,
+      );
+      assert.equal(
+        requests.filter(
+          (request) =>
+            request.url.includes('/v13/deployments?') &&
+            request.method === 'POST',
+        ).length,
+        0,
+      );
+      const record = JSON.parse(
+        await readFile(join(directory, 'delivery-record.json'), 'utf8'),
+      );
+      assert.equal(record.status, 'file-upload-pending');
+      assert.equal(
+        record.assetUploads[0].status,
+        scenario === 'large-late-drift' ? 'uploaded' : 'upload-requested',
+      );
+    });
+  }
+});
+
+test('tampered large assets fail integrity checks before any upload', async () => {
+  await withController('large-success', async ({ requests }) => {
+    await writeFile('dist/model.glb', Buffer.alloc(1_000_001, 8));
+    await assert.rejects(deploy, /bundle identity or content mismatch/);
+    assert.equal(
+      requests.filter((request) => request.method === 'POST').length,
+      0,
+    );
+  });
+});
+
+test('the original deployment JSON guard still rejects excess inline data before mutations', async () => {
+  await withController('inline-json-limit', async ({ requests }) => {
+    await assert.rejects(deploy, /deployment JSON limit/);
+    assert.equal(
+      requests.filter((request) => request.method === 'POST').length,
+      0,
+    );
+  });
+});
+
+test('file and aggregate bounds reject sparse oversized bundles before hashing or provider requests', async () => {
+  for (const sizes of [[100_000_001], [70_000_000, 70_000_000, 70_000_000]]) {
+    await withController('success', async ({ requests }) => {
+      for (const [index, size] of sizes.entries()) {
+        const path = `dist/oversized-${index}.bin`;
+        await writeFile(path, '');
+        await truncate(path, size);
+      }
+      await assert.rejects(deploy, /transport bounds/);
+      assert.equal(requests.length, 0);
+    });
+  }
+});
+
+test('bytes changed between initial integrity verification and capture fail before upload', async () => {
+  await withController('large-snapshot-tamper', async ({ requests }) => {
+    await assert.rejects(deploy, /Captured upload bytes differ/);
+    assert.equal(
+      requests.filter((request) => request.method === 'POST').length,
+      0,
+    );
+  });
+});
+
+test('historical sources skip only the later hero suite while hero markers require its exact command', async () => {
+  await withController('success', async () => {
+    await writeFile(
+      'package.json',
+      JSON.stringify({ scripts: { check: 'historical check' } }),
+    );
+    assert.equal(await heroRequired(), false);
+    await mkdir('public/hero', { recursive: true });
+    await writeFile('public/hero/wattson.glb', 'marker');
+    await assert.rejects(heroRequired, /must retain/);
+    await writeFile(
+      'package.json',
+      JSON.stringify({ scripts: { 'test:hero': 'echo skipped' } }),
+    );
+    await assert.rejects(heroRequired, /must retain/);
+    await writeFile(
+      'package.json',
+      JSON.stringify({
+        scripts: {
+          'test:hero': 'playwright test --config playwright.hero.config.ts',
+        },
+      }),
+    );
+    assert.equal(await heroRequired(), true);
+    await rm('public', { recursive: true });
+    assert.equal(await heroRequired(), true);
   });
 });
 

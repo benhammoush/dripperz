@@ -3,11 +3,13 @@
  * @packageDocumentation
  */
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { MatrixRain } from './MatrixRain';
 
 /** Properties for the single decorative region; its content remains semantic HTML. */
 interface AtmosphereProps {
   children: ReactNode;
+  paused?: boolean;
 }
 
 /**
@@ -17,6 +19,7 @@ interface AtmosphereProps {
  */
 export function Atmosphere(props: AtmosphereProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     const region = ref.current;
@@ -25,7 +28,7 @@ export function Atmosphere(props: AtmosphereProps) {
 
     /** Combine viewport and tab visibility without polling or scroll listeners. */
     function updateVisibility() {
-      if (region) region.dataset.active = String(inView && !document.hidden);
+      setActive(inView && !document.hidden);
     }
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -42,31 +45,8 @@ export function Atmosphere(props: AtmosphereProps) {
   }, []);
 
   return (
-    <div className="atmosphere" ref={ref} data-active="false">
-      <div className="matrix" aria-hidden="true">
-        {Array.from({ length: 16 }, (_, index) => (
-          <span
-            key={index}
-            style={{ '--column': index } as React.CSSProperties}
-          >
-            01
-            <br />
-            DCC
-            <br />
-            10
-            <br />
-            001
-            <br />
-            CYB
-            <br />
-            01
-            <br />
-            110
-            <br />
-            DCC
-          </span>
-        ))}
-      </div>
+    <div className="atmosphere" ref={ref} data-active={active}>
+      <MatrixRain active={active && !props.paused} />
       {props.children}
     </div>
   );
