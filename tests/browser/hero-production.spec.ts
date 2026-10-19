@@ -18,7 +18,9 @@ test('static continuation releases loading to a working model-specific view', as
       poster.evaluate((image: HTMLImageElement) => image.naturalWidth),
     )
     .toBeGreaterThan(0);
-  const posterAlpha = await poster.evaluate((image: HTMLImageElement) => {
+  const posterAlpha = await poster.evaluate(async (image: HTMLImageElement) => {
+    // Intrinsic dimensions can be available before WebKit has decoded drawable pixels.
+    await image.decode();
     const canvas = document.createElement('canvas');
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
