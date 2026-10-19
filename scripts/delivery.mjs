@@ -423,7 +423,8 @@ export async function deploy() {
     const file = path.slice(5);
     if (path !== 'dist/delivery.json')
       snapshot.push([file, bytes.toString('base64')]);
-    if (bytes.length > 1_000_000) {
+    // Keep small control files inline; batches of artwork must not exhaust JSON.
+    if (bytes.length > 64_000) {
       const sha = createHash('sha1').update(bytes).digest('hex');
       largeFiles.push({ file, bytes, sha });
       upload.push({ file, sha, size: bytes.length });

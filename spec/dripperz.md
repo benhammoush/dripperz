@@ -80,7 +80,8 @@ No new business promises, launch dates, adoption targets or Now/Next/Later prior
 - Known token IDs must reproduce approved reference attributes, rank, score formatting and composition.
 - Provide safe invalid-ID, missing-data and loading states; support lazy loading, keyboard use and mobile layouts.
 - Do not request OpenSea APIs, RPC, ownership or pricing data. Network verification must confirm the absence of blockchain/marketplace data requests.
-- Dataset provenance, exact rules, token-ID bounds and regression fixtures remain unresolved; ambiguity blocks calculation implementation.
+- Approved local implementation: use the audited active 5,555-token snapshot, with token IDs 1–5555 mapped consistently to the same record (not the old UI's next-token rank). Preserve stored scores/ranks, source tie order and one-decimal formatting. Owner confirmed rights for all 128 trait images and selected B, the striped catalog Sailor Tee artwork, without changing token metadata or rankings. Use optimized transparent layers in generator order. The audit, exact component arithmetic, provenance, ID/score/rank fixtures and art exception are documented in [rarity rules](../docs/rarity-explorer.md) before runtime implementation. No new scoring formula is introduced.
+- Local explorer behavior is owner-accepted. The owner separately approved lowering the inline file-selection threshold from 1,000,000 to 64,000 bytes so the rarity batch uses the existing binary upload path. Keep the 4 MB deployment JSON, 100 MB per-file and 200 MB aggregate guards, integrity and approval checks unchanged. Local checks and read-only review are complete; the owner subsequently authorized a commit and PR. Stop at PR/CI verification, without merging or deploying. Hosted verification of the rarity batch remains outstanding.
 
 ### 3.5 Showcase extras
 

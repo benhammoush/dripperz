@@ -17,6 +17,7 @@ import { Collection, Cybermap, ShowcaseFaq } from './CoreShowcase';
 import { PUBLIC_LINKS } from './showcaseContent';
 import { LocalHero } from './LocalHero';
 import { HERO_MODEL_BYTES } from './heroAsset';
+import { RaritySection } from './RaritySection';
 
 /**
  * Render shared desktop/mobile navigation and approved core content without external integrations.
@@ -250,6 +251,8 @@ export function App() {
                   <Cybermap />
                 ) : section.id === 'faq' ? (
                   <ShowcaseFaq />
+                ) : section.id === 'rarity' ? (
+                  <RaritySection />
                 ) : (
                   <>
                     <p>{section.detail}</p>

@@ -30,7 +30,7 @@ export const SECTIONS = [
     label: 'Rarity',
     title: 'Rarity explorer',
     detail:
-      'Local exploration follows validation of the legacy dataset and its original rules. No wallet is required.',
+      'Explore the archived collection with validated local traits, stored ranks and scores. No wallet is required.',
   },
   {
     id: 'faq',

@@ -92,7 +92,7 @@ test('renders the shell and runtime version without claiming feature completion'
     screen.getByRole('heading', { level: 1, name: /Dripperz.*ENTER THE/ }),
   ).toBeInTheDocument();
   expect(screen.getByTestId('app-version')).toHaveTextContent(APP_VERSION);
-  expect(screen.getAllByText('Not yet implemented')).toHaveLength(2);
+  expect(screen.getAllByText('Not yet implemented')).toHaveLength(1);
   fireEvent.click(screen.getByTestId('reload-model'));
   expect(
     screen.getByRole('dialog', { name: 'Loading Experience' }),

@@ -83,8 +83,32 @@ async function withController(scenario, run) {
     staticFiles.sort(([a], [b]) => a.localeCompare(b));
   }
   if (scenario === 'inline-json-limit') {
-    for (let index = 0; index < 4; index++)
-      staticFiles.push([`small-${index}.bin`, Buffer.alloc(900_000)]);
+    for (let index = 0; index < 60; index++)
+      staticFiles.push([`small-${index}.bin`, Buffer.alloc(60_000)]);
+    staticFiles.sort(([a], [b]) => a.localeCompare(b));
+  }
+  if (scenario.includes('rarity-')) {
+    const manifest = JSON.parse(
+      await readFile(
+        new URL('../../docs/rarity-source-manifest.json', import.meta.url),
+        'utf8',
+      ),
+    );
+    for (const asset of manifest.assets)
+      staticFiles.push([
+        asset.output.split('/').at(-1),
+        await readFile(
+          new URL(`../../public/rarity/${asset.output}`, import.meta.url),
+        ),
+      ]);
+    staticFiles.push([
+      'collection.json',
+      await readFile(
+        new URL('../../public/rarity/collection.json', import.meta.url),
+      ),
+    ]);
+    staticFiles.push(['inline-boundary.bin', Buffer.alloc(64_000)]);
+    staticFiles.push(['binary-boundary.bin', Buffer.alloc(64_001)]);
     staticFiles.sort(([a], [b]) => a.localeCompare(b));
   }
   const identity = {
@@ -262,6 +286,12 @@ async function withController(scenario, run) {
           if (scenario === 'large-ambiguous-upload')
             throw new Error('Synthetic lost file response');
           if (scenario === 'large-rejected-upload')
+            return new Response('', { status: 403 });
+          if (
+            scenario === 'rarity-rejected-middle' &&
+            requests.filter((request) => request.url.includes('/v2/files'))
+              .length === 3
+          )
             return new Response('', { status: 403 });
           uploaded = true;
           return new Response(null, { status: 200 });
@@ -578,6 +608,88 @@ test('large files use binary uploads and SHA references without raising the JSON
       assert.equal(record.status, 'smoke-verified-not-user-accepted');
     });
   }
+});
+
+test('rarity artwork batches and the exact inline boundary retain bounded JSON on both targets', async () => {
+  for (const scenario of ['rarity-success', 'production-rarity-success']) {
+    await withController(scenario, async ({ requests }) => {
+      await deploy();
+      const uploads = requests.filter((request) =>
+        request.url.includes('/v2/files'),
+      );
+      const deployments = requests.filter(
+        (request) =>
+          request.url.includes('/v13/deployments?') &&
+          request.method === 'POST',
+      );
+      assert.equal(deployments.length, 1);
+      const payload = deployments[0].body;
+      assert.ok(Buffer.byteLength(JSON.stringify(payload)) < 4_000_000);
+      const inline = payload.files.find(
+        (file) => file.file === 'inline-boundary.bin',
+      );
+      assert.equal(inline.encoding, 'base64');
+      assert.equal(Buffer.from(inline.data, 'base64').length, 64_000);
+      const binary = payload.files.find(
+        (file) => file.file === 'binary-boundary.bin',
+      );
+      assert.equal(binary.size, 64_001);
+      const references = payload.files.filter((file) => file.sha);
+      assert.equal(references.length, uploads.length);
+      assert.ok(
+        uploads.length > 100,
+        'Exercise the actual 128-layer batch, not just one large model',
+      );
+      const uploadedSizes = new Map(
+        uploads.map((request) => [
+          createHash('sha1').update(request.body).digest('hex'),
+          request.body.length,
+        ]),
+      );
+      for (const reference of references) {
+        assert.equal(uploadedSizes.get(reference.sha), reference.size);
+      }
+      assert.ok(
+        uploads.every(
+          (request) =>
+            requests.indexOf(request) < requests.indexOf(deployments[0]),
+        ),
+      );
+      assert.equal(
+        payload.files.filter((file) => /^t\d{3}\.png$/.test(file.file)).length,
+        128,
+      );
+    });
+  }
+});
+
+test('a rejected upload partway through the rarity batch stops without retry or deployment', async () => {
+  await withController(
+    'rarity-rejected-middle',
+    async ({ requests, directory }) => {
+      await assert.rejects(deploy);
+      assert.equal(
+        requests.filter((request) => request.url.includes('/v2/files')).length,
+        3,
+      );
+      assert.equal(
+        requests.filter(
+          (request) =>
+            request.url.includes('/v13/deployments?') &&
+            request.method === 'POST',
+        ).length,
+        0,
+      );
+      const record = JSON.parse(
+        await readFile(join(directory, 'delivery-record.json'), 'utf8'),
+      );
+      assert.equal(record.status, 'file-upload-pending');
+      assert.deepEqual(
+        record.assetUploads.map((asset) => asset.status),
+        ['uploaded', 'uploaded', 'upload-requested'],
+      );
+    },
+  );
 });
 
 test('failed or ambiguous file uploads and post-upload drift never create a deployment or retry', async () => {
