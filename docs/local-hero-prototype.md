@@ -31,7 +31,12 @@ published; the special loopback middleware has been removed.
   spacing, 15pt monospace and `#0001` trail fading as the visual reference.
   The latest owner-selected variation uses 160ms drawing cadence and 40px
   column spacing, calmer and sparser than the archive and the earlier 80ms trial.
-  The vertical step remains 20px. Its
+  The owner subsequently requested 50% smaller characters: both seeded and animated
+  glyphs now use 7.5pt monospace, without changing spacing, cadence or safeguards.
+  A subsequent request tightens same-column glyph spacing to 10px. Two rows are
+  drawn per unchanged 20px advance/160ms frame, retaining falling speed; seeded
+  trails retain their physical length and fade profile with twice as many rows.
+  Its
   opacity is the desktop source's 0.4. It remains hero-scoped rather than a
   fixed overlay on the rest of the archive. Responsive sizing, a DPR cap of 1.5,
   immediate seeded trails and viewport-relative recycling replace the old

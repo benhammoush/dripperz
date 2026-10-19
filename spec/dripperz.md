@@ -86,11 +86,12 @@ No new business promises, launch dates, adoption targets or Now/Next/Later prior
 ### 3.5 Showcase extras
 
 - Provide a decorative terminal with audited public commands and document links, without the legacy password gate or secrets.
-- Audio must be off by default and activated by the visitor. Provide explicit play/pause and unavailable-stream handling; stream failures must not break the rest of the showcase.
+- Terminal presentation correction approved by the owner: use the original transparent fixed bottom-left console at 30% desktop width, green Goldman text and `/` prompt, not a standalone section or bordered panel with a Run button. Use a width-bounded mobile dock and a small minimize/restore control so content can be accessed. Keep command behavior and the no-password/no-radio boundaries below.
+- Radio/audio is excluded at the owner's request. Do not add streams, soundtrack commands or playback controls.
 - Present treasury information as static, dated historical content with approved sources, visibly distinguished from current balances.
 - Do not query live Safe, Snapshot or RPC services, or fabricate treasury figures when sources are unavailable.
 - Verify commands, links, keyboard/mobile behavior and absence of blockchain requests.
-- Command inventory, public documents, stream availability and historical treasury content require audit/approval before implementation.
+- Approved terminal-only scope: green-on-black `/` prompt with `help`, `clear`, `report` and `mugshot`; keyboard history and mobile input; no password/Discord gate, secrets, radio, shell execution or automatic external requests/popups. Document commands return explicit clickable external PDF links with a new-tab warning. Both original URLs responded successfully during audit; `report` is the six-page fictional lore dossier. The 57.5 MB mugshot PDF exceeds the local document reader's inspection limit and is linked, not bundled or claimed fully reviewed. The owner approved these original links and local implementation after this audit. Keep archive-host availability explicit. See [terminal audit](../docs/terminal.md). The owner accepted the corrected docked terminal and Matrix presentation locally and authorized a commit and PR. Stop at PR/CI verification without merging or deploying. Historical treasury content remains separately blocked on audit/approval.
 
 ### 3.6 Release-wide acceptance
 

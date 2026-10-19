@@ -65,10 +65,11 @@ test('resize seeds archive-font glyphs immediately with a capped backing ratio a
   expect(canvas.width).toBe(300);
   expect(canvas.height).toBe(150);
   expect(context.setTransform).toHaveBeenLastCalledWith(1.5, 0, 0, 1.5, 0, 0);
-  expect(context.font).toBe('15pt monospace');
+  expect(context.font).toBe('7.5pt monospace');
   expect(context.fillRect).toHaveBeenCalledWith(0, 0, 200, 100);
   expect(context.fillText).toHaveBeenCalledWith('@', 200, 40);
-  expect(context.fillText).toHaveBeenCalledTimes(6 * 33);
+  expect(context.fillText).toHaveBeenCalledWith('@', 200, 30);
+  expect(context.fillText).toHaveBeenCalledTimes(6 * 65);
   expect(canvas.dataset.frames).toBe('1');
   expect(pending.size).toBe(0);
   controller.resize(200, 100, 3);
@@ -87,6 +88,9 @@ test('one owned loop advances at slower 160ms intervals without catching up hidd
   step(0);
   expect(canvas.dataset.frames).toBe('2');
   expect(context.fillStyle).toBe('#0694c1');
+  expect(context.font).toBe('7.5pt monospace');
+  expect(context.fillText).toHaveBeenNthCalledWith(6 * 65 + 11, '@', 200, 30);
+  expect(context.fillText).toHaveBeenLastCalledWith('@', 200, 40);
   step(20);
   expect(canvas.dataset.frames).toBe('2');
   step(40);
