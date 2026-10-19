@@ -33,6 +33,7 @@ export function App() {
   const [downloaded, setDownloaded] = useState<number | null>(null);
   const loadingDialog = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const terminalFocused = useRef(false);
 
   /** Reveal the page after a rendered frame or a handled asset/graphics failure. */
   const finishHero = useCallback(() => setHeroLoading(false), []);
@@ -81,7 +82,9 @@ export function App() {
     if (heroLoading && !dialog.open) dialog.showModal();
     if (!heroLoading && dialog.open) {
       dialog.close();
-      document.getElementById('main')?.focus({ preventScroll: true });
+      const target = terminalFocused.current ? 'main' : 'terminal-command';
+      document.getElementById(target)?.focus({ preventScroll: true });
+      terminalFocused.current = true;
     }
   }, [heroLoading]);
 

@@ -41,7 +41,6 @@ export function ShowcaseTerminal() {
   const [history, setHistory] = useState<string[]>([]);
   const [position, setPosition] = useState<number | null>(null);
   const [draft, setDraft] = useState('');
-  const [minimized, setMinimized] = useState(false);
   const sequence = useRef(0);
   const output = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -114,21 +113,8 @@ export function ShowcaseTerminal() {
       id="terminal"
       className="showcase-terminal"
       aria-label="Archive terminal"
-      data-minimized={minimized}
     >
-      <button
-        className="terminal-toggle"
-        type="button"
-        aria-expanded={!minimized}
-        aria-controls="terminal-console"
-        onClick={() => setMinimized(!minimized)}
-      >
-        {minimized ? 'Terminal /' : 'Minimize terminal −'}
-      </button>
-      <div id="terminal-console" hidden={minimized}>
-        <p className="terminal-welcome">
-          Welcome. Type 'help' to see a list of available commands.
-        </p>
+      <div id="terminal-console">
         <p id="terminal-help" className="sr-only">
           Archive prompt, not a system shell. Use ↑ / ↓ for command history. No
           password or wallet required.
@@ -144,7 +130,7 @@ export function ShowcaseTerminal() {
         >
           {entries.map((entry) => (
             <div className="terminal-entry" key={entry.id}>
-              <p className="terminal-echo">/ {entry.command}</p>
+              <p className="terminal-echo">Terminal/ {entry.command}</p>
               <p className="terminal-response">{entry.message}</p>
               {entry.document && (
                 <a
@@ -161,7 +147,7 @@ export function ShowcaseTerminal() {
         </div>
         <form className="terminal-form" onSubmit={submit}>
           <label htmlFor="terminal-command">
-            <span aria-hidden="true">/ </span>
+            <span aria-hidden="true">Terminal/</span>
             <span className="sr-only">Command</span>
           </label>
           <input

@@ -2,11 +2,15 @@
 
 The owner accepted the corrected docked terminal and Matrix presentation locally,
 excluding radio/audio entirely, and subsequently authorized a commit and PR.
-Stop at PR/CI verification; no merge or deployment is authorized in this step.
+That version shipped to dev through PR #15. The owner then accepted the smaller,
+always-visible white `Terminal/` prompt with initial focus, no welcome message,
+minimize control or input underline, and authorized preparing a commit and PR for
+dev delivery. Stop at PR/CI verification; merge remains owner-controlled and
+production is unchanged. Hosted acceptance of this refinement remains pending.
 
 ## Legacy audit and approved commands
 
-Source: untouched legacy `src/Phase_3.tsx`, lines 248–324. Preserve the green text,
+Source: untouched legacy `src/Phase_3.tsx`, lines 248–324. The legacy used green text,
 transparent bottom-left presentation, Goldman font, `/` prompt, welcome/help wording and original public document
 destinations. The legacy custom commands were `mugshot`, `report`, `password`
 (Discord gate) and `song` (radio attribution). Remove the latter two entirely;
@@ -44,14 +48,23 @@ No PDF files are copied into this repository. Archive-host failures cannot break
 the prompt, since commands do not fetch the PDFs. No prefetch/preconnect is added.
 
 The owner corrected the initial standalone section to match the original fixed
-bottom-left dock: desktop width 30%, transparent background, green Goldman text,
+bottom-left dock: desktop width 30%, transparent background, Goldman text,
 no visible section heading, bordered card or Run button. The dock remains inside
-the loading screen's inert shell and below header/menu controls. A small keyboard-
-accessible minimize control avoids trapping content behind the dock; its state
-preserves command output/history. Narrow screens use a viewport-bounded dock and
-44px input/toggle targets. This control is a deliberate usability addition to the
-legacy presentation, not an exact reproduction of the old emulator dependency.
+the loading screen's inert shell and below header/menu controls. Narrow screens
+use a viewport-bounded dock and a 44px input target. The owner subsequently
+removed the minimize control and selected the former minimized label's 0.7rem
+font size throughout, including the input on mobile. The prompt stays visible;
+history/output remain bounded. Native browser zoom is not disabled.
+
+After hosted review the owner requested white text, a persistent `Terminal/`
+prompt with input immediately beside it, no welcome message and no white input
+focus box. The owner then also removed the underline: input focus uses the
+native text caret, preserving other controls' keyboard focus indicators.
+Initial loading completion focuses the command input with
+`preventScroll`; subsequent 3D reload completions return focus to main rather than
+repeatedly stealing it. Nothing focuses an inert input behind the loading dialog.
 
 The output is a labelled, keyboard-scrollable live log. Input retains normal Tab
-navigation, has an accessible label with visible `/` prompt and supports Enter submission. No forced autofocus,
-typing animations, blink effects, password challenge or radio controls are used.
+navigation, has an accessible label with visible `Terminal/` prompt and supports
+Enter submission. No typing animations, blink effects, password challenge or
+radio controls are used.
