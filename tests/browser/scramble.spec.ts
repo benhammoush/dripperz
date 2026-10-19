@@ -4,12 +4,13 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { openShowcase } from './openShowcase';
 
 test('glitch characters cycle, pause offscreen and honor manual pause and reduced motion', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('/');
+  await openShowcase(page);
   const gallery = page.getByRole('region', { name: 'Meet the characters' });
   await gallery.getByRole('button', { name: /Next/ }).click();
   await expect(
