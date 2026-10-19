@@ -5,3 +5,4 @@ playwright-report/
 test-results/
 src/generated/
 package-lock.json
+public/rarity/collection.json

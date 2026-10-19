@@ -1,0 +1,146 @@
+/* Offline explorer: preserve readable facts independently of layered artwork loading. */
+.rarity-explorer button,
+#rarity button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--cyan);
+  background: #000;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.rarity-context,
+.rarity-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.rarity-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.rarity-search input {
+  width: 8rem;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0.6rem;
+  border: 1px solid var(--line);
+  background: #000;
+  color: #fff;
+  font: inherit;
+}
+.rarity-search [aria-invalid='true'] {
+  border-color: var(--magenta);
+}
+.rarity-search span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.rarity-input-error {
+  color: #ffb4d6;
+  min-height: 1.6em;
+  font-size: 0.8rem;
+}
+.rarity-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 2rem;
+}
+.rarity-art-frame {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  aspect-ratio: 1;
+  background: #000;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.rarity-art {
+  position: absolute;
+  inset: 0;
+}
+.rarity-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.rarity-art[data-ready='false'] img {
+  visibility: hidden;
+}
+.rarity-art-status {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  align-content: center;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+.rarity-explorer .rarity-image-retry {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  border-color: var(--line);
+}
+.rarity-facts h3 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+.rarity-ranking {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+.rarity-ranking dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.rarity-ranking dd {
+  margin: 0.25rem 0 0;
+  color: #81d4ed;
+  font-size: 1.15rem;
+}
+.rarity-facts table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.rarity-facts caption {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+}
+.rarity-facts th,
+.rarity-facts td {
+  padding: 0.6rem 0.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.rarity-facts th {
+  font-weight: 400;
+}
+.rarity-facts tbody th {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+@media (max-width: 45rem) {
+  .rarity-result {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .rarity-art-frame {
+    margin-inline: auto;
+  }
+  .rarity-search {
+    gap: 0.5rem;
+  }
+}

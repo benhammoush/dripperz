@@ -1,0 +1,1301 @@
+{
+  "schema": 1,
+  "sourceRaritySha256": "879353c792d3bc9634ffaffa51c0b780422428b3c5ca8b9ee37167a42e47ef1d",
+  "sourceMetadataSha256": "af45a40dcb372349f6cc5e9ea1e02c5ca10cd1652710d6a2957eee2595b6a5ee",
+  "sourceGeneratorSha256": "326067e64428fc3868d54a939fe85e7e6c2d3d26541f1849ce2148bbb10ba1a8",
+  "collectionSha256": "d4a17492c001f6b52904e59703a8c77b027b7430ccb81bcd6a04ed027d877611",
+  "layerOrder": [
+    "BACKGROUND",
+    "ACCESSORIES",
+    "BODY",
+    "NECK",
+    "CLASS",
+    "CLOTHES",
+    "HEAD"
+  ],
+  "sailorTeeDecision": "Owner-approved B: striped catalog artwork, no metadata/rank change",
+  "assets": [
+    {
+      "id": 0,
+      "type": "BACKGROUND",
+      "value": "BLACK",
+      "source": "gen/trait-layers/BACKGROUND/black.png",
+      "sourceSha256": "5ac606fa74e6a9912e1c4a6f10aa099842c61da5a8d9e5d3109a412db38b620e",
+      "output": "layers/t000.png",
+      "outputSha256": "77b08a75a310f5482ff3ec6deee213390327c756d99b5f811c4121228838519d",
+      "bytes": 620596
+    },
+    {
+      "id": 1,
+      "type": "BACKGROUND",
+      "value": "BLUE",
+      "source": "gen/trait-layers/BACKGROUND/blue.png",
+      "sourceSha256": "1297140635b10624edee152fe078d7a5dd0a335f73c49e0705f47b80159d3eda",
+      "output": "layers/t001.png",
+      "outputSha256": "8d8a26711234d62b505fe7d4abbcbdb6408151d8299cca2db0d31cfb49c567e4",
+      "bytes": 694821
+    },
+    {
+      "id": 2,
+      "type": "BACKGROUND",
+      "value": "MATRIX",
+      "source": "gen/trait-layers/BACKGROUND/matrix.png",
+      "sourceSha256": "2252ce1115b838b14655619de87287e914c862b0cba9e505bfdb58c458155c0b",
+      "output": "layers/t002.png",
+      "outputSha256": "4884471fe80348bd8fc5705f3ad395ccd49e673d2454c917b9f4fb1b98d146f1",
+      "bytes": 1325182
+    },
+    {
+      "id": 3,
+      "type": "BACKGROUND",
+      "value": "BROWN",
+      "source": "gen/trait-layers/BACKGROUND/brown.png",
+      "sourceSha256": "f6b8bff6c1e11188abf1191d121961db67b0774320aacd94b0d2ef9dc6c77a91",
+      "output": "layers/t003.png",
+      "outputSha256": "86fa3324da59b65e7acd086683a85bd6274ee33bf76161adf01ecd2aaad922f4",
+      "bytes": 717615
+    },
+    {
+      "id": 4,
+      "type": "BACKGROUND",
+      "value": "PURPLE",
+      "source": "gen/trait-layers/BACKGROUND/violet.png",
+      "sourceSha256": "7aea00f5496ff4ffc0170121cdb5cd935b14f2b5822c383154d2628d78229719",
+      "output": "layers/t004.png",
+      "outputSha256": "f8ac11a7d7d6ed06e446a1321d4469feeb17552e75891b3ca02e400062fca4be",
+      "bytes": 723522
+    },
+    {
+      "id": 5,
+      "type": "BACKGROUND",
+      "value": "HEIST",
+      "source": "gen/trait-layers/BACKGROUND/heist.png",
+      "sourceSha256": "b2feec70fc00131f4ff76bd5ca3ef33d228616ec99da8b39ff77116e7f10f030",
+      "output": "layers/t005.png",
+      "outputSha256": "1e3cb4fef0bfdbdb700ca76c953a2a0eebd352a259d50793c70b8d1952ef6afc",
+      "bytes": 1090460
+    },
+    {
+      "id": 6,
+      "type": "ACCESSORIES",
+      "value": "Tag Wings",
+      "source": "gen/trait-layers/BACKOBJECT/wing_I.png",
+      "sourceSha256": "236064279af0d9cc9fc5126cd931f6fc9d1b85415e3744935b26f7ac6079e86e",
+      "output": "layers/t006.png",
+      "outputSha256": "a5c9c10ffea7cece2c3eb63ab46ef1b81b4bc5978d60a4ae628acc297834f6d7",
+      "bytes": 978330
+    },
+    {
+      "id": 7,
+      "type": "ACCESSORIES",
+      "value": "Angel",
+      "source": "gen/trait-layers/BACKOBJECT/wing_II.png",
+      "sourceSha256": "5e473132c0ca49da1e6e05dba7704026e824a100a0e365a1615dbe515358c970",
+      "output": "layers/t007.png",
+      "outputSha256": "faa6944bfb11e62bb1f8ccec94a875c3998e44fcfcea86747f1ef741bc84aaf6",
+      "bytes": 916972
+    },
+    {
+      "id": 8,
+      "type": "ACCESSORIES",
+      "value": "Lucifer",
+      "source": "gen/trait-layers/BACKOBJECT/wing_III.png",
+      "sourceSha256": "8f3e74c56d57b93a0ccc9855883a7854f160972d5899b48570152294a99132b3",
+      "output": "layers/t008.png",
+      "outputSha256": "0e9c4b327cf7aa86b51bd6bae4cda647c4c93eb22a6f63de77b63e08a7101d98",
+      "bytes": 647520
+    },
+    {
+      "id": 9,
+      "type": "ACCESSORIES",
+      "value": "Masamune",
+      "source": "gen/trait-layers/BACKOBJECT/Masamune.png",
+      "sourceSha256": "c92fd177a0c5268f6b578b05fb0cc8802bf939717b4ecc4a42b36c41a2d58703",
+      "output": "layers/t009.png",
+      "outputSha256": "7be206bdf74dc8ba2cea4b0be12902c87be54657546e7d556c18ed758ce13436",
+      "bytes": 80628
+    },
+    {
+      "id": 10,
+      "type": "ACCESSORIES",
+      "value": "Muramasa",
+      "source": "gen/trait-layers/BACKOBJECT/Muramasa.png",
+      "sourceSha256": "59951734a7253c95e8d168d01141d70d04865365680dde8a2b55ca425f923bf4",
+      "output": "layers/t010.png",
+      "outputSha256": "6e9daef55aafb1de46faee209b44bb447385f792d09d2f7b5aabb598152b1312",
+      "bytes": 147992
+    },
+    {
+      "id": 11,
+      "type": "ACCESSORIES",
+      "value": "UAV",
+      "source": "gen/trait-layers/BACKOBJECT/Uav.png",
+      "sourceSha256": "338b919e71928f4cc0b74c52e2450bb3466954ea87c34c61b59fbdba713b4125",
+      "output": "layers/t011.png",
+      "outputSha256": "b39528751a73989bd96687fb67595520e6d50bf7b3b26a53ad123544f6eaebaa",
+      "bytes": 125424
+    },
+    {
+      "id": 12,
+      "type": "ACCESSORIES",
+      "value": "Falcon",
+      "source": "gen/trait-layers/BACKOBJECT/wing_IV.png",
+      "sourceSha256": "e1fdfa3dda168d0d1d8867abaf5d28e5fa8935d9840d019a78466fdc04a4c7f5",
+      "output": "layers/t012.png",
+      "outputSha256": "13a163c90ae4abec47a70480c8733f818af5ad503bfbc06776650eb6b85dc3eb",
+      "bytes": 1109816
+    },
+    {
+      "id": 13,
+      "type": "ACCESSORIES",
+      "value": "Cables",
+      "source": "gen/trait-layers/BACKOBJECT/Cable.png",
+      "sourceSha256": "fcebd647b393cc6a5ecdec269cf84da603ffa1b77ed06f53fea6f5742dbf95bc",
+      "output": "layers/t013.png",
+      "outputSha256": "16c07515cac5cfcc9168080ee7bfb86e38f785392be0d00605853856009d4bca",
+      "bytes": 589158
+    },
+    {
+      "id": 14,
+      "type": "ACCESSORIES",
+      "value": "Tentacle",
+      "source": "gen/trait-layers/BACKOBJECT/Octopus.png",
+      "sourceSha256": "c4697265d9bccbe25da8d8edb3d8f8d76cf4835cf0e4dd477e3e1a8a61a6a08d",
+      "output": "layers/t014.png",
+      "outputSha256": "9ff273e686281662dde5d5e8d33d9a092aa7b7a61198d75b75edb5b4ac9f824c",
+      "bytes": 581437
+    },
+    {
+      "id": 15,
+      "type": "BODY",
+      "value": "Silver",
+      "source": "gen/trait-layers/ROBOT/Silver.png",
+      "sourceSha256": "a0d080271da1bfbcfc8da5f60333c9e367863bc5831f101260d7dedd4f5b4355",
+      "output": "layers/t015.png",
+      "outputSha256": "bba233ee83e611d6b0b30cd565f16b0d54dcabc38c87db198e428fc5078ccd3a",
+      "bytes": 734384
+    },
+    {
+      "id": 16,
+      "type": "BODY",
+      "value": "Black",
+      "source": "gen/trait-layers/ROBOT/Black.png",
+      "sourceSha256": "449963f940115f4dd7d2901ac682a44a7e7cef292d26fce8663ba4a603721273",
+      "output": "layers/t016.png",
+      "outputSha256": "d108e373b78f5cc6d19100ee734fa3252c654c902cd0979841d27509a643695d",
+      "bytes": 455057
+    },
+    {
+      "id": 17,
+      "type": "BODY",
+      "value": "Gold",
+      "source": "gen/trait-layers/ROBOT/Gold.png",
+      "sourceSha256": "dc59ae0d7797fcb3d150eacd3f6d70007a91a34f571d47444829427b5fff20f7",
+      "output": "layers/t017.png",
+      "outputSha256": "9d19241774f05bf4b83e3383643ff5830728b8eb1c503cdb2c76df172573097c",
+      "bytes": 810694
+    },
+    {
+      "id": 18,
+      "type": "BODY",
+      "value": "Petrol",
+      "source": "gen/trait-layers/ROBOT/Petrol.png",
+      "sourceSha256": "491875541a334e46c59ba7c5b82df264df989364f15be17d8b2093500f453c75",
+      "output": "layers/t018.png",
+      "outputSha256": "b5b7ff7df04b1521f9c522c8f2083ed951181df287a25a65ef1d0c0f31852dfb",
+      "bytes": 901789
+    },
+    {
+      "id": 19,
+      "type": "BODY",
+      "value": "Graff",
+      "source": "gen/trait-layers/ROBOT/Graff.png",
+      "sourceSha256": "0a60d8eb315a680474b686ca10500ed1caf4fdd11b795b8c25499fd0b47f19c1",
+      "output": "layers/t019.png",
+      "outputSha256": "c5cdf2065863d95e8a5593480196dc307a5fe99b8af9f5382048b6bb8a541931",
+      "bytes": 616045
+    },
+    {
+      "id": 20,
+      "type": "BODY",
+      "value": "Prototype",
+      "source": "gen/trait-layers/ROBOT/Prototype.png",
+      "sourceSha256": "e34f4f339058fd81e5381687a9547383080639bdf39e40d60ec63c83c93d763c",
+      "output": "layers/t020.png",
+      "outputSha256": "25b27b9179c6fb74e9cf7f696cf97393a16f637c836fd718a796ad6401c7dcf5",
+      "bytes": 758067
+    },
+    {
+      "id": 21,
+      "type": "NECK",
+      "value": "Icy Drip",
+      "source": "gen/trait-layers/CHAIN/Icy_Drip.png",
+      "sourceSha256": "0d5e5c30e19e74c50a7c4e36b5936f6f5be6a17f2f40282626ca86fe973c4005",
+      "output": "layers/t021.png",
+      "outputSha256": "467d706d7b0b6036cea1926b7d2bd0940cad8bdee01b263e9063af02010981b7",
+      "bytes": 98890
+    },
+    {
+      "id": 22,
+      "type": "NECK",
+      "value": "Icy Eth",
+      "source": "gen/trait-layers/CHAIN/Icy_ETH.png",
+      "sourceSha256": "41110aeda8d60ea4d15ea454d752b872f27a078c4dab45d90e1bba07d44deb86",
+      "output": "layers/t022.png",
+      "outputSha256": "c2e6bd27d57c76ffad5e5e78860222a0ef5afbda418c6c8b7e044a28d600ab13",
+      "bytes": 91683
+    },
+    {
+      "id": 23,
+      "type": "NECK",
+      "value": "Duo",
+      "source": "gen/trait-layers/CHAIN/duo.png",
+      "sourceSha256": "ef8cab3de491f831365f7629fa1e893bc35881237415c0ec60e13ad9d01e7c12",
+      "output": "layers/t023.png",
+      "outputSha256": "06ae10c361cc3a86e2e0ecce01c35694d8adf7052ff8fa1df99e3c299ea2aea1",
+      "bytes": 38519
+    },
+    {
+      "id": 24,
+      "type": "NECK",
+      "value": "Five",
+      "source": "gen/trait-layers/CHAIN/five.png",
+      "sourceSha256": "8d341f439034169bd4fc80bff3e4712a69360bde13e81b762cd1209d109eea9b",
+      "output": "layers/t024.png",
+      "outputSha256": "2f83964fbd69103dd1b30274047008e97df8cd0ccd84f1d21912527ef5e25331",
+      "bytes": 100294
+    },
+    {
+      "id": 25,
+      "type": "NECK",
+      "value": "Solo",
+      "source": "gen/trait-layers/CHAIN/solo.png",
+      "sourceSha256": "456e17777fb42372beb8d3e52339f2316172ffe6de9b2946740831ad8c1b0e40",
+      "output": "layers/t025.png",
+      "outputSha256": "2f64a736eea5491688ea1d9b6aa90a697660d82d99c834cbd86825cf0a62887b",
+      "bytes": 28711
+    },
+    {
+      "id": 26,
+      "type": "CLASS",
+      "value": "A1M Sgt",
+      "source": "gen/trait-layers/HEAD/A1M_Sgt.png",
+      "sourceSha256": "7582afd4702af1b890d2d93cf5020ea9b73af967d0fb5dfde9f6b5114bad07e7",
+      "output": "layers/t026.png",
+      "outputSha256": "e255b766a689acf6f4ce0142b4f6eec56ae5e4ef3a1f35643717877336a23646",
+      "bytes": 185130
+    },
+    {
+      "id": 27,
+      "type": "CLASS",
+      "value": "A1M Gen",
+      "source": "gen/trait-layers/HEAD/A1M_Gen.png",
+      "sourceSha256": "17939d424c7e6cdc24763792e9b2f91a5610fbdfa873b05f231d6fdde456895f",
+      "output": "layers/t027.png",
+      "outputSha256": "0c9991f9e27bac7013610267a77cefe46b9545bf1a4fcf842204064f8bf9a9b0",
+      "bytes": 186071
+    },
+    {
+      "id": 28,
+      "type": "CLASS",
+      "value": "A1M Med",
+      "source": "gen/trait-layers/HEAD/A1M_Med.png",
+      "sourceSha256": "7016c5e9b0ff4568ba85b58b45e5043f9e695982b1f878e714aa2152ed98542e",
+      "output": "layers/t028.png",
+      "outputSha256": "711ccc0e59f6b2bb2724bfc0b9d2a15efac24afb7475ed85c71f06806eaa3377",
+      "bytes": 191463
+    },
+    {
+      "id": 29,
+      "type": "CLASS",
+      "value": "L1L Kush",
+      "source": "gen/trait-layers/HEAD/L1L_Kush.png",
+      "sourceSha256": "5af2ca54922ac8e157cd5bb20ce16d9bf99a1ce7ef8e0e5c7832202e0a608063",
+      "output": "layers/t029.png",
+      "outputSha256": "1a5b9d111ac6b362c0aa8739804d300cbca308944bfd8e129a4c65d64ff0eb99",
+      "bytes": 177859
+    },
+    {
+      "id": 30,
+      "type": "CLASS",
+      "value": "L1L Blood",
+      "source": "gen/trait-layers/HEAD/L1L_Blood.png",
+      "sourceSha256": "f2b038a86da6bac81ad0402ec9bf4e7a8c4a88096201b7588142712650c61fd7",
+      "output": "layers/t030.png",
+      "outputSha256": "77bcd5de78bbdc33ea22d8ad04f669cd4ee2981e92f0073faabda06c521acb40",
+      "bytes": 178206
+    },
+    {
+      "id": 31,
+      "type": "CLASS",
+      "value": "L1L G",
+      "source": "gen/trait-layers/HEAD/L1L_G.png",
+      "sourceSha256": "73b4713a78fa81dccca35248d3bf6487103760e8d55fcd30a18ed6829d41268b",
+      "output": "layers/t031.png",
+      "outputSha256": "582b8d0c851b49bff178cd10abdee00d29a3a8238828dd8b69d188d57c51d1df",
+      "bytes": 183867
+    },
+    {
+      "id": 32,
+      "type": "CLASS",
+      "value": "C1V1L S",
+      "source": "gen/trait-layers/HEAD/C1V1L_S.png",
+      "sourceSha256": "77a4b197660d2053b1c1530c8660d3294b452d142bf2b55832cd545d7b869d01",
+      "output": "layers/t032.png",
+      "outputSha256": "c072c4175c18432d21a73663b7b74347d57bcaf67097967d09cb7027f47102a4",
+      "bytes": 177874
+    },
+    {
+      "id": 33,
+      "type": "CLASS",
+      "value": "C1V1L G",
+      "source": "gen/trait-layers/HEAD/C1V1L_G.png",
+      "sourceSha256": "3e9d9e56c8b1eaa36489be16f38f74eeba6ce118bc348bdbfc837c3a99b6f702",
+      "output": "layers/t033.png",
+      "outputSha256": "3d623c8c7ee6363d4d4fb3fab9ba0895b4177724e3f8dcbb69ffeb81806d32fd",
+      "bytes": 177481
+    },
+    {
+      "id": 34,
+      "type": "CLASS",
+      "value": "AS4P Grevious",
+      "source": "gen/trait-layers/HEAD/AS4P_Grevious.png",
+      "sourceSha256": "c4a77fcf10bee4933cf745047c97ba23658b307eacd2891b8d78c0cc41af358c",
+      "output": "layers/t034.png",
+      "outputSha256": "a36b0b202545773d03dc7c62173601bac1c89217357d3d11d992b3d4a1e03b40",
+      "bytes": 157763
+    },
+    {
+      "id": 35,
+      "type": "CLASS",
+      "value": "AS4P Cortana",
+      "source": "gen/trait-layers/HEAD/AS4P_Cortana.png",
+      "sourceSha256": "83370e06be0377bfbcd44728d3c533ab2caa62b304eb0a1279cae7bcb01d047b",
+      "output": "layers/t035.png",
+      "outputSha256": "95ca6ae7ea9beaa857aa280235c485380c18845c38a5c4f77f02d8e33078bf66",
+      "bytes": 164776
+    },
+    {
+      "id": 36,
+      "type": "CLASS",
+      "value": "AS4P Samus",
+      "source": "gen/trait-layers/HEAD/AS4P_Samus.png",
+      "sourceSha256": "df610bc998f41e00ad0a636ecf663bff103402ab13361e38913db36ede4e3452",
+      "output": "layers/t036.png",
+      "outputSha256": "2b6fd1c3b86e14795d19a2ee1f96165b297f3ab4a0b399f4ee47de28a16060a8",
+      "bytes": 193688
+    },
+    {
+      "id": 37,
+      "type": "CLASS",
+      "value": "AS4P Pathfinder",
+      "source": "gen/trait-layers/HEAD/AS4P_Pathfinder.png",
+      "sourceSha256": "fbe8d93dda4466c7feb97ff829d97c0f96980f212b7fcbb1da8159c56f4dabd8",
+      "output": "layers/t037.png",
+      "outputSha256": "5192952b45ea47247344d0f503123a09fc8973a296b7dc758318c07d7ee8b3ad",
+      "bytes": 189901
+    },
+    {
+      "id": 38,
+      "type": "CLASS",
+      "value": "AS4P AVA",
+      "source": "gen/trait-layers/HEAD/AS4P_AVA.png",
+      "sourceSha256": "da3ed67c37ac0256ba1d3c7d3ee4f1a57b77da951b39f3a84aa53a3c1b22b499",
+      "output": "layers/t038.png",
+      "outputSha256": "d75fb84b5415d2d6b4082f12664e9f6053e3c14dfb9b505dd6642a8c3594da38",
+      "bytes": 164900
+    },
+    {
+      "id": 39,
+      "type": "CLASS",
+      "value": "AS4P Gundam",
+      "source": "gen/trait-layers/HEAD/AS4P_Gundam.png",
+      "sourceSha256": "558d7e7a5b152dbcbd4826866768bd0ee641c3d99575b3487974a2793574f08a",
+      "output": "layers/t039.png",
+      "outputSha256": "0db27e39720c483c23f4dafaa5ad90730ca091ea0a4dcc0fb65a01146112ea7c",
+      "bytes": 185412
+    },
+    {
+      "id": 40,
+      "type": "CLASS",
+      "value": "DR1P TM",
+      "source": "gen/trait-layers/HEAD/DR1P_TM.png",
+      "sourceSha256": "ab5585107414869e01adb039e705d3dc58e65a667cfd1a990e1545c45767d667",
+      "output": "layers/t040.png",
+      "outputSha256": "84a7f2a60f24f605519b43bcbc0f7da3005a4b2c52fc9052566eb908c4ceb093",
+      "bytes": 146179
+    },
+    {
+      "id": 41,
+      "type": "CLASS",
+      "value": "DR1P VA",
+      "source": "gen/trait-layers/HEAD/DR1P_VA.png",
+      "sourceSha256": "1d6fbad4f4ac862c15cb71072d8399cb07d946e339a572fae40209a6d13ce1a0",
+      "output": "layers/t041.png",
+      "outputSha256": "c0da0ec8d1509284a5af524913cf4994c48ced81a28b68cef7903a3bb552d9e1",
+      "bytes": 183586
+    },
+    {
+      "id": 42,
+      "type": "CLASS",
+      "value": "DR1P NGO",
+      "source": "gen/trait-layers/HEAD/DR1P_NGO.png",
+      "sourceSha256": "1c8fd18cc4d6f2300a99b31edcb3c20947b77b1b6b04891ccda57243596ca499",
+      "output": "layers/t042.png",
+      "outputSha256": "4f48c6cd3e3836f50cfbba22ba3d9d78d8e8649c9149ec243b2b41a7952279b4",
+      "bytes": 157964
+    },
+    {
+      "id": 43,
+      "type": "CLOTHES",
+      "value": "ETH Tee",
+      "source": "gen/trait-layers/CLOTHES/T-ETH.png",
+      "sourceSha256": "9ca0cbb8d8a8a1f88faf4b012f9200e01373faf23cda4d99ab68ce2e60bed58e",
+      "output": "layers/t043.png",
+      "outputSha256": "46c303a5f2dff9eb6b37e8a6a16c715b343da546ed48fadef831757457881a33",
+      "bytes": 701735
+    },
+    {
+      "id": 44,
+      "type": "CLOTHES",
+      "value": "WAGMI Tee",
+      "source": "gen/trait-layers/CLOTHES/T-WAGMI.png",
+      "sourceSha256": "f05521257ad26acc0d439a0cfb2a6765baf4265ecb16df71d2aa75a19acc6835",
+      "output": "layers/t044.png",
+      "outputSha256": "63c4010704379f8b151188367d510e90fdeacdebbcca8c86450b42a4d95cb0b3",
+      "bytes": 700427
+    },
+    {
+      "id": 45,
+      "type": "CLOTHES",
+      "value": "90s Tee",
+      "source": "gen/trait-layers/CLOTHES/T-90s.png",
+      "sourceSha256": "a1a701f7be5e64357e093b0875a402053b37a16ce92b2bd0671fd5cb51f24f6b",
+      "output": "layers/t045.png",
+      "outputSha256": "101a5602c4619a828db6e2627940759237dc3ca7050a430d5a67079b45564222",
+      "bytes": 529744
+    },
+    {
+      "id": 46,
+      "type": "CLOTHES",
+      "value": "Park Tee",
+      "source": "gen/trait-layers/CLOTHES/T-Park.png",
+      "sourceSha256": "0cd28630dc6c563232069dd83ced65e2e2ee04303fad3374fa67db6ff5e57d6b",
+      "output": "layers/t046.png",
+      "outputSha256": "7174de1a24005d040a3d8f93018063897c9b98ea9cc596f0b580c302f910a9b6",
+      "bytes": 521249
+    },
+    {
+      "id": 47,
+      "type": "CLOTHES",
+      "value": "Sailor Tee",
+      "source": "src/trait-layers/CLOTHES/T-Sailor.png",
+      "sourceSha256": "711029820f4becf25b46db56c125421fac444ebe5ab5c768a83beb9a13bd46af",
+      "output": "layers/t047.png",
+      "outputSha256": "47604b02da0dd5e3f0ab8515f9d5b8632e2720ce66281051b2c1094b40ed74f4",
+      "bytes": 880333
+    },
+    {
+      "id": 48,
+      "type": "CLOTHES",
+      "value": "Party Tee",
+      "source": "gen/trait-layers/CLOTHES/T-Party.png",
+      "sourceSha256": "81ee86ad0ff600b1aeaebb4cf9d91be3edbd6f474bbd2b13b22fd2d38a5eb028",
+      "output": "layers/t048.png",
+      "outputSha256": "7f9efb5a40ed5f8f2ccf6ee3a43c82792baa508042eb0a058d5a503bc1569089",
+      "bytes": 893466
+    },
+    {
+      "id": 49,
+      "type": "CLOTHES",
+      "value": "Monster Tee",
+      "source": "gen/trait-layers/CLOTHES/T-Monster.png",
+      "sourceSha256": "bf0bd20bbf72cabb444e123be50fbca459f0fcacff1a2b54c4fb8ef01dd6b4d7",
+      "output": "layers/t049.png",
+      "outputSha256": "60e471c8c1f0ffe9e38e2923fc601e28d778a200a7490a757c327b10ee7f3153",
+      "bytes": 588451
+    },
+    {
+      "id": 50,
+      "type": "CLOTHES",
+      "value": "Santa Drip Tee",
+      "source": "gen/trait-layers/CLOTHES/T-Santa Drip.png",
+      "sourceSha256": "88c1c16ab8e36bea2b5e37a797279e66ae952d1df9295dde8984f28dafa959d6",
+      "output": "layers/t050.png",
+      "outputSha256": "c316a3c8b95dba0bc1db0d975f826ad93242d37de5656fe32165e0cf8bc7297a",
+      "bytes": 701420
+    },
+    {
+      "id": 51,
+      "type": "CLOTHES",
+      "value": "Sailor Tee 2",
+      "source": "gen/trait-layers/CLOTHES/T-Sailor-2.png",
+      "sourceSha256": "f5ff31d337d543a19a0be654f26e356918def48e272ba6654087c2f8250f41cb",
+      "output": "layers/t051.png",
+      "outputSha256": "90b227b9b5dd3f9d3daeb5767aa78e7654e1a80e6f30b61fa5a0d38bc697e565",
+      "bytes": 791330
+    },
+    {
+      "id": 52,
+      "type": "CLOTHES",
+      "value": "Haze Tee",
+      "source": "gen/trait-layers/CLOTHES/T-Haze.png",
+      "sourceSha256": "4fe0e7863608bb7a8b9a6a90ab96683c0a08536700b1a57805ffa58b22d32b84",
+      "output": "layers/t052.png",
+      "outputSha256": "69f0ccdbe76a6241c08f34cd61bc9da3bf2a8c3786300a92b76e23affe69e94d",
+      "bytes": 680069
+    },
+    {
+      "id": 53,
+      "type": "CLOTHES",
+      "value": "Tag Tribute Sweat",
+      "source": "gen/trait-layers/CLOTHES/Tag_Tribute.png",
+      "sourceSha256": "ec2a0d677c5d8ed0c9bc61a35c8a614be64e221bd8cd7f8f1c4e56f1536a66b0",
+      "output": "layers/t053.png",
+      "outputSha256": "baa9bc03612d14858c738f382843552fbd78c1cf54699ca54346321b30fae380",
+      "bytes": 1125343
+    },
+    {
+      "id": 54,
+      "type": "CLOTHES",
+      "value": "Renaissance Sweat",
+      "source": "gen/trait-layers/CLOTHES/Renaissance.png",
+      "sourceSha256": "4bebf1e1afcb92dcc4d51f5934409037a102807e56d35ff0ba43023a12af9473",
+      "output": "layers/t054.png",
+      "outputSha256": "9fd0ac70213faf90028c504392ecd19bf364aaf54c1bf659237580a7ce9d8c99",
+      "bytes": 1107139
+    },
+    {
+      "id": 55,
+      "type": "CLOTHES",
+      "value": "Landscape Sweat",
+      "source": "gen/trait-layers/CLOTHES/Landscape.png",
+      "sourceSha256": "b51814c7be963de51d255f46edace199c9898822e740c1a7164adef3589dbee8",
+      "output": "layers/t055.png",
+      "outputSha256": "1c92abff118d7a350d47bf4b5ccbc8f264232bdc54b64d6aeb1d0bc709209fc4",
+      "bytes": 1109522
+    },
+    {
+      "id": 56,
+      "type": "CLOTHES",
+      "value": "The Syrup Sweat",
+      "source": "gen/trait-layers/CLOTHES/The Syrup.png",
+      "sourceSha256": "599ff95e4b7e5b6531e5bef5bcc5e1652995e3fb2e69c3c5b64cb76983920c2a",
+      "output": "layers/t056.png",
+      "outputSha256": "04278158b385ad9441931a90bf4c58b9cee49f6d590e8e4b9755bef79ad7230c",
+      "bytes": 1121346
+    },
+    {
+      "id": 57,
+      "type": "CLOTHES",
+      "value": "Trinity Sweat",
+      "source": "gen/trait-layers/CLOTHES/Trinity.png",
+      "sourceSha256": "dcc0e3e7758f7919b0d1a8aed5329aace76397cf2cda33f930ac6a9e706508ba",
+      "output": "layers/t057.png",
+      "outputSha256": "bfa81eb4bcf6d8feb0aa72244dc77ab210bc8ccbd1bc8d13f5c66b3c564c76b3",
+      "bytes": 1129172
+    },
+    {
+      "id": 58,
+      "type": "CLOTHES",
+      "value": "Pastel Blue Sweat",
+      "source": "gen/trait-layers/CLOTHES/Pastel_Blue.png",
+      "sourceSha256": "f2bff61a760864a1ebe2f690cea8a5b7809c4e6ebc9cd304e5e8553b1f799a50",
+      "output": "layers/t058.png",
+      "outputSha256": "901659256b09d7f8424dfa5b08006368bc97811da60fd50bb4e06f023758d057",
+      "bytes": 964268
+    },
+    {
+      "id": 59,
+      "type": "CLOTHES",
+      "value": "Beige Sweat",
+      "source": "gen/trait-layers/CLOTHES/Beige classique.png",
+      "sourceSha256": "5a1b499db9e3cf3e70214bdfc9b6ae59e2960fbd208f13e4ab4b7763cf13d362",
+      "output": "layers/t059.png",
+      "outputSha256": "ef2e018dff032c3def70b3773d742025667b3c9997807c8b76d666ede3cb4faf",
+      "bytes": 850183
+    },
+    {
+      "id": 60,
+      "type": "CLOTHES",
+      "value": "Butcher Apron",
+      "source": "gen/trait-layers/CLOTHES/Butcher_Apron.png",
+      "sourceSha256": "d2074a746a90dad53e1cbd8c645fc77922129f733eb9b342b7a50d42a344e2e0",
+      "output": "layers/t060.png",
+      "outputSha256": "ed4e77d16b82df41cafbab858308d22bafeaf894890d12250403bdae03316704",
+      "bytes": 406409
+    },
+    {
+      "id": 61,
+      "type": "CLOTHES",
+      "value": "Commando Vest",
+      "source": "gen/trait-layers/CLOTHES/Commando.png",
+      "sourceSha256": "15e993370c89d51906419445b0e93186ea221631ba3187d995d0f1682bb84bdb",
+      "output": "layers/t061.png",
+      "outputSha256": "81a48ac8b2318aed01f8da0b1d78b33052e14d5895d582bbe40a2cff8b9ff6a1",
+      "bytes": 201741
+    },
+    {
+      "id": 62,
+      "type": "CLOTHES",
+      "value": "Midas Vest",
+      "source": "gen/trait-layers/CLOTHES/Midas.png",
+      "sourceSha256": "29ab574f0215f31d1209ea2664e4e8dac602c290e522655c0c553413a64451e7",
+      "output": "layers/t062.png",
+      "outputSha256": "a70d8b995ef342acc1f945c8da8404c8a7aafce9ee9cce786bae9a00a80e6258",
+      "bytes": 287562
+    },
+    {
+      "id": 63,
+      "type": "CLOTHES",
+      "value": "Flex Harness",
+      "source": "gen/trait-layers/CLOTHES/harnais_1.png",
+      "sourceSha256": "7da25afd1d59658560ba1c05c36133baf4923a71c596adb26146d2cd02eb7fa7",
+      "output": "layers/t063.png",
+      "outputSha256": "8dc27b588aa22c2b72c097e1bc61848f21b870683524f1ca411093fb3ae91149",
+      "bytes": 153267
+    },
+    {
+      "id": 64,
+      "type": "CLOTHES",
+      "value": "Black Harness",
+      "source": "gen/trait-layers/CLOTHES/harnais_2.png",
+      "sourceSha256": "932696b61db626b0d03c118758529a47367f79d8791b3e0e53e010fb6d076cb3",
+      "output": "layers/t064.png",
+      "outputSha256": "51f58445e0d51bc5a53329f48cadba9f94e19699448b668bd5e00ec2d0a087df",
+      "bytes": 98038
+    },
+    {
+      "id": 65,
+      "type": "CLOTHES",
+      "value": "Ye Big",
+      "source": "gen/trait-layers/CLOTHES/Big_Ye.png",
+      "sourceSha256": "d3916a7a1ea9940e56625441360e6776fe65f9b6d41fbde30b56270ecdd69bc8",
+      "output": "layers/t065.png",
+      "outputSha256": "e95d5a4af6e3061a9a3175472399b235da93e9071196dac2957752cec3151818",
+      "bytes": 813168
+    },
+    {
+      "id": 66,
+      "type": "CLOTHES",
+      "value": "Fractal Big",
+      "source": "gen/trait-layers/CLOTHES/Big_Fractal.png",
+      "sourceSha256": "ad628aa78de7444bea0c92e89069ade3b1648661bbcf45124045260992d46902",
+      "output": "layers/t066.png",
+      "outputSha256": "4771219fcfe6686780b0854f3cdf348ae4eeb417df01702e0e81644e7099d1f9",
+      "bytes": 895201
+    },
+    {
+      "id": 67,
+      "type": "CLOTHES",
+      "value": "Clouds Puffy",
+      "source": "gen/trait-layers/CLOTHES/Puffy_clouds.png",
+      "sourceSha256": "d75fdd635a06a6dd066b949d158058c3f2bc6d3424a601377821cc3b391ab0e0",
+      "output": "layers/t067.png",
+      "outputSha256": "5ced6b2562d90d29acad03d8593099f49849e13a94c20ff523ab306575cfd682",
+      "bytes": 800727
+    },
+    {
+      "id": 68,
+      "type": "CLOTHES",
+      "value": "Tag Puffy",
+      "source": "gen/trait-layers/CLOTHES/Puffy_Tag.png",
+      "sourceSha256": "16c697a32edb9cdef0c2f683ec8c146b656e9e849faa874e7126342c512daf07",
+      "output": "layers/t068.png",
+      "outputSha256": "1604d0df14633ea7931ae8c288628612b8e0bf5a52ed25ad115d751080b61699",
+      "bytes": 643862
+    },
+    {
+      "id": 69,
+      "type": "CLOTHES",
+      "value": "Lemon Puffy",
+      "source": "gen/trait-layers/CLOTHES/Puffy_Lemon.png",
+      "sourceSha256": "ab1e56de08ce36b9fd8638ea97e5fad6f6afe80dcc4a410b997970299cbd40ae",
+      "output": "layers/t069.png",
+      "outputSha256": "44e3a4c5d640f24d2ffffaee93ef2890d64aa0e7c6f836d3a346378717ba5235",
+      "bytes": 837952
+    },
+    {
+      "id": 70,
+      "type": "CLOTHES",
+      "value": "Cee NFJ",
+      "source": "gen/trait-layers/CLOTHES/NFJ_Cee.png",
+      "sourceSha256": "9eab84bf881a4bd24ce09b52abf15e12d9b40a6165eaa07d4c0b7cfc64a530e6",
+      "output": "layers/t070.png",
+      "outputSha256": "6b170cf55985a8fe2064e62fcec410bc7a4bad3e2d55dab5d2d5ca9b2e7dd8df",
+      "bytes": 1016825
+    },
+    {
+      "id": 71,
+      "type": "CLOTHES",
+      "value": "Black NFJ",
+      "source": "gen/trait-layers/CLOTHES/NFJ_Black.png",
+      "sourceSha256": "34253445964d8b60ad4f9d1beac4efedf43208076d902d90e66a1f6bbb891457",
+      "output": "layers/t071.png",
+      "outputSha256": "1cbf5526b6ee77e490257a1057131d8bfe9280ec5dc76e84814e228e6050e8dc",
+      "bytes": 606793
+    },
+    {
+      "id": 72,
+      "type": "CLOTHES",
+      "value": "Renaissance NFJ",
+      "source": "gen/trait-layers/CLOTHES/NFJ_Painting.png",
+      "sourceSha256": "8449fae8f343a4c4a091c9d42a8bbd729aa27e339e03f671f8eb7ab77d656019",
+      "output": "layers/t072.png",
+      "outputSha256": "b5ea551f2d7324ed8a27c25a6f3a42a790375658acbba891acdd842a4448830c",
+      "bytes": 821767
+    },
+    {
+      "id": 73,
+      "type": "CLOTHES",
+      "value": "Tartan NFJ",
+      "source": "gen/trait-layers/CLOTHES/NFJ_Tartan.png",
+      "sourceSha256": "57ce9277244dda0c71836c39dc18f1633d752daee5c95624e33a2025054a1fd8",
+      "output": "layers/t073.png",
+      "outputSha256": "c16c5222b6e419e3d58e418fdde2ce62a7163b2ed04a4cc5c98f9e16a0aaf712",
+      "bytes": 794148
+    },
+    {
+      "id": 74,
+      "type": "CLOTHES",
+      "value": "Gas NFJ",
+      "source": "gen/trait-layers/CLOTHES/NFJ_GAS.png",
+      "sourceSha256": "16572e4a104fcdb5fcbd2560010bf6307ea97176f71dfa2f242ecfbff86088bc",
+      "output": "layers/t074.png",
+      "outputSha256": "ab937f431c8a0746968f31032341416fab114cbda53134045c217398ada06c84",
+      "bytes": 1295644
+    },
+    {
+      "id": 75,
+      "type": "CLOTHES",
+      "value": "Purple NFJ",
+      "source": "gen/trait-layers/CLOTHES/NFJ_Purple.png",
+      "sourceSha256": "b158ff03df9dc24f184190684e0a199feb03166e59b9168b4a789be79cff8925",
+      "output": "layers/t075.png",
+      "outputSha256": "5ad2fab211143dfcd71b871a70fda308f5e59b2e125d5d1fe0eda987a94b8207",
+      "bytes": 1066087
+    },
+    {
+      "id": 76,
+      "type": "CLOTHES",
+      "value": "Black SPJ",
+      "source": "gen/trait-layers/CLOTHES/SPJ_Black.png",
+      "sourceSha256": "3a5c68812e7742aa175cc49c296f6102df8a66cea863b29107b31f0d32f019f0",
+      "output": "layers/t076.png",
+      "outputSha256": "1f58190dee8cbde9396ad9bcce5832139efb126d1370ca9d6e5db7843db4d5b4",
+      "bytes": 378196
+    },
+    {
+      "id": 77,
+      "type": "CLOTHES",
+      "value": "Synth SPJ",
+      "source": "gen/trait-layers/CLOTHES/SPJ_Synth.png",
+      "sourceSha256": "52954c78d01956e190267849a9cabf36fa762fc7472ee63763d514ac2e239ba8",
+      "output": "layers/t077.png",
+      "outputSha256": "ada7c0729299f0125d2ae059d56bf8864b7fc787d88d9eefc97cf263ce7692e3",
+      "bytes": 696947
+    },
+    {
+      "id": 78,
+      "type": "CLOTHES",
+      "value": "Camo SPJ",
+      "source": "gen/trait-layers/CLOTHES/SPJ_Camo.png",
+      "sourceSha256": "bcbce09aca83349fa394df1213d185fa7e94706258e510b5b37b512021693ce7",
+      "output": "layers/t078.png",
+      "outputSha256": "e119d43b3137e7ded56a9a20b27635b7f20d3b0c9eb57a462731104fe6d09ebb",
+      "bytes": 591376
+    },
+    {
+      "id": 79,
+      "type": "CLOTHES",
+      "value": "Tag SPJ",
+      "source": "gen/trait-layers/CLOTHES/SPJ_Tag.png",
+      "sourceSha256": "e0c3007a32a0369e510b7e8c3df3f257517d13054153ba53d6581edc3dd138de",
+      "output": "layers/t079.png",
+      "outputSha256": "93b54245a9c74272e3b80dcd428a18c3647b8cd8a4d8f8ac34326c602d85e81d",
+      "bytes": 551618
+    },
+    {
+      "id": 80,
+      "type": "CLOTHES",
+      "value": "Gold SPJ",
+      "source": "gen/trait-layers/CLOTHES/SPJ_Gold.png",
+      "sourceSha256": "03502869e482cb07b3689e83243aedb4e01988c7b234d14a4652d8b18dba28d4",
+      "output": "layers/t080.png",
+      "outputSha256": "28cc326914a245c4c2c2c22a79215bdc88d50d9945b0345d116b9d2b573dc912",
+      "bytes": 663648
+    },
+    {
+      "id": 81,
+      "type": "CLOTHES",
+      "value": "Tartan SPJ",
+      "source": "gen/trait-layers/CLOTHES/SPJ_Tartan.png",
+      "sourceSha256": "adf521c3a0a51c9872b5e358ba77e83ed87032c633a28be0b6fba917381cfcaf",
+      "output": "layers/t081.png",
+      "outputSha256": "c45bdaff4765966a9efc036e50f3e9fb9fecc0a53e7c06444f25c191c1e45f17",
+      "bytes": 675114
+    },
+    {
+      "id": 82,
+      "type": "CLOTHES",
+      "value": "College OPJ",
+      "source": "gen/trait-layers/CLOTHES/OPJ_College.png",
+      "sourceSha256": "945dbc737bd778f6870e97be33531ea9ac008ad059d57e45a3f84fb17cc884f8",
+      "output": "layers/t082.png",
+      "outputSha256": "c76126267aceae979ed1bdf6e5d0aa533f8d69c8cfa40093b39afe0dc64dd32f",
+      "bytes": 781382
+    },
+    {
+      "id": 83,
+      "type": "CLOTHES",
+      "value": "Tag OPJ",
+      "source": "gen/trait-layers/CLOTHES/OPJ_Tag.png",
+      "sourceSha256": "e1d8214fdd65dfa294ea19e83fd8190c29fd3f5c0c35dcc2cab2904c513f41b8",
+      "output": "layers/t083.png",
+      "outputSha256": "f3d3c540389ba390d737ff009e346573884a6168727e89f20f75b5c606d524f7",
+      "bytes": 984873
+    },
+    {
+      "id": 84,
+      "type": "CLOTHES",
+      "value": "Acid OPJ",
+      "source": "gen/trait-layers/CLOTHES/OPJ_Acid.png",
+      "sourceSha256": "00e5699bbd1ac75f351043b76b88c65325789ffb9bcbb5d843537f7cf108f34f",
+      "output": "layers/t084.png",
+      "outputSha256": "d598d9fe312d8c182c391221770f21fb4056596ceb60aac308f99ff07436accc",
+      "bytes": 881694
+    },
+    {
+      "id": 85,
+      "type": "CLOTHES",
+      "value": "Ye OPJ",
+      "source": "gen/trait-layers/CLOTHES/OPJ_Ye.png",
+      "sourceSha256": "dd82b878ed26eb797d2161672ad0c87cca80aa1a9a5e9f9d1b8e1195f890e344",
+      "output": "layers/t085.png",
+      "outputSha256": "76476e19fb962e13e41f365045384622f06058cd9778cfe5d79987c7a293f926",
+      "bytes": 733004
+    },
+    {
+      "id": 86,
+      "type": "CLOTHES",
+      "value": "Candy OPJ",
+      "source": "gen/trait-layers/CLOTHES/OPJ_Candy.png",
+      "sourceSha256": "98501fa703836bd7f00936b6e9735605ec5890bee6cdbebb3f7f49d00200ae61",
+      "output": "layers/t086.png",
+      "outputSha256": "cef5e2577ef5411214a4785ca395667bf4117ca9b92cb59bf9b3115a6ccd195c",
+      "bytes": 1010350
+    },
+    {
+      "id": 87,
+      "type": "CLOTHES",
+      "value": "Lava OPJ",
+      "source": "gen/trait-layers/CLOTHES/OPJ_Lava.png",
+      "sourceSha256": "57c87bdc4577f913979456c2981c49491cc70afc141f9f225db7aa3038bc5095",
+      "output": "layers/t087.png",
+      "outputSha256": "43ebd8ae5babdcf540856b5180ec77c956f7b4455643c3c5d2aa172050222b38",
+      "bytes": 1011903
+    },
+    {
+      "id": 88,
+      "type": "CLOTHES",
+      "value": "Ye Kimono",
+      "source": "gen/trait-layers/CLOTHES/Kimono_Ye.png",
+      "sourceSha256": "01912c8516aef7cbf4cf42ec3e6bdd621c2fc190eb8b75d8cf91e741d3b1f44a",
+      "output": "layers/t088.png",
+      "outputSha256": "e66defa2fc6789c69990ccf64d41b0ca3556b431cbf629184cf8cf175994d6af",
+      "bytes": 846465
+    },
+    {
+      "id": 89,
+      "type": "CLOTHES",
+      "value": "Tartan Kimono",
+      "source": "gen/trait-layers/CLOTHES/Kimono_Tartan.png",
+      "sourceSha256": "35fca17dc6570c44051cbda8909b39f36da7ad25cbeff486634f642fbdb4e961",
+      "output": "layers/t089.png",
+      "outputSha256": "5043bfc64ea10018c5f36942f1c47455733e9d39057e82c5ec2b8eafc0aa1d2a",
+      "bytes": 965180
+    },
+    {
+      "id": 90,
+      "type": "CLOTHES",
+      "value": "Black Tag Kimono",
+      "source": "gen/trait-layers/CLOTHES/Black_Tag_Kimono.png",
+      "sourceSha256": "f0be66769619d5be3e60edcf116e3b1fd80fe1856aab34f32702eadfe0d24c4c",
+      "output": "layers/t090.png",
+      "outputSha256": "1acbd9da30918bc05591e4c99662ec94759f91d249c6ac8386c0a3dbcc88de40",
+      "bytes": 761104
+    },
+    {
+      "id": 91,
+      "type": "CLOTHES",
+      "value": "Blue Tag Kimono",
+      "source": "gen/trait-layers/CLOTHES/Blue_Tag_Kimono.png",
+      "sourceSha256": "e4ce8f7750d3e8bf35ab34556bb8b59c3177cf05bc362975b7e70765cf952393",
+      "output": "layers/t091.png",
+      "outputSha256": "1d93eaf95f95b4919648ad1b7b21be0bfaf68ed0f40f6a71463dd23230006df2",
+      "bytes": 1045831
+    },
+    {
+      "id": 92,
+      "type": "CLOTHES",
+      "value": "Tartan Trench",
+      "source": "gen/trait-layers/CLOTHES/Trench_Tartan.png",
+      "sourceSha256": "52c65f81375508d6ca3e71ba111f61ceaf4c3061cf0a77ec5bb6ba06a8129106",
+      "output": "layers/t092.png",
+      "outputSha256": "144252b24c9527e52c0c1aae75c59ff221cadaac4264af09d35c676a4a6cf58f",
+      "bytes": 698904
+    },
+    {
+      "id": 93,
+      "type": "CLOTHES",
+      "value": "Acid Trench",
+      "source": "gen/trait-layers/CLOTHES/Trench_Acid.png",
+      "sourceSha256": "15b8542ad926a4df34b603fb4a5772f1760acf9b8e830e8d9b0b60480a002392",
+      "output": "layers/t093.png",
+      "outputSha256": "26db90f46775edefa2c83ef805a356e4560cf443742bd654c3538fde98ee4e69",
+      "bytes": 771096
+    },
+    {
+      "id": 94,
+      "type": "CLOTHES",
+      "value": "Tag HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_tag.png",
+      "sourceSha256": "384402e861aed36aa942ddd44fbdb2c1f60697249a6057566dfda5adf93bad08",
+      "output": "layers/t094.png",
+      "outputSha256": "df73f7fd2ac9cf2374affd3c5587962c37d479faf7663780139dabae3be1c697",
+      "bytes": 1164348
+    },
+    {
+      "id": 95,
+      "type": "CLOTHES",
+      "value": "Sun HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Sun.png",
+      "sourceSha256": "42face86e854b05751979f36ade1676d8f7cd550dd309e3472cbf2c170b66d9f",
+      "output": "layers/t095.png",
+      "outputSha256": "486a50be741af6401de15db29626cf4d05b04e34b46bd4259b469d1cea2cb5a1",
+      "bytes": 1006399
+    },
+    {
+      "id": 96,
+      "type": "CLOTHES",
+      "value": "Lean HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Lean.png",
+      "sourceSha256": "1dfe9b19b42e1a85748e1ce46f6baec09b02a7886bd2c37adfbb56bb2cc60f33",
+      "output": "layers/t096.png",
+      "outputSha256": "3333f3874066faf651f3d726ff20eec6243b6bcded6a2ca000bd2f4c76484d7c",
+      "bytes": 1104277
+    },
+    {
+      "id": 97,
+      "type": "CLOTHES",
+      "value": "Clouds HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Clouds.png",
+      "sourceSha256": "4e2d0115c1ac22ff540f18d3ccd562a1a3e2172c0134dfcd535e2240280bb62d",
+      "output": "layers/t097.png",
+      "outputSha256": "770c4a6ec332cc384819bc670119414af49f6bc114ea3da3b3f6ff2233b915cd",
+      "bytes": 1101264
+    },
+    {
+      "id": 98,
+      "type": "CLOTHES",
+      "value": "Black HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Black.png",
+      "sourceSha256": "e0faeab3878317f5b6452ecd99d8cb2da0b3e93b181a752f78c2e03124027863",
+      "output": "layers/t098.png",
+      "outputSha256": "0a34388c2cab92102505d1e8eb9790789fd646632ef292f79e9f4044330a7b1c",
+      "bytes": 606578
+    },
+    {
+      "id": 99,
+      "type": "CLOTHES",
+      "value": "Tribute HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Tribute.png",
+      "sourceSha256": "b81a1a122da7cab5922bd4716c1d4debaad042da7a0b416bcce416e302806362",
+      "output": "layers/t099.png",
+      "outputSha256": "393b44919ac4af0749e6dd4620855ad2ee89b2de0ece5cfe82ff9284aef38c84",
+      "bytes": 1005157
+    },
+    {
+      "id": 100,
+      "type": "CLOTHES",
+      "value": "Tribute II HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Tribute2.png",
+      "sourceSha256": "0dbf74eef81420320faa3c796708f1d96e638ea4fafc4cc1cf72fd67c270bdb2",
+      "output": "layers/t100.png",
+      "outputSha256": "3259c571c99ee15383c24eff6b013a78f20fcd0a4a3429fbd5dd9de04e1b90dc",
+      "bytes": 1049418
+    },
+    {
+      "id": 101,
+      "type": "CLOTHES",
+      "value": "Pixel HPJ",
+      "source": "gen/trait-layers/CLOTHES/HPJ_Pixel.png",
+      "sourceSha256": "27983aefadfe916caf818e49dc8f7fc781109d0b158524b6a65761ebb732bd46",
+      "output": "layers/t101.png",
+      "outputSha256": "f0a26e60187a2896c301c94fc96f76d940883bf982b6f9417cff5ecaa1fd1230",
+      "bytes": 1160383
+    },
+    {
+      "id": 102,
+      "type": "CLOTHES",
+      "value": "Isaac Hoodie",
+      "source": "gen/trait-layers/CLOTHES/Isaac_Hoodie.png",
+      "sourceSha256": "21cbea77ef8cf31789e57be1d13bcabbd67a955420e5b4903a69f2b0cd4fe5ff",
+      "output": "layers/t102.png",
+      "outputSha256": "bf14732ee713efb6411c639cd3d42d362d9b46bece1dfb8732c50113970a4437",
+      "bytes": 615551
+    },
+    {
+      "id": 103,
+      "type": "CLOTHES",
+      "value": "Lava Hoodie",
+      "source": "gen/trait-layers/CLOTHES/Lava_Hoodie.png",
+      "sourceSha256": "b7965c60a97fb309a8e2d975e51b456ae51cf9dda0e8bf8bdd6f9b26a5850387",
+      "output": "layers/t103.png",
+      "outputSha256": "fdb29f79d1ea1b8d33a58f5c0c663afef1d368344306aa681e27f84394905261",
+      "bytes": 1236870
+    },
+    {
+      "id": 104,
+      "type": "CLOTHES",
+      "value": "Lean Hoodie",
+      "source": "gen/trait-layers/CLOTHES/Lean_Hoodie.png",
+      "sourceSha256": "24536dd093e3144a5fcc2bf2c7500c7f465168cd0e10897bea9b343310b30bce",
+      "output": "layers/t104.png",
+      "outputSha256": "db130170d0ce34543b66498ae0d717cc64abeb4cc967fe65793029ff7308029f",
+      "bytes": 1152818
+    },
+    {
+      "id": 105,
+      "type": "CLOTHES",
+      "value": "Fluid",
+      "source": "gen/trait-layers/CLOTHES/Fluid.png",
+      "sourceSha256": "d373e89c3de92a189ad9b5690cfca5a458e7369cebfb327373282030fcdb553f",
+      "output": "layers/t105.png",
+      "outputSha256": "083738e8a1f77fe0bc2217fea42a7d0fba048aaedb05b60e57f47e7513718c23",
+      "bytes": 814114
+    },
+    {
+      "id": 106,
+      "type": "CLOTHES",
+      "value": "Patch",
+      "source": "gen/trait-layers/CLOTHES/Patch.png",
+      "sourceSha256": "335b10d83e742a64a7f5d67f2aa049da162d7dfe30c3b009e28ebfb46a8f837b",
+      "output": "layers/t106.png",
+      "outputSha256": "7d8b1e4f278d04a737691df3da0f5090e6b703a52c5491ff633af204de8cc651",
+      "bytes": 740085
+    },
+    {
+      "id": 107,
+      "type": "HEAD",
+      "value": "Farmer Bucket",
+      "source": "gen/trait-layers/HEADACC/Farmer_Bucket.png",
+      "sourceSha256": "4dd7c3d7665a22d95c9c6e84e9ca8e36036efcba079ab89b03d7c6868ba18795",
+      "output": "layers/t107.png",
+      "outputSha256": "ed3413807e055684bc8227beb0b26d9706e1798fcd0cc21b91e41941cf0bcb5d",
+      "bytes": 141603
+    },
+    {
+      "id": 108,
+      "type": "HEAD",
+      "value": "Pink Bucket",
+      "source": "gen/trait-layers/HEADACC/Pink_Bucket.png",
+      "sourceSha256": "c1046ef228f6be90bd4a530b4e67c3ce192f10fbf02ac3172205c9359dd70658",
+      "output": "layers/t108.png",
+      "outputSha256": "a1ceac120e5d3fb940908339e25f33251b8f99fe24d54e07bd1e7c56bc7a88f6",
+      "bytes": 150076
+    },
+    {
+      "id": 109,
+      "type": "HEAD",
+      "value": "Cheetah Bucket",
+      "source": "gen/trait-layers/HEADACC/Cheetah_Bucket.png",
+      "sourceSha256": "b114c2167e4330080648a55f92306bf52ee1afcc86410111663fb10a59dac046",
+      "output": "layers/t109.png",
+      "outputSha256": "aa972cef6971b2bef84551441a46f893b1f416b7a167b61477912af1a2316fb0",
+      "bytes": 160947
+    },
+    {
+      "id": 110,
+      "type": "HEAD",
+      "value": "Tartan Bucket",
+      "source": "gen/trait-layers/HEADACC/Tartan_Bucket.png",
+      "sourceSha256": "4c7d3ae40045406cfaf850082bd3b0994256782992a67788b009ba6416bd0fb5",
+      "output": "layers/t110.png",
+      "outputSha256": "1d9cb5f02f8a0cf9530682e0132f50fd6da31fa2a048cdc450f66031d196ae2e",
+      "bytes": 166890
+    },
+    {
+      "id": 111,
+      "type": "HEAD",
+      "value": "Shadow Bucket",
+      "source": "gen/trait-layers/HEADACC/Shadow_Bucket.png",
+      "sourceSha256": "b34382d1d5c54271882b3ef825c99ddbbeab2f66d848304ef37f8051103c0197",
+      "output": "layers/t111.png",
+      "outputSha256": "d053bd05fd7a5dfb55de590de02d79f1e326c948abed37180005da9b29fdddee",
+      "bytes": 119005
+    },
+    {
+      "id": 112,
+      "type": "HEAD",
+      "value": "Degen Bucket",
+      "source": "gen/trait-layers/HEADACC/Degen_Bucket.png",
+      "sourceSha256": "dc11127a71668a623023f888cc0a96964c1ca8a045e76dce8aeb1d7b3062f933",
+      "output": "layers/t112.png",
+      "outputSha256": "df0e1c01bc8eae10b7db0278fc29c4065a00cd19f608a8ea51d2fdf5b0e939af",
+      "bytes": 151904
+    },
+    {
+      "id": 113,
+      "type": "HEAD",
+      "value": "X-Ray",
+      "source": "gen/trait-layers/HEADACC/X-Ray.png",
+      "sourceSha256": "e381c17c950174c9b65c1bccd0f5976ad5cda52b572a8c1a050d9435dcc94ecd",
+      "output": "layers/t113.png",
+      "outputSha256": "838ae9f981cd6e3cea658bf50a377c2950cdc9067d616de7654790aea72a5801",
+      "bytes": 31523
+    },
+    {
+      "id": 114,
+      "type": "HEAD",
+      "value": "TechnoKid",
+      "source": "gen/trait-layers/HEADACC/TechnoKid.png",
+      "sourceSha256": "f431c59abc2c4548dc5432709fddb5083b255c91572d00a1fb2faedac43d93f9",
+      "output": "layers/t114.png",
+      "outputSha256": "cb601a8e02b587e639afc414f37f3a5a8403bf0529e1f7d41e9cdf546abb9632",
+      "bytes": 34778
+    },
+    {
+      "id": 115,
+      "type": "HEAD",
+      "value": "Morpheus",
+      "source": "gen/trait-layers/HEADACC/Morpheus.png",
+      "sourceSha256": "7a7315ab4d919189a7dcfae53afdcddb09accbe75d8cee600c2c491b08d996dc",
+      "output": "layers/t115.png",
+      "outputSha256": "9dbb4a30dd02396eb48a4c5d61ff386f3cf876d784c8d569d665372fe46925f0",
+      "bytes": 37679
+    },
+    {
+      "id": 116,
+      "type": "HEAD",
+      "value": "Alien",
+      "source": "gen/trait-layers/HEADACC/Alien.png",
+      "sourceSha256": "bf0dd52cd559d4f78987bb09f6cfeba3ab1996c5288a1ee62c853e60a3c54303",
+      "output": "layers/t116.png",
+      "outputSha256": "245a3ecd19aa1082aaf53b8a9e23f8b3e7980b3990639dce7b11bf1584105cfa",
+      "bytes": 26210
+    },
+    {
+      "id": 117,
+      "type": "HEAD",
+      "value": "DYOR",
+      "source": "gen/trait-layers/HEADACC/DYOR.png",
+      "sourceSha256": "386a6d6f950a00c68671929ced7da34d32477972f319d9b74224ca36a8c004c5",
+      "output": "layers/t117.png",
+      "outputSha256": "f86ae9f1ff305af605b50815bb5b6751e9807908ca2008d149baefe925cea48d",
+      "bytes": 26458
+    },
+    {
+      "id": 118,
+      "type": "HEAD",
+      "value": "Kartier",
+      "source": "gen/trait-layers/HEADACC/Kartier.png",
+      "sourceSha256": "936692a27e252642a3ae74a5d29080893807c0545f9b8db3557238d888d5c2db",
+      "output": "layers/t118.png",
+      "outputSha256": "623622c8b1fbeee2c7f7e0ffc746b17342cf4a36ac2d9b22c9095d4ee10183fd",
+      "bytes": 44144
+    },
+    {
+      "id": 119,
+      "type": "HEAD",
+      "value": "Gas Mask",
+      "source": "gen/trait-layers/HEADACC/gaz_mask.png",
+      "sourceSha256": "72e0283c7208b4e19ade93b264eafb17d89581b8dd0bac0ae215baf12c2f8ced",
+      "output": "layers/t119.png",
+      "outputSha256": "28569ad4c5543315c556025a8f5cc42e5d83e3ee39daa9eeaeeccdd1243c3197",
+      "bytes": 78554
+    },
+    {
+      "id": 120,
+      "type": "HEAD",
+      "value": "VR",
+      "source": "gen/trait-layers/HEADACC/Metaverse.png",
+      "sourceSha256": "db9b284a1edde17d67951afd22a81b3042ada31cafb8aea8749059301e7a9e8f",
+      "output": "layers/t120.png",
+      "outputSha256": "f73b5b2f2e14150672f38a4f5b47ba423cd03049d7cc68a4293276476fe3b65e",
+      "bytes": 58058
+    },
+    {
+      "id": 121,
+      "type": "HEAD",
+      "value": "Trash Bag",
+      "source": "gen/trait-layers/HEADACC/Trash_Bag.png",
+      "sourceSha256": "d8594b1438021f3509b40c297a54b9dd47b1c9f0ca39eaaad19ee0b96e5acb89",
+      "output": "layers/t121.png",
+      "outputSha256": "06878fc056dc74676539ddd9fad07ddb847fd7ef1e6597d5908a1fd44b042c28",
+      "bytes": 174040
+    },
+    {
+      "id": 122,
+      "type": "HEAD",
+      "value": "Cardi",
+      "source": "gen/trait-layers/HEADACC/Cardi_cag.png",
+      "sourceSha256": "225b142a2910d4e7de8bbfd8552f55a09f60d0dceb9d8b444261db906b81c270",
+      "output": "layers/t122.png",
+      "outputSha256": "9ab5efdcbe0a8f0b69b19ce699591b639f99af25dda319c767a0a91332c74fa6",
+      "bytes": 252295
+    },
+    {
+      "id": 123,
+      "type": "HEAD",
+      "value": "TIGER",
+      "source": "gen/trait-layers/HEADACC/Tiger_cag.png",
+      "sourceSha256": "fc5109c6db0651f117c4565e497473a94b9b9af8fff01378c14deab33e16e855",
+      "output": "layers/t123.png",
+      "outputSha256": "c68cd60368022f1b259c1f552734d6a04ede012ae78e90c6da5c495b959d2c44",
+      "bytes": 266061
+    },
+    {
+      "id": 124,
+      "type": "HEAD",
+      "value": "G.I.",
+      "source": "gen/trait-layers/HEADACC/GI_cag.png",
+      "sourceSha256": "e1cdb65897e6d2c876461e8c402aeae78a9851855b29a30eb7dcb9602f7ab6bf",
+      "output": "layers/t124.png",
+      "outputSha256": "b82e18442fcc9a190a38028297354c3cfef06bd4e7027bf84b6ff6317cb63b9c",
+      "bytes": 188270
+    },
+    {
+      "id": 125,
+      "type": "HEAD",
+      "value": "Mocha",
+      "source": "gen/trait-layers/HEADACC/Mocha_cag.png",
+      "sourceSha256": "df4bdb635afd32ff10d1e178828fae36bc7e608d9f00e73f4c94b7af45b8d657",
+      "output": "layers/t125.png",
+      "outputSha256": "d88765b1be1d2c91882e15e37b17e1d27e91bf199637d684ef16887633aaebdd",
+      "bytes": 219859
+    },
+    {
+      "id": 126,
+      "type": "HEAD",
+      "value": "Fresh Mint",
+      "source": "gen/trait-layers/HEADACC/Fresh_cag.png",
+      "sourceSha256": "6402b36d43401888f57e36bb66b6541c73e1066ba5bfa74b0d58a41e17d1f04f",
+      "output": "layers/t126.png",
+      "outputSha256": "21eff1301a5e71e2b0ad235cb4078dde959d71a219d6b83b18e569699e229690",
+      "bytes": 274155
+    },
+    {
+      "id": 127,
+      "type": "HEAD",
+      "value": "$$",
+      "source": "gen/trait-layers/HEADACC/Dollar_cag.png",
+      "sourceSha256": "ba703f60f1429e518bedc906dc1ced26fd6f92624b4a5f13f26e1380e2808b85",
+      "output": "layers/t127.png",
+      "outputSha256": "e2319ec4eaa1d0ecee3eeb849100bf6515009888f8754aaecd83e0c5a420ac89",
+      "bytes": 275966
+    }
+  ],
+  "imageSize": 1000,
+  "optimizedImageBytes": 72804536
+}
