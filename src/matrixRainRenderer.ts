@@ -3,9 +3,12 @@
  * @packageDocumentation
  */
 
-// Owner-selected calmer, sparser variation; retain the archive's 20px vertical step.
+// Tighter rows with the existing 20px-per-frame falling speed and 40px columns.
 const MATRIX_FRAME_MS = 160;
 const MATRIX_COLUMN_PX = 40;
+const MATRIX_FONT = '7.5pt monospace';
+const MATRIX_ROW_PX = 10;
+const MATRIX_ADVANCE_PX = 20;
 
 /** Resource controls keep drawing separate from React and visibility subscriptions. */
 export interface MatrixRainController {
@@ -31,7 +34,7 @@ export interface MatrixRainController {
 }
 
 /**
- * Adapt Phase_3's cyan ASCII, 15pt monospace and #0001 trails with selected spacing and safe scheduling.
+ * Adapt Phase_3's cyan ASCII and #0001 trails with half-size glyphs, selected spacing and safe scheduling.
  * @param canvas - Owned, inaccessible decorative canvas; no page content is drawn here.
  * @param random - Random sample source, injectable for deterministic lifecycle tests.
  * @returns Resource controls, or null when a 2D context cannot be created.
@@ -75,30 +78,33 @@ export function createMatrixRain(
   function seed() {
     context!.fillStyle = '#000';
     context!.fillRect(0, 0, width, height);
-    context!.font = '15pt monospace';
+    context!.font = MATRIX_FONT;
     drops = Array.from(
       { length: Math.floor(width / MATRIX_COLUMN_PX) + 1 },
-      () => Math.floor((random() * height) / 20) * 20,
+      () =>
+        Math.floor((random() * height) / MATRIX_ADVANCE_PX) * MATRIX_ADVANCE_PX,
     );
     drops.forEach((y, column) => {
-      for (let tail = 32; tail >= 0; tail -= 1) {
-        context!.fillStyle = `rgba(6, 148, 193, ${Math.pow(14 / 15, tail)})`;
-        glyph(column * MATRIX_COLUMN_PX, y - tail * 20);
+      for (let tail = 64; tail >= 0; tail -= 1) {
+        context!.fillStyle = `rgba(6, 148, 193, ${Math.pow(14 / 15, tail / 2)})`;
+        glyph(column * MATRIX_COLUMN_PX, y - tail * MATRIX_ROW_PX);
       }
     });
     recordFrame();
   }
 
-  /** Fade the prior surface and advance every column by the archive's 20px step. */
+  /** Fill both 10px rows per 20px advance, retaining speed and physical trail length. */
   function draw() {
     context!.fillStyle = '#0001';
     context!.fillRect(0, 0, width, height);
     context!.fillStyle = '#0694c1';
-    context!.font = '15pt monospace';
+    context!.font = MATRIX_FONT;
     drops.forEach((y, column) => {
+      glyph(column * MATRIX_COLUMN_PX, y - MATRIX_ROW_PX);
       glyph(column * MATRIX_COLUMN_PX, y);
       // Recycle after leaving the responsive surface, not the archive's unbounded offscreen range.
-      drops[column] = y > height && random() > 0.975 ? 0 : y + 20;
+      drops[column] =
+        y > height && random() > 0.975 ? 0 : y + MATRIX_ADVANCE_PX;
     });
     recordFrame();
   }

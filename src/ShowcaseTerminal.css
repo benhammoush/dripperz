@@ -1,0 +1,90 @@
+/* Archive-style transparent bottom-left console, with a compact mobile escape hatch. */
+.showcase-terminal {
+  position: fixed;
+  z-index: 4;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  max-height: 45dvh;
+  overflow-y: auto;
+  padding: 0.75rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  background: transparent;
+  color: #7cfc00;
+  font-family: Goldman, system-ui, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 3px #000;
+}
+.terminal-toggle {
+  display: block;
+  margin-bottom: 0.4rem;
+  padding: 0.25rem 0;
+  border: 0;
+  background: transparent;
+  color: #b0c6b0;
+  font: inherit;
+  font-size: 0.7rem;
+  cursor: pointer;
+  min-height: 24px;
+}
+.showcase-terminal[data-minimized='true'] {
+  width: auto;
+}
+.terminal-welcome {
+  margin: 0 0 0.5rem;
+}
+.terminal-new-tab {
+  font-size: 0.7rem;
+}
+.terminal-output {
+  max-height: 20dvh;
+  overflow-y: auto;
+}
+.terminal-entry {
+  padding-bottom: 0.75rem;
+}
+.terminal-echo {
+  margin: 0;
+}
+.terminal-response {
+  margin: 0.3rem 0;
+  white-space: pre-wrap;
+}
+.showcase-terminal a {
+  color: #7cfc00;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.terminal-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.terminal-form input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  color: #7cfc00;
+  padding: 0;
+  font: inherit;
+  text-shadow: 0 1px 3px #000;
+  border-radius: 0;
+}
+@media (max-width: 45rem) {
+  .showcase-terminal {
+    width: min(100%, 26rem);
+    font-size: 0.85rem;
+  }
+  .terminal-toggle {
+    min-height: 44px;
+  }
+  .terminal-form input {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+}

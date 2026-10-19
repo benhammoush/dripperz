@@ -18,6 +18,7 @@ import { PUBLIC_LINKS } from './showcaseContent';
 import { LocalHero } from './LocalHero';
 import { HERO_MODEL_BYTES } from './heroAsset';
 import { RaritySection } from './RaritySection';
+import { ShowcaseTerminal } from './ShowcaseTerminal';
 
 /**
  * Render shared desktop/mobile navigation and approved core content without external integrations.
@@ -263,6 +264,7 @@ export function App() {
             ))}
           </div>
         </main>
+        <ShowcaseTerminal />
         <footer className="site-footer">
           <a href="#home" tabIndex={0}>
             Dripperz Cyber Club ↑
