@@ -88,7 +88,7 @@ test('output and history are bounded and disappear on remount', () => {
   expect(screen.getAllByText('Wrong command, type help instead.')).toHaveLength(
     30,
   );
-  expect(screen.queryByText('/ unknown-0', { exact: true })).toBeNull();
+  expect(screen.queryByText('Terminal/ unknown-0', { exact: true })).toBeNull();
   const input = screen.getByRole<HTMLInputElement>('textbox', {
     name: 'Command',
   });
@@ -100,12 +100,18 @@ test('output and history are bounded and disappear on remount', () => {
   expect(screen.getByRole('log').childElementCount).toBe(0);
 });
 
-test('minimizing preserves the console without a visible submit button', () => {
+test('the console remains available with no minimize or submit buttons', () => {
   render(<ShowcaseTerminal />);
   run('help');
-  expect(screen.queryByRole('button', { name: 'Run command' })).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: /Minimize terminal/ }));
-  expect(screen.queryByRole('textbox', { name: 'Command' })).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: 'Terminal /' }));
+  expect(screen.queryByRole('button')).toBeNull();
+  expect(screen.getByRole('textbox', { name: 'Command' })).toBeInTheDocument();
   expect(screen.getByRole('log')).toHaveTextContent('help — List commands');
+});
+
+test('the persistent prompt replaces the welcome message', () => {
+  const { container } = render(<ShowcaseTerminal />);
+  expect(screen.queryByText(/Welcome/)).toBeNull();
+  expect(container.querySelector('label')?.textContent).toBe(
+    'Terminal/Command',
+  );
 });

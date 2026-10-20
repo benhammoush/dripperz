@@ -12,7 +12,7 @@ test('mobile disclosure supports keyboard navigation and escape', async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openShowcase(page);
-  // Loading continuation deliberately focuses main; start header traversal from the brand.
+  // Loading continuation focuses the terminal; start header traversal from the brand.
   await page.getByRole('link', { name: 'Dripperz home' }).focus();
   await page.keyboard.press('Shift+Tab');
   await expect(

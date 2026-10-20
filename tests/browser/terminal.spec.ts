@@ -23,6 +23,14 @@ for (const width of [1440, 390]) {
     const region = page.locator('#terminal');
     await region.scrollIntoViewIfNeeded();
     const input = region.getByRole('textbox', { name: 'Command' });
+    await expect(input).toBeFocused();
+    await expect(input).toHaveCSS('color', 'rgb(255, 255, 255)');
+    await expect(input).toHaveCSS('outline-style', 'none');
+    await expect(input).toHaveCSS('box-shadow', 'none');
+    await expect(region.locator('label [aria-hidden="true"]')).toHaveText(
+      'Terminal/',
+    );
+    await expect(region.getByText(/Welcome/)).toHaveCount(0);
     await input.fill('help');
     await input.press('Enter');
     await expect(region.getByRole('log')).toContainText(
@@ -68,17 +76,24 @@ for (const width of [1440, 390]) {
     expect(dock.position).toBe('fixed');
     expect(dock.background).toBe('rgba(0, 0, 0, 0)');
     expect(dock.font).toContain('Goldman');
-    expect(dock.bottom).toBe(900);
+    // Firefox may report fractional layout rounding far below a CSS pixel.
+    expect(dock.bottom).toBeCloseTo(900, 4);
     if (width === 1440) expect(dock.width).toBeCloseTo(width * 0.3, 0);
     await page.locator('#faq').scrollIntoViewIfNeeded();
     await expect(input).toBeVisible();
-    await region.getByRole('button', { name: 'Minimize terminal' }).click();
-    await expect(input).toBeHidden();
-    await region
-      .getByRole('button', { name: 'Terminal /', exact: true })
-      .press('Enter');
-    await expect(input).toBeVisible();
+    await expect(region.getByRole('button')).toHaveCount(0);
+    // Engines quantize rem sizes differently; retain subpixel tolerance, not a size change.
+    expect(
+      await input.evaluate((element) =>
+        parseFloat(getComputedStyle(element).fontSize),
+      ),
+    ).toBeCloseTo(11.2, 1);
     await expect(links).toHaveCount(1);
+    expect(
+      await region
+        .locator('label')
+        .evaluate((element) => parseFloat(getComputedStyle(element).fontSize)),
+    ).toBeCloseTo(11.2, 1);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth,

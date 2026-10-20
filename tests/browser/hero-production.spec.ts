@@ -41,7 +41,7 @@ test('static continuation releases loading to a working model-specific view', as
   expect(posterAlpha.hasModel).toBe(true);
   await expect(hero.locator('canvas')).toHaveCount(0);
   await expect(hero.getByRole('checkbox')).toHaveCount(0);
-  await expect(page.locator('#main')).toBeFocused();
+  await expect(page.locator('#terminal-command')).toBeFocused();
   await expect(hero).toHaveCSS('text-align', 'center');
   await expect(hero).toHaveCSS('border-top-width', '0px');
   await expect(hero.getByText('Wattson · Interim hero')).toHaveCount(0);
@@ -128,5 +128,5 @@ test('continue without 3D becomes visible after ten seconds of pending loading',
   await button.click();
   await expect(dialog).not.toBeVisible();
   release?.();
-  await expect(page.locator('#main')).toBeFocused();
+  await expect(page.locator('#terminal-command')).toBeFocused();
 });
