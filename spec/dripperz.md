@@ -131,7 +131,7 @@ No new business promises, launch dates, adoption targets or Now/Next/Later prior
 - Documentation must explain purpose and meaningful parameters, results, errors, side effects and assumptions without duplicating TypeScript signature types. Complex decisions and failure handling need useful inline explanations.
 - Configure maintained, compatible documentation-presence/structure checks plus TSDoc syntax validation. Syntax validation alone is insufficient.
 - Documentation violations must be blocking local-lint/CI errors from PR 1. Do not use warning-only adoption, a changed-files baseline or blanket suppressions.
-- Explicitly exclude generated code/build artifacts, not difficult handwritten code. Document conventions and exclusions in contribution guidance.
+- Explicitly exclude generated code/build artifacts, not difficult handwritten code. Keep conventions and generated-file exclusions explicit in the lint configuration.
 - Rule tests must prove missing/malformed documentation fails, valid documentation passes, substantive named arrow functions/hooks/components are covered and generated artifacts are excluded.
 - Read-only review must also inspect comment usefulness and accuracy; lint cannot establish those qualities.
 - Initial application version is `0.1.0`, aligned across package metadata and runtime reporting. This specification-only change does not create an application or bump a version.
