@@ -23,7 +23,7 @@ export const SECTIONS = [
     label: 'Treasury',
     title: 'Historical treasury',
     detail:
-      'Only approved, dated historical information will appear here. No live balances are requested.',
+      'Original treasury and governance references, with a dated source review. No live balances are requested.',
   },
   {
     id: 'rarity',

@@ -151,7 +151,7 @@ export const SHOWCASE_FAQ = [
   {
     question: 'Are treasury and rarity features available?',
     answer:
-      'Not yet. Historical treasury content requires approved dated sources, and the local rarity explorer requires validation of the legacy data and rules. No live balances, ownership or prices are requested.',
+      'The treasury section preserves historical source references, not current balances or active governance. The local rarity explorer uses archived traits, stored ranks and scores. Neither feature requests live balances, ownership or prices.',
   },
 ] as const;
 
