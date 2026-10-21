@@ -84,6 +84,61 @@ for (const viewport of [
     const cybermap = page.locator('#cybermap');
     await expect(cybermap.getByRole('listitem')).toHaveCount(7);
     await expect(cybermap.getByText(/Archived roadmap/)).toBeVisible();
+    const treasury = page.getByRole('region', { name: 'Historical treasury' });
+    await treasury.scrollIntoViewIfNeeded();
+    await expect(
+      treasury.getByText(
+        'Historical reference—not current balances or active governance.',
+      ),
+    ).toBeVisible();
+    await expect(
+      treasury.getByRole('heading', { name: 'Community treasury' }),
+    ).toBeVisible();
+    await expect(
+      treasury.getByRole('heading', { name: 'Latest proposal' }),
+    ).toBeVisible();
+    await expect(
+      treasury.getByText('0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
+    ).toBeVisible();
+    await expect(treasury.getByText('XXXX-XX-XX', { exact: true })).toHaveCount(
+      2,
+    );
+    await expect(treasury.getByText('XXXX.XXXX ETH')).toBeVisible();
+    await expect(treasury.getByText('XXX.XXX,XX USD')).toBeVisible();
+    await expect(
+      treasury.getByText('XXXX.XXXX', { exact: true }),
+    ).toBeVisible();
+    await expect(
+      treasury.getByText('XXXX XXXX XXXX', { exact: true }),
+    ).toBeVisible();
+    await expect(
+      treasury.getByText(
+        'XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX',
+      ),
+    ).toBeVisible();
+    await expect(treasury.locator('.treasury-choices span')).toHaveCount(3);
+    await expect(treasury).not.toContainText(
+      '0xaad0102aed9213c09af3e7a1dfa4b8a055845e1c',
+    );
+    await expect(treasury).not.toContainText('dripperzcyberclub.eth');
+    await expect(treasury.getByRole('link')).toHaveCount(0);
+    await expect(treasury.getByRole('button')).toHaveCount(0);
+    const summaryBox = await treasury
+      .locator('.treasury-overview')
+      .boundingBox();
+    const proposalBox = await treasury
+      .locator('.treasury-proposal')
+      .boundingBox();
+    const gridBox = await treasury.locator('.treasury-grid').boundingBox();
+    expect(summaryBox).not.toBeNull();
+    expect(proposalBox).not.toBeNull();
+    expect(gridBox).not.toBeNull();
+    expect(proposalBox!.y).toBeGreaterThan(summaryBox!.y + summaryBox!.height);
+    expect(proposalBox!.height).toBeGreaterThan(summaryBox!.height);
+    expect(proposalBox!.x + proposalBox!.width / 2).toBeCloseTo(
+      gridBox!.x + gridBox!.width / 2,
+      0,
+    );
     for (const item of SHOWCASE_FAQ) {
       const question = page.getByText(item.question, { exact: true });
       await question.scrollIntoViewIfNeeded();

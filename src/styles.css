@@ -420,6 +420,99 @@ h2 {
   border-left: 2px solid var(--cyan);
   font-size: 0.85rem;
 }
+.treasury-references {
+  font-size: 0.85rem;
+}
+.treasury-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.treasury-card {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+}
+.treasury-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.treasury-overview .treasury-references {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem 1rem;
+  align-items: baseline;
+}
+.treasury-overview .treasury-references dt,
+.treasury-overview .treasury-references dd {
+  margin: 0;
+}
+.treasury-balances {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  margin-top: 1.5rem;
+}
+.treasury-balances p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.treasury-balances strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: #c9d4d9;
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+.treasury-proposal {
+  width: min(100%, 56rem);
+  justify-self: center;
+  padding: 1.5rem clamp(1.25rem, 4vw, 3rem);
+  border-radius: 1.5rem;
+  text-align: center;
+}
+.treasury-proposal h3 {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.treasury-proposal .treasury-references {
+  max-width: 48rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.treasury-proposal-title {
+  font-size: 1.2rem;
+  text-decoration: underline;
+  text-decoration-color: var(--cyan);
+  text-underline-offset: 0.2em;
+}
+.treasury-proposal-status {
+  color: #c9d4d9;
+}
+.treasury-choices span {
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--line);
+  color: #c9d4d9;
+}
+.treasury-references dt {
+  margin-top: 1.5rem;
+  color: var(--muted);
+}
+@media (min-width: 48.001rem) {
+  .treasury-proposal {
+    box-shadow: 0 0 10px #0694c1;
+  }
+}
+.treasury-references dd {
+  margin: 0.5rem 0;
+  overflow-wrap: anywhere;
+}
 .cybermap {
   list-style: none;
   padding: 0;

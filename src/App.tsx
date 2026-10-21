@@ -13,7 +13,12 @@ import {
 } from 'react';
 import { Atmosphere } from './Atmosphere';
 import { SECTIONS } from './sections';
-import { Collection, Cybermap, ShowcaseFaq } from './CoreShowcase';
+import {
+  Collection,
+  Cybermap,
+  HistoricalTreasury,
+  ShowcaseFaq,
+} from './CoreShowcase';
 import { PUBLIC_LINKS } from './showcaseContent';
 import { LocalHero } from './LocalHero';
 import { HERO_MODEL_BYTES } from './heroAsset';
@@ -258,10 +263,7 @@ export function App() {
                 ) : section.id === 'rarity' ? (
                   <RaritySection />
                 ) : (
-                  <>
-                    <p>{section.detail}</p>
-                    <span className="milestone-label">Not yet implemented</span>
-                  </>
+                  <HistoricalTreasury />
                 )}
               </section>
             ))}

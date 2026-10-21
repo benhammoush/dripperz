@@ -84,3 +84,60 @@ export function ShowcaseFaq() {
     </div>
   );
 }
+
+/**
+ * Recreate the legacy treasury layout with every historical value deliberately masked.
+ * @returns Static treasury and proposal panels without live integrations or voting controls.
+ */
+export function HistoricalTreasury() {
+  return (
+    <>
+      <p className="archive-notice">
+        Historical reference—not current balances or active governance.
+      </p>
+      <div className="treasury-grid">
+        <article className="treasury-card treasury-overview">
+          <h3>Community treasury</h3>
+          <dl className="treasury-references">
+            <dt>Safe address</dt>
+            <dd>0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+            <dt>Record date</dt>
+            <dd>XXXX-XX-XX</dd>
+          </dl>
+          <div className="treasury-balances">
+            <p>
+              Treasury value <strong>XXXX.XXXX ETH</strong>
+            </p>
+            <p>
+              USD conversion <strong>XXX.XXX,XX USD</strong>
+            </p>
+          </div>
+        </article>
+        <article className="treasury-card treasury-proposal">
+          <h3>Latest proposal</h3>
+          <dl className="treasury-references">
+            <dt>Governance space</dt>
+            <dd>XXXX.XXXX</dd>
+            <dt>Proposal title</dt>
+            <dd className="treasury-proposal-title">XXXX XXXX XXXX</dd>
+            <dt>Status</dt>
+            <dd className="treasury-proposal-status">XXXXXXX</dd>
+            <dt>Proposal details</dt>
+            <dd>
+              XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
+              XXXX XXXX XXXX
+            </dd>
+            <dt>Choices</dt>
+            <dd className="treasury-choices">
+              <span>XXXX</span>
+              <span>XXXX</span>
+              <span>XXXX</span>
+            </dd>
+            <dt>Record date</dt>
+            <dd>XXXX-XX-XX</dd>
+          </dl>
+        </article>
+      </div>
+    </>
+  );
+}

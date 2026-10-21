@@ -92,7 +92,37 @@ test('renders the shell and runtime version without claiming feature completion'
     screen.getByRole('heading', { level: 1, name: /Dripperz.*ENTER THE/ }),
   ).toBeInTheDocument();
   expect(screen.getByTestId('app-version')).toHaveTextContent(APP_VERSION);
-  expect(screen.getAllByText('Not yet implemented')).toHaveLength(1);
+  expect(screen.queryByText('Not yet implemented')).toBeNull();
+  expect(
+    screen.getByText(
+      'Historical reference—not current balances or active governance.',
+    ),
+  ).toBeInTheDocument();
+  expect(screen.getByText('Community treasury')).toBeInTheDocument();
+  expect(screen.getByText('Latest proposal')).toBeInTheDocument();
+  for (const [label, value, count] of [
+    ['Safe address', '0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 1],
+    ['Record date', 'XXXX-XX-XX', 2],
+    ['Governance space', 'XXXX.XXXX', 1],
+    ['Proposal title', 'XXXX XXXX XXXX', 1],
+    ['Status', 'XXXXXXX', 1],
+    [
+      'Proposal details',
+      'XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX',
+      1,
+    ],
+    ['Choices', 'XXXX', 1],
+  ] as const) {
+    const fields = screen.getAllByText(label);
+    expect(fields).toHaveLength(count);
+    for (const field of fields) {
+      expect(field.nextElementSibling).toHaveTextContent(value);
+    }
+  }
+  expect(screen.getByText('Treasury value')).toHaveTextContent('XXXX.XXXX ETH');
+  expect(screen.getByText('USD conversion')).toHaveTextContent(
+    'XXX.XXX,XX USD',
+  );
   fireEvent.click(screen.getByTestId('reload-model'));
   expect(
     screen.getByRole('dialog', { name: 'Loading Experience' }),
