@@ -20,7 +20,7 @@ function run(command: string) {
 test('help and document commands expose only fixed, explicitly followed public links', () => {
   render(<ShowcaseTerminal />);
   run(' HELP ');
-  expect(screen.getByRole('log')).toHaveTextContent('report — Data compiled');
+  expect(screen.getByRole('log')).toHaveTextContent('report — Club lore PDF');
   run('report');
   run('mugshot');
   const links = within(screen.getByRole('log')).getAllByRole('link');

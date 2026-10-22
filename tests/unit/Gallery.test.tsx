@@ -26,7 +26,8 @@ test('manual navigation wraps and changes image, title and description together'
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[0]!.src,
   );
-  fireEvent.click(screen.getByRole('button', { name: /Next/ }));
+  const gallery = screen.getByRole('region');
+  fireEvent.keyDown(gallery, { key: 'ArrowRight' });
   expect(
     screen.getByRole('heading', { name: 'Glitching signal' }),
   ).toBeInTheDocument();
@@ -36,8 +37,8 @@ test('manual navigation wraps and changes image, title and description together'
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[1]!.src,
   );
-  fireEvent.keyDown(screen.getByRole('region'), { key: 'ArrowLeft' });
-  fireEvent.keyDown(screen.getByRole('region'), { key: 'ArrowLeft' });
+  fireEvent.keyDown(gallery, { key: 'ArrowLeft' });
+  fireEvent.keyDown(gallery, { key: 'ArrowLeft' });
   expect(screen.getByRole('heading', { name: 'L1L-X' })).toBeInTheDocument();
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[4]!.src,
@@ -58,7 +59,7 @@ test('a failed artwork leaves the caption and navigation usable', () => {
     screen.getByRole('img', { name: /Artwork unavailable/ }),
   ).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'DRIP-X' })).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: /Next/ }));
+  fireEvent.keyDown(screen.getByRole('region'), { key: 'ArrowRight' });
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[1]!.src,
   );
@@ -97,7 +98,7 @@ test('autoplay stops in a hidden tab and releases its timer and subscriptions', 
       intervalMs={8000}
     />,
   );
-  fireEvent.click(screen.getByRole('button', { name: 'Play slideshow' }));
+  expect(screen.queryByRole('button')).toBeNull();
   // jsdom does not model a real pointer position; browser tests cover hover.
   vi.spyOn(screen.getByRole('region'), 'matches').mockReturnValue(false);
   act(() => {

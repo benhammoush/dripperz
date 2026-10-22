@@ -6,13 +6,14 @@
 import { expect, test } from '@playwright/test';
 import { openShowcase } from './openShowcase';
 
-test('glitch characters cycle, pause offscreen and honor manual pause and reduced motion', async ({
+test('glitch characters cycle, pause offscreen and honor reduced motion', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await openShowcase(page);
   const gallery = page.getByRole('region', { name: 'Meet the characters' });
-  await gallery.getByRole('button', { name: /Next/ }).click();
+  await gallery.focus();
+  await page.keyboard.press('ArrowRight');
   await expect(
     gallery.getByRole('heading', { name: 'Glitching signal', exact: true }),
   ).toBeVisible();
@@ -46,22 +47,6 @@ test('glitch characters cycle, pause offscreen and honor manual pause and reduce
       (element) => getComputedStyle(element, '::after').animationPlayState,
     ),
   ).toBe('paused');
-  await page.getByRole('button', { name: 'Pause effects' }).click();
-  await decoration.scrollIntoViewIfNeeded();
-  await expect(decoration).toHaveAttribute('data-active', 'true');
-  expect(
-    await decoration.evaluate(
-      (element) => getComputedStyle(element, '::after').animationPlayState,
-    ),
-  ).toBe('paused');
-  await page.getByRole('button', { name: 'Resume effects' }).click();
-  await decoration.scrollIntoViewIfNeeded();
-  await expect(decoration).toHaveAttribute('data-active', 'true');
-  expect(
-    await decoration.evaluate(
-      (element) => getComputedStyle(element, '::after').animationPlayState,
-    ),
-  ).toBe('running');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   expect(
     await decoration.evaluate(

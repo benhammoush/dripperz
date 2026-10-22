@@ -1,5 +1,5 @@
 /**
- * Verify automatic hero mounting and controlled static recovery without creating a GPU renderer.
+ * Verify automatic hero mounting and poster recovery without creating a GPU renderer.
  * @packageDocumentation
  */
 
@@ -11,14 +11,13 @@ const callbacks = {
   onReady: vi.fn(),
   onUnavailable: vi.fn(),
   onLoad: vi.fn(),
-  onDisable: vi.fn(),
   onDownload: vi.fn(),
 };
 
 vi.mock('../../src/LocalHeroScene', () => ({
   /**
    * Stand in for a successful lazy renderer without requiring a test GPU.
-   * @returns A visible marker for explicit loading and unloading assertions.
+   * @returns A visible marker for explicit model loading assertions.
    */
   default: () => <p>Mock local scene</p>,
 }));
@@ -28,7 +27,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test('hero loads automatically and the parent can switch to its model poster', async () => {
+test('hero loads automatically and exposes reload only when showing its poster', async () => {
   vi.stubGlobal(
     'matchMedia',
     vi.fn(() => ({
@@ -37,27 +36,26 @@ test('hero loads automatically and the parent can switch to its model poster', a
       removeEventListener: vi.fn(),
     })),
   );
-  const { rerender } = render(
-    <LocalHero paused={false} enabled {...callbacks} />,
-  );
+  const { rerender } = render(<LocalHero enabled {...callbacks} />);
   expect(await screen.findByText('Mock local scene')).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: 'Use static view' }));
-  expect(callbacks.onDisable).toHaveBeenCalledOnce();
-  rerender(<LocalHero paused={false} enabled={false} {...callbacks} />);
+  expect(screen.queryByRole('button', { name: /Static view/ })).toBeNull();
+  rerender(<LocalHero enabled={false} {...callbacks} />);
   expect(
     screen
       .getByRole('img', { name: 'Wattson character on black' })
       .getAttribute('src'),
   ).toBe('/hero/wattson-poster.png');
-  expect(screen.getByText(/3D is unloaded/)).toBeInTheDocument();
+  expect(
+    screen.getByText(/3D preview is currently unloaded/),
+  ).toBeInTheDocument();
   expect(screen.queryByText('Mock local scene')).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: /View in 3D/ }));
   expect(callbacks.onLoad).toHaveBeenCalledOnce();
-  rerender(<LocalHero paused={false} enabled {...callbacks} />);
+  rerender(<LocalHero enabled {...callbacks} />);
   expect(await screen.findByText('Mock local scene')).toBeInTheDocument();
 });
 
-test('visibility and parent pause gate playback and unmount removes subscriptions', () => {
+test('visibility and reduced motion gate playback and unmount removes subscriptions', () => {
   let notify: IntersectionObserverCallback | undefined;
   const disconnect = vi.fn();
   vi.stubGlobal(
@@ -78,9 +76,7 @@ test('visibility and parent pause gate playback and unmount removes subscription
   );
   const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
   const remove = vi.spyOn(document, 'removeEventListener');
-  const { rerender, unmount } = render(
-    <LocalHero paused={false} enabled {...callbacks} />,
-  );
+  const { unmount } = render(<LocalHero enabled {...callbacks} />);
   const preview = screen.getByRole('figure');
   act(() =>
     notify?.(
@@ -99,8 +95,7 @@ test('visibility and parent pause gate playback and unmount removes subscription
     document.dispatchEvent(new Event('visibilitychange'));
   });
   expect(preview.getAttribute('data-playing')).toBe('true');
-  rerender(<LocalHero paused enabled {...callbacks} />);
-  expect(preview.getAttribute('data-playing')).toBe('false');
+  expect(screen.queryByRole('button', { name: /Static view/ })).toBeNull();
   unmount();
   expect(disconnect).toHaveBeenCalledOnce();
   expect(remove).toHaveBeenCalledWith('visibilitychange', expect.any(Function));

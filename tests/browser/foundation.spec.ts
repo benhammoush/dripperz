@@ -17,10 +17,11 @@ for (const viewport of [
     page.on('pageerror', (error) => pageErrors.push(error.message));
     await page.setViewportSize(viewport);
     await openShowcase(page);
-    await expect(page).toHaveTitle('Dripperz — Phase 3 showcase');
+    await expect(page).toHaveTitle('Dripperz Cyberclub');
     await expect(
       page.getByRole('heading', { level: 1, name: /Dripperz.*ENTER THE/ }),
     ).toBeVisible();
+    await expect(page.locator('.hero-description')).toHaveCount(0);
     await expect(page.getByTestId('app-version')).toHaveText(APP_VERSION);
     const alignment = await page.locator('.local-hero').evaluate((panel) => {
       const section = panel.closest('.hero')!;
@@ -34,21 +35,23 @@ for (const viewport of [
           .getElementById('hero-title')!
           .getBoundingClientRect().bottom,
         modelTop: box.top,
-        modelBottom: box.bottom,
-        descriptionTop: section
-          .querySelector('.hero-description')!
-          .getBoundingClientRect().top,
         stageHeight: panel
           .querySelector('.local-hero-stage')!
           .getBoundingClientRect().height,
+        heroHeight: hero.height,
+        heroBottom: hero.bottom,
+        exploreBottom: section
+          .querySelector('.enter-link')!
+          .getBoundingClientRect().bottom,
       };
     });
     expect(alignment.horizontal).toBeLessThan(2);
     expect(alignment.modelTop).toBeGreaterThanOrEqual(alignment.titleBottom);
-    expect(alignment.descriptionTop).toBeGreaterThanOrEqual(
-      alignment.modelBottom,
-    );
     expect(alignment.stageHeight).toBeGreaterThanOrEqual(viewport.height * 0.5);
+    expect(alignment.heroHeight).toBeGreaterThanOrEqual(viewport.height - 55);
+    expect(alignment.heroBottom - alignment.exploreBottom).toBeLessThanOrEqual(
+      32,
+    );
     expect(pageErrors).toEqual([]);
     expect(
       await page.evaluate(

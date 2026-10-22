@@ -43,10 +43,9 @@ test('built interim hero renders on black without HDR controls or requests', asy
     assets.filter((url) => url.endsWith('/hero/wattson.glb')),
   ).toHaveLength(1);
   await expect(preview.getByRole('checkbox')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Pause effects' }).click();
-  await expect(preview).toHaveAttribute('data-playing', 'false');
-  await page.getByRole('button', { name: 'Resume effects' }).click();
-  await expect(preview).toHaveAttribute('data-playing', 'true');
+  await expect(
+    page.getByRole('button', { name: /Pause effects|Static view/ }),
+  ).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(preview).toHaveAttribute('data-playing', 'false');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -55,16 +54,9 @@ test('built interim hero renders on black without HDR controls or requests', asy
   await expect(preview).toHaveAttribute('data-playing', 'false');
   await preview.scrollIntoViewIfNeeded();
   await expect(preview).toHaveAttribute('data-playing', 'true');
-  await preview.getByRole('button', { name: 'Use static view' }).click();
-  await expect(preview.locator('canvas')).toHaveCount(0);
   await expect(
-    preview.getByRole('img', { name: 'Wattson character on black' }),
-  ).toBeVisible();
-  await preview.getByRole('button', { name: /View in 3D/ }).click();
-  await expect(preview).toHaveAttribute('data-rendered', 'true', {
-    timeout: 30000,
-  });
-  await expect(preview.getByRole('checkbox')).toHaveCount(0);
+    preview.getByRole('button', { name: /Static view/ }),
+  ).toHaveCount(0);
   expect(assets.some((url) => /\.hdr(?:\?|$)/.test(url))).toBe(false);
   expect(errors).toEqual([]);
 });
@@ -89,20 +81,19 @@ test('an unavailable model fails without breaking the showcase or retrying', asy
     preview.getByRole('img', { name: 'Wattson character on black' }),
   ).toBeVisible();
   expect(attempts).toBe(1);
-  await preview.getByRole('button', { name: 'Use static view' }).click();
   await expect(
-    preview.getByRole('img', { name: 'Wattson character on black' }),
-  ).toBeVisible();
+    preview.getByRole('button', { name: /Static view/ }),
+  ).toHaveCount(0);
   await expect(page.getByRole('navigation', { name: 'Main' })).toBeVisible();
 });
 
-test('HQ rendering uses 2x backing resolution and does not degrade after sustained frames', async ({
+test('HQ rendering supersamples at 1.5x and stays sharp after sustained frames', async ({
   browser,
   baseURL,
 }) => {
   const page = await browser.newPage({
     viewport: { width: 960, height: 900 },
-    deviceScaleFactor: 2,
+    deviceScaleFactor: 1,
   });
   try {
     await page.goto(`${baseURL!}/`);
@@ -115,7 +106,7 @@ test('HQ rendering uses 2x backing resolution and does not degrade after sustain
     const initial = await canvas.evaluate(
       (element: HTMLCanvasElement) => element.width / element.clientWidth,
     );
-    expect(initial).toBeCloseTo(2, 2);
+    expect(initial).toBeCloseTo(1.5, 2);
     await page.evaluate(
       () =>
         new Promise<void>((resolve) => {
@@ -133,7 +124,7 @@ test('HQ rendering uses 2x backing resolution and does not degrade after sustain
     const sustained = await canvas.evaluate(
       (element: HTMLCanvasElement) => element.width / element.clientWidth,
     );
-    expect(sustained).toBeCloseTo(2, 2);
+    expect(sustained).toBeCloseTo(1.5, 2);
   } finally {
     await page.close();
   }

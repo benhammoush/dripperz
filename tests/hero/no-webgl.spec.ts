@@ -19,9 +19,11 @@ test('disabled WebGL preserves the static fallback and normal page controls', as
   await expect(
     preview.getByRole('img', { name: 'Wattson character on black' }),
   ).toBeVisible();
-  await preview.getByRole('button', { name: 'Use static view' }).click();
   await expect(
     preview.getByRole('img', { name: 'Wattson character on black' }),
   ).toBeVisible();
+  await expect(
+    preview.getByRole('button', { name: /Static view/ }),
+  ).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });

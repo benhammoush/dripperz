@@ -79,8 +79,8 @@ export function RaritySection() {
       ) : (
         <>
           <p>
-            Explore the archived collection by token ID using validated local
-            data.
+            Explore the collection by token ID using its original traits and
+            rarity data.
           </p>
           <button
             className="motion-toggle"
