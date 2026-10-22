@@ -94,10 +94,10 @@ test('renders the shell and runtime version without claiming feature completion'
   expect(screen.getByTestId('app-version')).toHaveTextContent(APP_VERSION);
   expect(screen.queryByText('Not yet implemented')).toBeNull();
   expect(
-    screen.getByText(
+    screen.queryByText(
       'Historical reference—not current balances or active governance.',
     ),
-  ).toBeInTheDocument();
+  ).toBeNull();
   expect(screen.getByText('Community treasury')).toBeInTheDocument();
   expect(screen.getByText('Latest proposal')).toBeInTheDocument();
   for (const [label, value, count] of [

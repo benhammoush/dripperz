@@ -15,13 +15,12 @@ export const SECTIONS = [
     id: 'cybermap',
     label: 'Cybermap',
     title: 'Cybermap',
-    detail:
-      'The original roadmap is archived as historical proposals, not current commitments.',
+    detail: 'The original roadmap describes ideas, not current commitments.',
   },
   {
     id: 'treasury',
-    label: 'Treasury',
-    title: 'Historical treasury',
+    label: 'Governance',
+    title: 'Decentralized Autonomous Organization',
     detail:
       'Original treasury and governance references, with a dated source review. No live balances are requested.',
   },
@@ -30,7 +29,7 @@ export const SECTIONS = [
     label: 'Rarity',
     title: 'Rarity explorer',
     detail:
-      'Explore the archived collection with validated local traits, stored ranks and scores. No wallet is required.',
+      'Explore the collection with local traits, stored ranks and scores. No wallet is required.',
   },
   {
     id: 'faq',

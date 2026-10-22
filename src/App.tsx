@@ -24,6 +24,8 @@ import { LocalHero } from './LocalHero';
 import { HERO_MODEL_BYTES } from './heroAsset';
 import { RaritySection } from './RaritySection';
 import { ShowcaseTerminal } from './ShowcaseTerminal';
+import { Gallery } from './Gallery';
+import { COLLECTION_SLIDES } from './showcaseContent';
 
 /**
  * Render shared desktop/mobile navigation and approved core content without external integrations.
@@ -31,7 +33,6 @@ import { ShowcaseTerminal } from './ShowcaseTerminal';
  */
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [heroEnabled, setHeroEnabled] = useState(true);
   const [heroLoading, setHeroLoading] = useState(true);
   const [skipAvailable, setSkipAvailable] = useState(false);
@@ -49,7 +50,7 @@ export function App() {
     setHeroLoading(false);
   }, []);
 
-  /** Explicitly reload the model after choosing or unloading the static view. */
+  /** Explicitly reload the model after continuing without 3D. */
   const loadHero = useCallback(() => {
     setSkipAvailable(false);
     setDownloaded(null);
@@ -80,6 +81,26 @@ export function App() {
     const timer = window.setTimeout(() => setSkipAvailable(true), 10_000);
     return () => window.clearTimeout(timer);
   }, [heroLoading]);
+
+  useEffect(() => {
+    const panels = document.querySelectorAll<HTMLElement>('.content-panel');
+    if (!('IntersectionObserver' in window)) {
+      panels.forEach((panel) => (panel.dataset.revealed = 'true'));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          (entry.target as HTMLElement).dataset.revealed = 'true';
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.08 },
+    );
+    panels.forEach((panel) => observer.observe(panel));
+    return () => observer.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const dialog = loadingDialog.current;
@@ -133,10 +154,11 @@ export function App() {
           )}
         </div>
       </dialog>
-      <div className="shell" data-paused={paused} inert={heroLoading}>
+      <div className="shell" inert={heroLoading}>
         <a className="skip-link" href="#main" tabIndex={0}>
           Skip to content
         </a>
+        <div className="site-header-spacer" aria-hidden="true" />
         <header
           className="site-header"
           onKeyDown={(event) => {
@@ -192,98 +214,77 @@ export function App() {
             ))}
           </nav>
         </header>
-        <main id="main" tabIndex={-1}>
-          <Atmosphere paused={paused || heroLoading}>
+        <Atmosphere paused={heroLoading}>
+          <main id="main" tabIndex={-1}>
             <section className="hero" id="home" aria-labelledby="hero-title">
-              <p className="eyebrow">Dripperz Cyber Club / Phase 03</p>
               <h1 id="hero-title">
                 <span className="sr-only">Dripperz — </span>ENTER THE{' '}
                 <span className="glitch">CYBERCLUB</span>
               </h1>
               <LocalHero
-                paused={paused}
                 enabled={heroEnabled}
                 onReady={finishHero}
                 onUnavailable={finishHero}
                 onLoad={loadHero}
-                onDisable={skipHero}
                 onDownload={reportDownload}
               />
-              <p className="hero-description">
-                A historical showcase.
-                <br />A cyberpunk identity. No wallet required.
-              </p>
               <a className="enter-link" href="#collection" tabIndex={0}>
                 Explore the club <span aria-hidden="true">↓</span>
               </a>
-              <div className="hero-base">
-                <p>
-                  Historical showcase <span>/ Core collection archive</span>
-                </p>
-                <button
-                  className="motion-toggle"
-                  type="button"
-                  aria-pressed={paused}
-                  onClick={() => setPaused(!paused)}
-                >
-                  {paused ? 'Resume effects' : 'Pause effects'}
-                </button>
-              </div>
             </section>
-            <div className="marquee" aria-hidden="true">
-              <div className="marquee-track">
-                {[0, 1].map((copy) => (
-                  <span key={copy}>
-                    WELCOME TO THE CYBERCLUB / DRIPPERZ / WELCOME TO THE
-                    CYBERCLUB / DRIPPERZ /{' '}
-                  </span>
-                ))}
-              </div>
+            <div className="hero-carousel">
+              <Gallery
+                id="hero-carousel"
+                title="Featured collection"
+                slides={COLLECTION_SLIDES}
+                intervalMs={3000}
+                visibleSlides={3}
+                compact
+              />
             </div>
-          </Atmosphere>
-          <div className="sections">
-            {SECTIONS.map((section, index) => (
-              <section
-                className="content-panel"
-                id={section.id}
-                tabIndex={-1}
-                key={section.id}
-                aria-labelledby={`${section.id}-title`}
-              >
-                <p className="eyebrow">
-                  0{index + 1} / {section.label}
-                </p>
-                <h2 id={`${section.id}-title`}>{section.title}</h2>
-                {section.id === 'collection' ? (
-                  <Collection />
-                ) : section.id === 'cybermap' ? (
-                  <Cybermap />
-                ) : section.id === 'faq' ? (
-                  <ShowcaseFaq />
-                ) : section.id === 'rarity' ? (
-                  <RaritySection />
-                ) : (
-                  <HistoricalTreasury />
-                )}
-              </section>
-            ))}
-          </div>
-        </main>
-        <ShowcaseTerminal />
-        <footer className="site-footer">
-          <a href="#home" tabIndex={0}>
-            Dripperz Cyber Club ↑
-          </a>
-          <p>Historical showcase · No Web3 integration</p>
-          {PUBLIC_LINKS.map((link) => (
-            <a key={link.href} href={link.href} tabIndex={0}>
-              {link.label} ↗
+            <div className="sections">
+              {SECTIONS.map((section, index) => (
+                <section
+                  className="content-panel"
+                  id={section.id}
+                  tabIndex={-1}
+                  key={section.id}
+                  aria-labelledby={`${section.id}-title`}
+                >
+                  <p className="eyebrow">
+                    0{index + 1} / {section.label}
+                  </p>
+                  <h2 id={`${section.id}-title`}>{section.title}</h2>
+                  {section.id === 'collection' ? (
+                    <Collection />
+                  ) : section.id === 'cybermap' ? (
+                    <Cybermap />
+                  ) : section.id === 'faq' ? (
+                    <ShowcaseFaq />
+                  ) : section.id === 'rarity' ? (
+                    <RaritySection />
+                  ) : (
+                    <HistoricalTreasury />
+                  )}
+                </section>
+              ))}
+            </div>
+          </main>
+          <footer className="site-footer">
+            <a href="#home" tabIndex={0}>
+              Dripperz Cyber Club ↑
             </a>
-          ))}
-          <p>
-            Version <span data-testid="app-version">{APP_VERSION}</span>
-          </p>
-        </footer>
+            {PUBLIC_LINKS.map((link) => (
+              <a key={link.href} href={link.href} tabIndex={0}>
+                {link.label} ↗
+              </a>
+            ))}
+            <p>
+              Version <span data-testid="app-version">{APP_VERSION}</span>
+            </p>
+          </footer>
+        </Atmosphere>
+        <ShowcaseTerminal />
       </div>
     </>
   );

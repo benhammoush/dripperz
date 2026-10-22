@@ -160,9 +160,6 @@ export default function RarityExplorer() {
 
   return (
     <div className="rarity-explorer">
-      <p className="rarity-context">
-        Archived collection · 5,555 tokens · No wallet or live marketplace data
-      </p>
       <form className="rarity-search" onSubmit={submit} noValidate>
         <label htmlFor="rarity-token-id">Token ID</label>
         <input
@@ -204,7 +201,7 @@ export default function RarityExplorer() {
           <h3 aria-live="polite">{rarityName(token.id)}</h3>
           <dl className="rarity-ranking">
             <div>
-              <dt>Archived rank</dt>
+              <dt>Rank</dt>
               <dd>
                 {token.rank} / {data.total}
               </dd>
@@ -236,10 +233,6 @@ export default function RarityExplorer() {
               })}
             </tbody>
           </table>
-          <p className="rarity-note">
-            Historical dataset values, not ownership, price or investment
-            information.
-          </p>
         </div>
       </div>
     </div>

@@ -68,11 +68,11 @@ published; the special loopback middleware has been removed.
   view immediately, without waiting for loading. Skipping does not promise to
   abort an in-flight loader transfer or release cached data. Explicit reload
   uses the loading screen again and may reuse the session's model cache.
-- Parent **Pause effects**, reduced motion, hidden tabs and offscreen state gate
-  animation and auto-orbit; static scenes use demand rendering. Manual orbit
-  listeners and animation mixers have owned cleanup.
-- HQ-first model rendering uses device DPR clamped to 1–2, without the former
-  automatic reduction after slow frames. Devices above DPR 2 remain capped at 2.
+- Reduced motion, hidden tabs and offscreen state gate model animation and slow
+  rotation; static scenes use demand rendering. The camera is locked, with no
+  manual orbit listeners. Animation mixers have owned cleanup.
+- HQ-first model rendering uses device DPR clamped to 1.5–3, without the former
+  automatic reduction after slow frames.
   This prioritizes sharpness at increased GPU cost; it does not upgrade the
   model's original geometry/textures or establish a hardware frame-rate guarantee.
   Bounds-based camera framing replaces the legacy arbitrary world offset. These

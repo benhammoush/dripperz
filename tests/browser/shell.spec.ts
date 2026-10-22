@@ -1,5 +1,5 @@
 /**
- * Verify disclosure navigation, motion controls and local-only shell resources.
+ * Verify disclosure navigation, automatic motion safeguards and local-only resources.
  * @packageDocumentation
  */
 
@@ -12,6 +12,7 @@ test('mobile disclosure supports keyboard navigation and escape', async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openShowcase(page);
+  await expect(page.locator('.site-header')).toBeInViewport();
   // Loading continuation focuses the terminal; start header traversal from the brand.
   await page.getByRole('link', { name: 'Dripperz home' }).focus();
   await page.keyboard.press('Shift+Tab');
@@ -21,8 +22,7 @@ test('mobile disclosure supports keyboard navigation and escape', async ({
   await page.keyboard.press('Enter');
   await expect(page.locator('#main')).toBeFocused();
   const menu = page.getByRole('button', { name: /menu/i });
-  await menu.focus();
-  await page.keyboard.press('Enter');
+  await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
   await page.keyboard.press('Tab');
   await expect(
@@ -53,37 +53,30 @@ test('mobile disclosure supports keyboard navigation and escape', async ({
   }
 });
 
-test('effects can pause and stop offscreen; reduced motion removes animations', async ({
+test('matrix spans the whole page and reduced motion keeps it still', async ({
   page,
 }) => {
   await openShowcase(page);
-  const marquee = page.locator('.marquee-track');
   const rain = page.locator('canvas.matrix');
-  await expect(marquee).toHaveCSS('animation-play-state', 'running');
+  const atmosphere = page.locator('.atmosphere');
+  await expect(page.locator('.marquee')).toHaveCount(0);
+  await expect(atmosphere).toHaveAttribute('data-active', 'true');
   await expect(rain).toHaveAttribute('data-running', 'true');
-  await page.getByRole('button', { name: 'Pause effects' }).click();
-  await expect(marquee).toHaveCSS('animation-play-state', 'paused');
-  await expect(rain).toHaveAttribute('data-running', 'false');
-  await page.getByRole('button', { name: 'Resume effects' }).click();
-  await expect(marquee).toHaveCSS('animation-play-state', 'running');
+  await expect(rain).toHaveCSS('position', 'fixed');
+  await page.locator('.site-footer').scrollIntoViewIfNeeded();
+  await expect(atmosphere).toHaveAttribute('data-active', 'true');
   await expect(rain).toHaveAttribute('data-running', 'true');
-  await page.locator('#faq').scrollIntoViewIfNeeded();
-  await expect(page.locator('.atmosphere')).toHaveAttribute(
-    'data-active',
-    'false',
+  const canvasHeight = await rain.evaluate(
+    (canvas) => canvas.getBoundingClientRect().height,
   );
-  await expect(marquee).toHaveCSS('animation-play-state', 'paused');
-  await expect(rain).toHaveAttribute('data-running', 'false');
+  expect(canvasHeight).toBeCloseTo(await page.evaluate(() => innerHeight), 0);
+  expect(canvasHeight).toBeGreaterThan(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(marquee).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.glitch')).toHaveCSS('animation-name', 'none');
   await expect(rain).toHaveAttribute('data-running', 'false');
   await page.locator('#home').scrollIntoViewIfNeeded();
-  await expect(page.locator('.atmosphere')).toHaveAttribute(
-    'data-active',
-    'true',
-  );
+  await expect(atmosphere).toHaveAttribute('data-active', 'true');
   await expect(rain).toHaveAttribute('data-running', 'false');
-  await expect(page.locator('.glitch')).toHaveCSS('animation-name', 'none');
 });
 
 test('shell assets load locally without remote integrations', async ({

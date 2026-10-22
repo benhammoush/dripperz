@@ -18,9 +18,8 @@ import './LocalHero.css';
 
 const Scene = lazy(() => import('./LocalHeroScene'));
 
-/** Parent motion preference is shared with the existing decorative-effect controls. */
+/** Model loading state, lifecycle callbacks and actual transfer progress. */
 interface LocalHeroProps {
-  paused: boolean;
   enabled: boolean;
   /** Reveal the application after the renderer samples a completed frame. */
   onReady: () => void;
@@ -28,8 +27,6 @@ interface LocalHeroProps {
   onUnavailable: () => void;
   /** Start an explicit model reload and show the loading screen. */
   onLoad: () => void;
-  /** Use the static poster and release the loading screen. */
-  onDisable: () => void;
   /**
    * Update model download progress without treating transfer completion as renderer readiness.
    * @param loaded - Actual response-body bytes received by the loader.
@@ -92,7 +89,7 @@ class HeroBoundary extends Component<
         />
         <p role="status">
           {this.state.webgl ? 'WebGL unavailable.' : '3D unavailable.'} You can
-          continue with the static view; the showcase still works.
+          continue with the poster image; the showcase still works.
         </p>
       </div>
     ) : (
@@ -135,9 +132,9 @@ function staticPlayback() {
 }
 
 /**
- * Automatically load the owner-approved interim model while allowing a static escape path.
- * @param props - Parent Pause effects state, also applied to model and orbit motion.
- * @returns Automatic model loading, static fallback, unload/reload controls and local evidence.
+ * Automatically load the owner-approved interim model while retaining its fallback poster.
+ * @param props - Model loading state, lifecycle callbacks and actual transfer progress.
+ * @returns Automatic model loading, a fallback poster, reload control and local evidence.
  */
 export function LocalHero(props: LocalHeroProps) {
   const { onReady } = props;
@@ -150,7 +147,7 @@ export function LocalHero(props: LocalHeroProps) {
     browserPlayback,
     staticPlayback,
   );
-  const playing = inView && browserAllowsMotion && !props.paused;
+  const playing = inView && browserAllowsMotion;
 
   /**
    * Retain local evidence and reveal the experience only after a completed frame sample.
@@ -172,12 +169,6 @@ export function LocalHero(props: LocalHeroProps) {
     observer.observe(region.current);
     return () => observer.disconnect();
   }, []);
-
-  /** Release the canvas on demand and discard evidence tied to the previous mount. */
-  function unload() {
-    setStats(null);
-    props.onDisable();
-  }
 
   /** Start a new, explicit loading sample before importing the renderer and fetching assets. */
   function load() {
@@ -203,7 +194,7 @@ export function LocalHero(props: LocalHeroProps) {
               height="640"
               alt="Wattson character on black"
             />
-            <p className="sr-only">Static view — 3D is unloaded.</p>
+            <p className="sr-only">3D preview is currently unloaded.</p>
           </div>
         ) : (
           <HeroBoundary onUnavailable={props.onUnavailable}>
@@ -224,17 +215,17 @@ export function LocalHero(props: LocalHeroProps) {
           </HeroBoundary>
         )}
       </div>
-      <div className="local-hero-controls">
-        <button
-          type="button"
-          onClick={props.enabled ? unload : load}
-          aria-label={
-            props.enabled ? 'Use static view' : 'View in 3D (70.10 MB)'
-          }
-        >
-          {props.enabled ? 'Static view' : 'View in 3D'}
-        </button>
-      </div>
+      {!props.enabled && (
+        <div className="local-hero-controls">
+          <button
+            type="button"
+            onClick={load}
+            aria-label="View in 3D (70.10 MB)"
+          >
+            View in 3D
+          </button>
+        </div>
+      )}
     </figure>
   );
 }

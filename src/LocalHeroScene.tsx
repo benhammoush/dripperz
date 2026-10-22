@@ -13,7 +13,6 @@ import {
   type Group,
 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { HeroStats } from './LocalHero';
 import { HERO_MODEL_URL } from './heroAsset';
 
@@ -41,6 +40,7 @@ interface SceneProps {
 function Model(props: SceneProps) {
   const frames = useRef(0);
   const group = useRef<Group>(null);
+  const pivot = useRef<Group>(null);
   const { scene, animations } = useLoader(
     GLTFLoader,
     HERO_MODEL_URL,
@@ -59,11 +59,14 @@ function Model(props: SceneProps) {
     if (size.width <= 0 || size.height <= 0) return;
     // Recompute from authored coordinates instead of accumulating centering across resizes.
     group.current?.position.set(0, 0, 0);
+    const yaw = pivot.current?.rotation.y ?? 0;
+    pivot.current?.rotation.set(0, 0, 0);
     group.current?.updateWorldMatrix(true, true);
     const box = new Box3().setFromObject(scene);
     const center = box.getCenter(new Vector3());
     const extent = box.getSize(new Vector3());
     const radius = extent.length() / 2;
+    if (pivot.current) pivot.current.rotation.y = yaw;
     if (!Number.isFinite(radius) || radius <= 0)
       throw new Error('Model bounds unavailable');
     group.current?.position.copy(center).negate();
@@ -96,7 +99,11 @@ function Model(props: SceneProps) {
 
   useFrame((_, delta) => {
     // A hidden-tab return must not jump through a long animation interval.
-    if (props.playing) mixer.update(Math.min(delta, 0.1));
+    if (props.playing) {
+      const step = Math.min(delta, 0.1);
+      mixer.update(step);
+      if (pivot.current) pivot.current.rotation.y += step * 0.12;
+    }
     frames.current += 1;
     // Static/reduced-motion previews still receive a completed-frame diagnostic sample.
     if (frames.current === 1) invalidate();
@@ -109,49 +116,12 @@ function Model(props: SceneProps) {
       });
   });
   return (
-    <group ref={group}>
-      <primitive object={scene} dispose={null} />
+    <group ref={pivot}>
+      <group ref={group}>
+        <primitive object={scene} dispose={null} />
+      </group>
     </group>
   );
-}
-
-/** Playback gate for the official Three orbit controls. */
-interface ControlsProps {
-  playing: boolean;
-}
-
-/**
- * Bind manual orbit listeners with explicit cleanup and no inertia-driven background loop.
- * @param props - Whether automatic orbit is currently permitted.
- * @returns No scene nodes; controls operate on the existing camera and canvas.
- */
-function LocalControls(props: ControlsProps) {
-  const { camera, gl, invalidate } = useThree();
-  const controls = useRef<OrbitControls | null>(null);
-  useEffect(() => {
-    const instance = new OrbitControls(camera, gl.domElement);
-    instance.enablePan = false;
-    instance.enableZoom = false;
-    instance.enableDamping = false;
-    instance.autoRotateSpeed = 0.4;
-    /** Request one frame without treating the control's event object as a frame count. */
-    function requestFrame() {
-      invalidate();
-    }
-    instance.addEventListener('change', requestFrame);
-    controls.current = instance;
-    return () => {
-      instance.removeEventListener('change', requestFrame);
-      instance.dispose();
-      controls.current = null;
-    };
-  }, [camera, gl, invalidate]);
-  useFrame((_, delta) => {
-    if (!controls.current) return;
-    controls.current.autoRotate = props.playing;
-    controls.current.update(Math.min(delta, 0.1));
-  });
-  return null;
 }
 
 /**
@@ -168,7 +138,7 @@ function UnavailableGraphics() {
         alt="Wattson character on black"
       />
       <p role="status">
-        WebGL unavailable — use the static view. The showcase remains usable.
+        WebGL unavailable — the poster image remains available.
       </p>
     </div>
   );
@@ -183,14 +153,13 @@ export default function LocalHeroScene(props: SceneProps) {
   return (
     <Canvas
       camera={{ position: [0, 0, 3], fov: 40, near: 0.001, far: 1000 }}
-      dpr={[1, 2]}
+      dpr={[1.5, 3]}
       frameloop={props.playing ? 'always' : 'demand'}
       fallback={<UnavailableGraphics />}
     >
       <ambientLight intensity={1.5} />
       <directionalLight position={[3, 4, 5]} intensity={3} />
       <Model {...props} />
-      <LocalControls playing={props.playing} />
     </Canvas>
   );
 }

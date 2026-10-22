@@ -108,7 +108,7 @@ export const ARCHIVED_ROADMAP = [
   {
     title: 'Treasury / Community wallet',
     description:
-      'The original plan described a community wallet, committee elections and voting. This archive does not verify implementation, funding or current governance.',
+      'The original plan described a community wallet, committee elections and voting. These plans do not confirm implementation or current governance.',
   },
   {
     title: 'Community building',
@@ -118,7 +118,7 @@ export const ARCHIVED_ROADMAP = [
   {
     title: 'Expanding the Cyberclub universe',
     description:
-      'The original plan proposed a play-to-earn studio, spin-off collections and future-project access. This archive does not announce or confirm delivery of those proposals.',
+      'The original plan proposed a play-to-earn studio, spin-off collections and future-project access. These ideas are not current announcements.',
   },
 ] as const;
 
@@ -126,7 +126,7 @@ export const SHOWCASE_FAQ = [
   {
     question: 'What is this site?',
     answer:
-      'A personal, non-commercial historical showcase of the Dripperz Phase 3 visual identity, artwork and fictional universe. It is not a mint or sales website.',
+      'A personal, non-commercial showcase of Dripperz artwork and its fictional universe. It is not a mint or sales website.',
   },
   {
     question: 'Do I need a wallet?',
@@ -136,7 +136,7 @@ export const SHOWCASE_FAQ = [
   {
     question: 'How do the galleries work?',
     answer:
-      'Use Previous and Next, or focus a gallery and press Left or Right. Images and descriptions change together. Slideshows are off by default; play is optional, with pauses while focused, hovered, hidden or offscreen. Reduced-motion preferences keep them still.',
+      'Slides advance automatically, and images and descriptions stay together. Focus a gallery and press Left or Right to explore. Automatic motion pauses while focused, hidden or offscreen; reduced-motion preferences keep slides still.',
   },
   {
     question: 'Is the cybermap a current roadmap?',
@@ -146,12 +146,12 @@ export const SHOWCASE_FAQ = [
   {
     question: 'Does this site grant artwork rights?',
     answer:
-      'No artwork license or ownership rights are granted by viewing this showcase. It makes no claim about the rights associated with any historical token.',
+      'No artwork license or ownership rights are granted by viewing this showcase. It makes no claim about the rights associated with any token.',
   },
   {
     question: 'Are treasury and rarity features available?',
     answer:
-      'The treasury section preserves historical source references, not current balances or active governance. The local rarity explorer uses archived traits, stored ranks and scores. Neither feature requests live balances, ownership or prices.',
+      'The treasury and rarity sections show locally presented information. Neither feature requests live balances, ownership or prices.',
   },
 ] as const;
 

@@ -27,24 +27,53 @@ for (const viewport of [
     });
     await page.setViewportSize(viewport);
     await openShowcase(page);
-    const portraits = page.getByRole('region', {
-      name: 'Collection portraits',
-    });
-    await portraits.scrollIntoViewIfNeeded();
-    for (let index = 0; index < 5; index += 1) {
-      await expect(portraits.getByRole('img')).toBeVisible();
-      await expect
-        .poll(() =>
-          portraits
-            .getByRole('img')
-            .evaluate(
-              (image: HTMLImageElement) =>
-                image.complete && image.naturalWidth === 1000,
-            ),
-        )
-        .toBe(true);
-      await portraits.getByRole('button', { name: /Next/ }).click();
-    }
+    await expect(
+      page.getByRole('link', { name: /Explore the club/ }),
+    ).toHaveCSS('border-bottom-style', 'none');
+    await expect(
+      page.getByText('Cyberpunk style. Individuality without limits.', {
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByText('Historical showcase · No Web3 integration', {
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByText(
+        'Slides advance automatically · Use Left / Right to explore.',
+        { exact: true },
+      ),
+    ).toHaveCount(0);
+    await expect(page.locator('.marquee')).toHaveCount(0);
+    await expect(page.locator('body')).not.toContainText(
+      'WELCOME TO THE CYBERCLUB / DRIPPERZ',
+    );
+    const featured = page.getByRole('region', { name: 'Featured collection' });
+    await featured.scrollIntoViewIfNeeded();
+    await expect(featured).toBeVisible();
+    await expect(
+      featured.getByRole('heading', { name: 'Featured collection' }),
+    ).toHaveClass('sr-only');
+    await expect(featured.locator('.gallery-heading > span')).toHaveCount(0);
+    await expect(
+      featured.locator('.gallery-artwork[aria-hidden="false"]'),
+    ).toHaveCount(3);
+    await expect(featured.getByRole('img')).toHaveCount(3);
+    await expect(featured.locator('.gallery-strip-track')).toHaveCSS(
+      'animation-name',
+      'none',
+    );
+    await expect(featured).toHaveAttribute('data-playing', 'true');
+    expect(
+      (await page.locator('.site-header').boundingBox())?.height,
+    ).toBeLessThanOrEqual(70);
+    await expect(
+      page.getByRole('button', {
+        name: /Pause effects|Resume effects|Static view/,
+      }),
+    ).toHaveCount(0);
     const characters = page.getByRole('region', {
       name: 'Meet the characters',
     });
@@ -78,19 +107,25 @@ for (const viewport of [
       characters.getByRole('heading', { name: 'DRIP-X', exact: true }),
     ).toBeVisible();
     await page.keyboard.press('ArrowLeft');
+    await expect(characters.locator('.character-entering')).toHaveCSS(
+      'animation-name',
+      'character-enter',
+    );
     await expect(
       characters.getByRole('heading', { name: 'L1L-X', exact: true }),
     ).toBeVisible();
     const cybermap = page.locator('#cybermap');
     await expect(cybermap.getByRole('listitem')).toHaveCount(7);
-    await expect(cybermap.getByText(/Archived roadmap/)).toBeVisible();
-    const treasury = page.getByRole('region', { name: 'Historical treasury' });
+    await expect(cybermap.getByText(/Archived roadmap/)).toHaveCount(0);
+    const treasury = page.getByRole('region', {
+      name: 'Decentralized Autonomous Organization',
+    });
     await treasury.scrollIntoViewIfNeeded();
     await expect(
       treasury.getByText(
         'Historical reference—not current balances or active governance.',
       ),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(
       treasury.getByRole('heading', { name: 'Community treasury' }),
     ).toBeVisible();
@@ -123,6 +158,9 @@ for (const viewport of [
     await expect(treasury).not.toContainText('dripperzcyberclub.eth');
     await expect(treasury.getByRole('link')).toHaveCount(0);
     await expect(treasury.getByRole('button')).toHaveCount(0);
+    await expect(page.locator('body')).not.toContainText(/archive/i);
+    // Measure layout only after the panel's scroll-reveal transform has settled.
+    await expect(treasury).toHaveCSS('transform', 'none');
     const summaryBox = await treasury
       .locator('.treasury-overview')
       .boundingBox();
@@ -160,27 +198,44 @@ for (const viewport of [
   });
 }
 
-test('optional autoplay pauses for hover, focus, reduced motion and offscreen', async ({
+test('slideshow advances quickly on hover and pauses for focus, reduced motion and offscreen', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.clock.install();
   await openShowcase(page);
-  const gallery = page.getByRole('region', { name: 'Collection portraits' });
-  const title = gallery.locator('h4');
+  const gallery = page.getByRole('region', { name: 'Featured collection' });
+  const images = gallery.getByRole('img');
+  /**
+   * Read the visible image order to verify each automatic and keyboard step.
+   * @returns Current artwork source paths.
+   */
+  const sources = () =>
+    images.evaluateAll((items) =>
+      items.map((item) => item.getAttribute('src')),
+    );
   await gallery.scrollIntoViewIfNeeded();
-  await gallery.getByRole('button', { name: 'Play slideshow' }).click();
+  await expect(gallery.getByRole('button')).toHaveCount(0);
   await page.mouse.move(0, 0);
   await page.evaluate(() => (document.activeElement as HTMLElement).blur());
-  await page.clock.runFor(5200);
-  await expect(title).toHaveText('Collection study 02');
+  await expect(gallery).toHaveAttribute('data-playing', 'true');
+  const beforeAdvance = await sources();
+  await page.clock.runFor(3100);
+  await expect(images.first()).not.toHaveAttribute('src', beforeAdvance[0]!);
+  await expect(gallery.locator('.gallery-strip-track')).toHaveCSS(
+    'animation-name',
+    'hero-carousel-glide',
+  );
   await gallery.hover();
-  await page.clock.runFor(6000);
-  await expect(title).toHaveText('Collection study 02');
+  await expect(gallery).toHaveAttribute('data-playing', 'true');
+  const whileHovered = await sources();
+  await page.clock.runFor(3100);
+  await expect(images.first()).not.toHaveAttribute('src', whileHovered[0]!);
   await page.mouse.move(0, 0);
   await gallery.focus();
-  await page.clock.runFor(6000);
-  await expect(title).toHaveText('Collection study 02');
+  const whileFocused = await sources();
+  await page.clock.runFor(4000);
+  expect(await sources()).toEqual(whileFocused);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   // Media emulation reaches WebKit asynchronously; observe it before ticking timers.
   await expect
@@ -190,26 +245,39 @@ test('optional autoplay pauses for hover, focus, reduced motion and offscreen', 
       ),
     )
     .toBe(true);
+  await expect(gallery.locator('.gallery-strip-track')).toHaveCSS(
+    'animation-name',
+    'none',
+  );
   await page.evaluate(() => (document.activeElement as HTMLElement).blur());
   await expect(gallery).toHaveAttribute('data-playing', 'false');
-  await page.clock.runFor(6000);
-  await expect(title).toHaveText('Collection study 02');
+  const reducedMotionSources = await sources();
+  await page.clock.runFor(4000);
+  expect(await sources()).toEqual(reducedMotionSources);
   await page.locator('#faq').scrollIntoViewIfNeeded();
   // IntersectionObserver updates asynchronously, outside the mocked clock.
   await expect(gallery).toHaveAttribute('data-visible', 'false');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect(gallery).toHaveAttribute('data-playing', 'false');
-  await page.clock.runFor(6000);
-  await expect(title).toHaveText('Collection study 02');
+  const offscreenSources = await sources();
+  await page.clock.runFor(4000);
+  expect(await sources()).toEqual(offscreenSources);
   await gallery.scrollIntoViewIfNeeded();
   await page.mouse.move(0, 0);
   await expect(gallery).toHaveAttribute('data-playing', 'true');
-  await page.clock.runFor(5200);
-  await expect(title).toHaveText('The Creator');
-  await gallery.getByRole('button', { name: /Next/ }).click();
-  await expect(
-    gallery.getByRole('button', { name: 'Play slideshow' }),
-  ).toHaveAttribute('aria-pressed', 'false');
+  const afterResume = await sources();
+  await page.clock.runFor(3100);
+  await expect(images.first()).not.toHaveAttribute('src', afterResume[0]!);
+  await gallery.focus();
+  const beforeKeyboard = await sources();
+  await page.keyboard.press('ArrowRight');
+  await expect(images.first()).not.toHaveAttribute('src', beforeKeyboard[0]!);
+  await page.keyboard.press('ArrowLeft');
+  await expect(images.first()).toHaveAttribute('src', beforeKeyboard[0]!);
+  await expect(gallery.locator('.gallery-strip-track')).toHaveCSS(
+    'animation-name',
+    'hero-carousel-reverse',
+  );
 });
 
 test('failed artwork does not block captions, controls or FAQ', async ({
@@ -217,12 +285,16 @@ test('failed artwork does not block captions, controls or FAQ', async ({
 }) => {
   await page.route('**/artwork/showcase-01.jpg', (route) => route.abort());
   await openShowcase(page);
-  const gallery = page.getByRole('region', { name: 'Collection portraits' });
+  const gallery = page.getByRole('region', { name: 'Featured collection' });
   await gallery.scrollIntoViewIfNeeded();
   await expect(
     gallery.getByRole('img', { name: /Artwork unavailable/ }),
   ).toBeVisible();
-  await gallery.getByRole('button', { name: /Next/ }).click();
-  await expect(gallery.locator('h4')).toHaveText('Collection study 02');
+  await gallery.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(gallery.getByRole('img').first()).toHaveAttribute(
+    'src',
+    '/artwork/showcase-02.jpg',
+  );
   await expect(page.locator('#faq')).toBeVisible();
 });

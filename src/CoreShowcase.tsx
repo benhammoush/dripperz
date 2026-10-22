@@ -7,33 +7,25 @@ import { Gallery } from './Gallery';
 import {
   ARCHIVED_ROADMAP,
   CHARACTER_SLIDES,
-  COLLECTION_SLIDES,
   SHOWCASE_FAQ,
 } from './showcaseContent';
 
 /**
- * Display the collection's two galleries without current sales, governance or ownership claims.
- * @returns The shared desktop/mobile collection introduction and gallery controls.
+ * Display character lore without duplicating artwork already shown in the hero carousel.
+ * @returns The shared collection introduction and character gallery.
  */
 export function Collection() {
   return (
     <>
       <p className="collection-intro">
-        Cyberclub is a fictional fashion universe built around individuality and
-        cyberpunk style. This archive revisits the artwork and characters
-        presented in Phase 3.
+        Cyberclub brings individuality and cyberpunk style together in a world
+        of its own.
       </p>
-      <Gallery
-        id="collection-studies"
-        title="Collection portraits"
-        slides={COLLECTION_SLIDES}
-        intervalMs={5000}
-      />
       <Gallery
         id="characters"
         title="Meet the characters"
         slides={CHARACTER_SLIDES}
-        intervalMs={8000}
+        intervalMs={3500}
       />
     </>
   );
@@ -46,11 +38,6 @@ export function Collection() {
 export function Cybermap() {
   return (
     <>
-      <p className="archive-notice">
-        Archived roadmap · Historical proposals, not verified achievements or
-        current commitments. Completion status and dates are not established by
-        the original page.
-      </p>
       <ol className="cybermap">
         {ARCHIVED_ROADMAP.map((stage, index) => (
           <li key={stage.title}>
@@ -92,9 +79,6 @@ export function ShowcaseFaq() {
 export function HistoricalTreasury() {
   return (
     <>
-      <p className="archive-notice">
-        Historical reference—not current balances or active governance.
-      </p>
       <div className="treasury-grid">
         <article className="treasury-card treasury-overview">
           <h3>Community treasury</h3>
@@ -123,9 +107,10 @@ export function HistoricalTreasury() {
             <dt>Status</dt>
             <dd className="treasury-proposal-status">XXXXXXX</dd>
             <dt>Proposal details</dt>
-            <dd>
-              XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
-              XXXX XXXX XXXX
+            <dd className="treasury-proposal-details">
+              XXXX XXXX XXXX XXXX XXXX <br />
+              XXXX XXXX XXXX XXXX XXXX <br />
+              XXXX XXXX XXXX XXXX XXXX XXXX
             </dd>
             <dt>Choices</dt>
             <dd className="treasury-choices">

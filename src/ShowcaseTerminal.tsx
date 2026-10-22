@@ -14,11 +14,11 @@ import './ShowcaseTerminal.css';
 
 const DOCUMENTS = {
   report: {
-    label: 'Open archived report (PDF)',
+    label: 'Open club report (PDF)',
     href: 'https://dripperzcyberclub.mypinata.cloud/ipfs/QmNSwRjCrKQDuqc1CthMDX39v1qrWWzFtGU5d445k41tYK',
   },
   mugshot: {
-    label: 'Open archived club members (PDF, approximately 58 MB)',
+    label: 'Open club members (PDF, approximately 58 MB)',
     href: 'https://dripperzcyberclub.mypinata.cloud/ipfs/QmPfGUovpmDNRJAWGnnkfc543uyoZE4R6FaPWrwyWk1e8L',
   },
 } as const;
@@ -33,7 +33,7 @@ interface TerminalEntry {
 
 /**
  * Render a local allowlisted prompt; typing never executes code or opens a remote resource.
- * @returns Keyboard-accessible command input, bounded history and explicit archive links.
+ * @returns Keyboard-accessible command input, bounded history and explicit document links.
  */
 export function ShowcaseTerminal() {
   const [input, setInput] = useState('');
@@ -71,11 +71,11 @@ export function ShowcaseTerminal() {
     };
     if (normalized === 'help')
       entry.message =
-        'help — List commands\nclear — Clear the screen\nreport — Data compiled: archived lore PDF\nmugshot — Club members: archived PDF';
+        'help — List commands\nclear — Clear the screen\nreport — Club lore PDF\nmugshot — Club members PDF';
     if (normalized === 'report' || normalized === 'mugshot') {
       entry.document = normalized;
       entry.message =
-        'Archived fictional material. External PDF; opens only when you follow the link. Availability is controlled by the archive host.';
+        'Fictional club material. External PDF; opens only when you follow the link. Availability is controlled by the document host.';
     }
     setEntries((current) => [...current, entry].slice(-30));
   }
@@ -112,11 +112,11 @@ export function ShowcaseTerminal() {
     <aside
       id="terminal"
       className="showcase-terminal"
-      aria-label="Archive terminal"
+      aria-label="Dripperz terminal"
     >
       <div id="terminal-console">
         <p id="terminal-help" className="sr-only">
-          Archive prompt, not a system shell. Use ↑ / ↓ for command history. No
+          Dripperz prompt, not a system shell. Use ↑ / ↓ for command history. No
           password or wallet required.
         </p>
         <div

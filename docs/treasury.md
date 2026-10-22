@@ -26,17 +26,15 @@ The layout mirrors the legacy treasury summary followed by a larger centered
 proposal panel, masking every value with `X` characters in a field-shaped format:
 address-length, `XXXX-XX-XX` dates, balances, governance space, proposal fields
 and choices. Three choice chips are illustrative layout placeholders, not a
-claim about the number of choices in an archived proposal. It retains the notice
-“Historical reference—not current balances or active governance.” No
-additional placeholder label, external link, voting control, network request or
-legacy component code is added.
+claim about the number of choices in a proposal. The panel has no extra caution
+or placeholder label, external link, voting control, network request or legacy
+component code.
 
-The shared showcase component renders the panels; the FAQ distinguishes the
-archived treasury from the local rarity explorer. App unit assertions cover both
-panels and all placeholder fields. The responsive showcase browser test checks
-the disclaimer, masked values, absence of exposed identifiers, links and buttons,
-no automatic external requests and page width at desktop, tablet and mobile sizes
-in all three configured engines.
+The shared showcase component renders the panels. App unit assertions cover both
+panels and all masked fields. The responsive showcase browser test checks masked
+values, absence of exposed identifiers, links and buttons, no automatic external
+requests and page width at desktop, tablet and mobile sizes in all three
+configured engines.
 
 This bounded implementation is not release-wide or hosted acceptance. It does
 not authorize radio, new documents, wallet integrations or changes to legacy
