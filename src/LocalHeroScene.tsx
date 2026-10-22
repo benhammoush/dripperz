@@ -40,6 +40,7 @@ interface SceneProps {
 function Model(props: SceneProps) {
   const frames = useRef(0);
   const group = useRef<Group>(null);
+  const pivot = useRef<Group>(null);
   const { scene, animations } = useLoader(
     GLTFLoader,
     HERO_MODEL_URL,
@@ -58,11 +59,14 @@ function Model(props: SceneProps) {
     if (size.width <= 0 || size.height <= 0) return;
     // Recompute from authored coordinates instead of accumulating centering across resizes.
     group.current?.position.set(0, 0, 0);
+    const yaw = pivot.current?.rotation.y ?? 0;
+    pivot.current?.rotation.set(0, 0, 0);
     group.current?.updateWorldMatrix(true, true);
     const box = new Box3().setFromObject(scene);
     const center = box.getCenter(new Vector3());
     const extent = box.getSize(new Vector3());
     const radius = extent.length() / 2;
+    if (pivot.current) pivot.current.rotation.y = yaw;
     if (!Number.isFinite(radius) || radius <= 0)
       throw new Error('Model bounds unavailable');
     group.current?.position.copy(center).negate();
@@ -98,7 +102,7 @@ function Model(props: SceneProps) {
     if (props.playing) {
       const step = Math.min(delta, 0.1);
       mixer.update(step);
-      if (group.current) group.current.rotation.y += step * 0.12;
+      if (pivot.current) pivot.current.rotation.y += step * 0.12;
     }
     frames.current += 1;
     // Static/reduced-motion previews still receive a completed-frame diagnostic sample.
@@ -112,8 +116,10 @@ function Model(props: SceneProps) {
       });
   });
   return (
-    <group ref={group}>
-      <primitive object={scene} dispose={null} />
+    <group ref={pivot}>
+      <group ref={group}>
+        <primitive object={scene} dispose={null} />
+      </group>
     </group>
   );
 }

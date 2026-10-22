@@ -6,7 +6,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { Gallery } from '../../src/Gallery';
-import { CHARACTER_SLIDES } from '../../src/showcaseContent';
+import { CHARACTER_SLIDES, COLLECTION_SLIDES } from '../../src/showcaseContent';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -63,6 +63,32 @@ test('a failed artwork leaves the caption and navigation usable', () => {
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[1]!.src,
   );
+});
+
+test('strip retains its track and exposes the selected window in both directions', () => {
+  const { container } = render(
+    <Gallery
+      id="featured"
+      title="Featured collection"
+      slides={COLLECTION_SLIDES}
+      intervalMs={3000}
+      visibleSlides={3}
+    />,
+  );
+  const track = container.querySelector('.gallery-strip-track');
+  const gallery = screen.getByRole('region');
+  fireEvent.keyDown(gallery, { key: 'ArrowRight' });
+  expect(container.querySelector('.gallery-strip-track')).toBe(track);
+  expect(track?.firstElementChild?.getAttribute('aria-hidden')).toBe('true');
+  expect(
+    screen.getAllByRole('img').map((image) => image.getAttribute('src')),
+  ).toEqual(COLLECTION_SLIDES.slice(1, 4).map((slide) => slide.src));
+  fireEvent.keyDown(gallery, { key: 'ArrowLeft' });
+  expect(container.querySelector('.gallery-strip-track')).toBe(track);
+  expect(track?.classList.contains('is-reversing')).toBe(true);
+  expect(
+    screen.getAllByRole('img').map((image) => image.getAttribute('src')),
+  ).toEqual(COLLECTION_SLIDES.slice(0, 3).map((slide) => slide.src));
 });
 
 test('autoplay stops in a hidden tab and releases its timer and subscriptions', () => {

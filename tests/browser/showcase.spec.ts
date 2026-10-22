@@ -205,7 +205,7 @@ test('slideshow advances quickly on hover and pauses for focus, reduced motion a
   await page.clock.install();
   await openShowcase(page);
   const gallery = page.getByRole('region', { name: 'Featured collection' });
-  const images = gallery.locator('.gallery-artwork img');
+  const images = gallery.getByRole('img');
   /**
    * Read the visible image order to verify each automatic and keyboard step.
    * @returns Current artwork source paths.
@@ -272,6 +272,12 @@ test('slideshow advances quickly on hover and pauses for focus, reduced motion a
   const beforeKeyboard = await sources();
   await page.keyboard.press('ArrowRight');
   await expect(images.first()).not.toHaveAttribute('src', beforeKeyboard[0]!);
+  await page.keyboard.press('ArrowLeft');
+  await expect(images.first()).toHaveAttribute('src', beforeKeyboard[0]!);
+  await expect(gallery.locator('.gallery-strip-track')).toHaveCSS(
+    'animation-name',
+    'hero-carousel-reverse',
+  );
 });
 
 test('failed artwork does not block captions, controls or FAQ', async ({
@@ -286,7 +292,7 @@ test('failed artwork does not block captions, controls or FAQ', async ({
   ).toBeVisible();
   await gallery.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(gallery.locator('.gallery-artwork img').first()).toHaveAttribute(
+  await expect(gallery.getByRole('img').first()).toHaveAttribute(
     'src',
     '/artwork/showcase-02.jpg',
   );

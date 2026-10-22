@@ -259,7 +259,11 @@ h1 {
   width: 133.333333%;
 }
 .hero-carousel .gallery-strip-track.is-advancing {
+  transform: translateX(-25%);
   animation: hero-carousel-glide 800ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.hero-carousel .gallery-strip-track.is-reversing {
+  animation: hero-carousel-reverse 800ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 .hero-carousel .gallery-strip-track > .gallery-artwork {
   flex: 0 0 25%;
@@ -621,8 +625,19 @@ h2 {
   }
 }
 @keyframes hero-carousel-glide {
+  from {
+    transform: translateX(0);
+  }
   to {
     transform: translateX(-25%);
+  }
+}
+@keyframes hero-carousel-reverse {
+  from {
+    transform: translateX(-25%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 @media (max-width: 64rem) {
@@ -701,7 +716,8 @@ h2 {
     opacity: 1;
     transform: none;
   }
-  .hero-carousel .gallery-strip-track.is-advancing {
+  .hero-carousel .gallery-strip-track.is-advancing,
+  .hero-carousel .gallery-strip-track.is-reversing {
     animation: none;
   }
   .gallery-artwork .character-previous {

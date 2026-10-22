@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { GallerySlide } from './showcaseContent';
 import { ScrambledSignal } from './ScrambledSignal';
 
@@ -23,18 +23,35 @@ interface GalleryProps {
  * @returns The local gallery, keyboard navigation, image fallback and automatic slideshow.
  */
 export function Gallery(props: GalleryProps) {
-  const [selection, setSelection] = useState({ index: 0, previous: 0 });
-  const { index, previous } = selection;
+  const [selection, setSelection] = useState({
+    index: 0,
+    previous: 0,
+    direction: 1,
+  });
+  const { index, previous, direction } = selection;
   const [animateStrip, setAnimateStrip] = useState(false);
   const [failedSrc, setFailedSrc] = useState('');
   const regionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const slide = props.slides[index]!;
   const count = props.slides.length;
   const visibleCount = Math.min(props.visibleSlides ?? 1, count);
   const visibleSlides = Array.from(
     { length: visibleCount + (visibleCount > 1 ? 1 : 0) },
-    (_, offset) => props.slides[(index + offset) % count]!,
+    (_, offset) =>
+      props.slides[
+        ((animateStrip && direction > 0 ? previous : index) + offset) % count
+      ]!,
   );
+
+  useLayoutEffect(() => {
+    if (!animateStrip) return;
+    // Restart the retained track from the prior window, including consecutive moves in one direction.
+    trackRef.current?.getAnimations?.().forEach((animation) => {
+      animation.cancel();
+      animation.play();
+    });
+  }, [selection, animateStrip]);
 
   useEffect(() => {
     const region = regionRef.current;
@@ -54,6 +71,7 @@ export function Gallery(props: GalleryProps) {
           setSelection((current) => ({
             index: (current.index + 1) % count,
             previous: current.index,
+            direction: 1,
           }));
         }, props.intervalMs);
       }
@@ -106,6 +124,7 @@ export function Gallery(props: GalleryProps) {
     setSelection((current) => ({
       index: (current.index + offset + count) % count,
       previous: current.index,
+      direction: offset,
     }));
   }
 
@@ -144,12 +163,16 @@ export function Gallery(props: GalleryProps) {
       {visibleCount > 1 ? (
         <div className="gallery-strip" aria-live="off">
           <div
-            className={`gallery-strip-track${animateStrip ? ' is-advancing' : ''}`}
-            key={index}
+            className={`gallery-strip-track${animateStrip ? (direction > 0 ? ' is-advancing' : ' is-reversing') : ''}`}
+            ref={trackRef}
           >
             {visibleSlides.map((visibleSlide, offset) => (
               <div
-                aria-hidden={offset >= visibleCount}
+                aria-hidden={
+                  animateStrip && direction > 0
+                    ? offset === 0
+                    : offset >= visibleCount
+                }
                 className="gallery-artwork"
                 key={visibleSlide.src}
               >
