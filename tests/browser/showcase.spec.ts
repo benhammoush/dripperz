@@ -159,6 +159,8 @@ for (const viewport of [
     await expect(treasury.getByRole('link')).toHaveCount(0);
     await expect(treasury.getByRole('button')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText(/archive/i);
+    // Measure layout only after the panel's scroll-reveal transform has settled.
+    await expect(treasury).toHaveCSS('transform', 'none');
     const summaryBox = await treasury
       .locator('.treasury-overview')
       .boundingBox();
