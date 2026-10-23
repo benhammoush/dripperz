@@ -21,8 +21,9 @@ Artifact integrity is checked before deployment.
 The adapter retains the bounded controller and original evidence fields, adding
 the shared versioned release-record fields. Failed/uncertain records cannot
 authorize promotion. Existing required-check names remain compatibility gates for
-shared checks. This migration changes no enablement, credentials or provider
-settings; passing PR checks does not establish live deployment acceptance.
+shared checks. This migration removes the dev deployment opt-in but changes no
+production enablement, credentials or provider settings; passing PR checks does
+not establish live deployment acceptance.
 
 This is the PR 2 delivery contract, **not evidence of configured environments or an operational showcase**. Local development remains unchanged. There is no staging target. Legacy Drip, Netlify, domains and other projects must remain untouched.
 
