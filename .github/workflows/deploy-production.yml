@@ -25,10 +25,10 @@ jobs:
   # including three-engine core flows and the focused Chromium hero/WebGL suite.
   # This is the same safety path as dev, not a lighter production test shortcut.
   verify_release:
-    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@d7d0c297f0b4038e9815349fd16f79bb92d77ceb
+    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@a35aea526ca8b69d7ec27ff7952cff6af8c1bbe5
     with:
       # Shared: full immutable pin matches the reusable workflow implementation.
-      automation_sha: d7d0c297f0b4038e9815349fd16f79bb92d77ceb
+      automation_sha: a35aea526ca8b69d7ec27ff7952cff6af8c1bbe5
       source_sha: ${{ inputs.sha }}
       # Shared: select declared production build inputs, not a user-defined target.
       environment: production
@@ -37,7 +37,7 @@ jobs:
   # That job binds GitHub's production environment, where native owner approval,
   # main-only access and no admin bypass must be configured (not defined here).
   # After approval it rechecks dev evidence/source/artifact identity, respects
-  # DEPLOY_ENABLED and the target lock, then deploys without rebuilding tested output.
+  # the target lock, then deploys without rebuilding tested output or a boolean opt-in.
   # Project: scripts/ci-deploy.mjs uses Dripperz's bounded static controller for
   # isolated Vercel upload, identity/routing smoke and retained prior deployment ID.
   # No blind retry/rollback: failed or uncertain outcomes need investigation and
@@ -45,9 +45,9 @@ jobs:
   deploy_production:
     needs: verify_release
     if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
-    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@d7d0c297f0b4038e9815349fd16f79bb92d77ceb
+    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@a35aea526ca8b69d7ec27ff7952cff6af8c1bbe5
     with:
-      automation_sha: d7d0c297f0b4038e9815349fd16f79bb92d77ceb
+      automation_sha: a35aea526ca8b69d7ec27ff7952cff6af8c1bbe5
       source_sha: ${{ inputs.sha }}
       environment: production
       node_version: 24.21.0

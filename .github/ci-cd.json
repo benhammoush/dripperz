@@ -2,11 +2,10 @@
   "schemaVersion": 1,
   "profile": "web",
   "nodeVersion": "24.21.0",
-  "automationSha": "d7d0c297f0b4038e9815349fd16f79bb92d77ceb",
+  "automationSha": "a35aea526ca8b69d7ec27ff7952cff6af8c1bbe5",
   "integration": false,
   "legacyChecks": ["Quality and build", "Browser smoke"],
   "deploymentVariables": [
-    "DEPLOY_ENABLED",
     "VERCEL_TEAM_ID",
     "VERCEL_DEV_PROJECT_ID",
     "VERCEL_PRODUCTION_PROJECT_ID"

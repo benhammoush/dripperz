@@ -353,7 +353,6 @@ export async function deploy() {
   const target = required('DELIVERY_TARGET');
   const name = projectName(target);
   if (target === 'production') {
-    requireDelivery(env.DEPLOY_ENABLED === 'true', 'Delivery remains disabled');
     requireDelivery(
       env.GITHUB_EVENT_NAME === 'workflow_dispatch' &&
         env.GITHUB_RUN_ATTEMPT === '1',

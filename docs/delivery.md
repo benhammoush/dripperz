@@ -2,7 +2,9 @@
 
 ## Versioned CI/CD entry points
 
-Automation 2.0 removes dev opt-ins when this adoption is merged to main.
+Automation 3.0 removes production deployment opt-ins; dev remains automatic.
+The verified immutable v3.0.0 release is pinned below. Delete obsolete live
+deployment flags only after this consumer adoption is merged and verified.
 
 The [shared contract](https://github.com/benhammoush/ci-cd-workflows/blob/main/docs/contract.md)
 is pinned by immutable SHA in `.github/ci-cd.json`. Generated `ci.yml` verifies
@@ -21,8 +23,8 @@ Artifact integrity is checked before deployment.
 The adapter retains the bounded controller and original evidence fields, adding
 the shared versioned release-record fields. Failed/uncertain records cannot
 authorize promotion. Existing required-check names remain compatibility gates for
-shared checks. This migration removes the dev deployment opt-in but changes no
-production enablement, credentials or provider settings; passing PR checks does
+shared checks. This migration removes the production deployment opt-in but changes no
+manual dispatch, approval, credentials or provider settings; passing PR checks does
 not establish live deployment acceptance.
 
 This is the PR 2 delivery contract, **not evidence of configured environments or an operational showcase**. Local development remains unchanged. There is no staging target. Legacy Drip, Netlify, domains and other projects must remain untouched.
@@ -40,9 +42,9 @@ This is the PR 2 delivery contract, **not evidence of configured environments or
 
 ## Automatic dev and gated production
 
-Dev delivery has no `DEPLOY_ENABLED` opt-in: absent/false values do not prevent deployment after successful main verification. Complete dev configuration before merging. Missing credentials/configuration fail delivery rather than producing a successful disabled no-op. Production still requires its environment's `DEPLOY_ENABLED=true`, a new manual dispatch, native environment approval and the recovery prerequisites below; production never deploys automatically.
+Delivery has no `DEPLOY_ENABLED` opt-in: absent/false values do not prevent deployment. Complete dev configuration before merging for automatic dev delivery after successful main verification. Missing credentials/configuration fail delivery rather than producing a successful disabled no-op. Production still requires a new manual dispatch, native environment approval and the recovery prerequisites below; production never deploys automatically.
 
-The old repository-level delivery switches are no longer read. Remote settings changes require separate authorization. Do not copy a shared enabled value into production; retain its environment-scoped opt-in and native approval.
+The old repository-level delivery switches are no longer read. Remote settings changes require separate authorization. Hold production by not dispatching it until authorized; retain native approval.
 
 Provisioning, environment/secret configuration, workflow dispatch, deployment, publication and merging are separately authorized operations. An assistant implementing this milestone does not perform deployment or rollback mutations.
 
