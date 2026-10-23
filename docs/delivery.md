@@ -2,9 +2,11 @@
 
 ## Versioned CI/CD entry points
 
+Automation 2.0 removes dev opt-ins when this adoption is merged to main.
+
 The [shared contract](https://github.com/benhammoush/ci-cd-workflows/blob/main/docs/contract.md)
 is pinned by immutable SHA in `.github/ci-cd.json`. Generated `ci.yml` verifies
-PRs/main and delivers only successful exact main commits to enabled dev. Separate
+PRs/main and delivers successful exact main commits to dev without an opt-in switch. Separate
 manual `deploy-production.yml` selects a full merged `sha`, verifies retained dev
 delivery and the candidate, then waits for native approval. CI dispatch is the
 exact-SHA manual dev recovery path. These supersede older Delivery-workflow
@@ -19,8 +21,9 @@ Artifact integrity is checked before deployment.
 The adapter retains the bounded controller and original evidence fields, adding
 the shared versioned release-record fields. Failed/uncertain records cannot
 authorize promotion. Existing required-check names remain compatibility gates for
-shared checks. This migration changes no enablement, credentials or provider
-settings; passing PR checks does not establish live deployment acceptance.
+shared checks. This migration removes the dev deployment opt-in but changes no
+production enablement, credentials or provider settings; passing PR checks does
+not establish live deployment acceptance.
 
 This is the PR 2 delivery contract, **not evidence of configured environments or an operational showcase**. Local development remains unchanged. There is no staging target. Legacy Drip, Netlify, domains and other projects must remain untouched.
 
@@ -35,11 +38,11 @@ This is the PR 2 delivery contract, **not evidence of configured environments or
 - The existing CI quality job validates workflow syntax/expressions using checksum-verified actionlint `1.7.12`; validation failure blocks that check. Embedded shell/Python analyzer integrations are disabled; this does not claim a separate shell security audit.
 - Production needs native explicit owner approval; self-review is allowed; administrator bypass is disabled. A manual dispatch is not approval. GitHub enforces the environment gate before the delivery job starts. The operator must verify actual protection settings during setup/readiness and before authorizing enablement or promotion; missing enforcement/readback blocks that authorization. The controller does not query GitHub administration APIs or detect later policy drift automatically.
 
-## Disabled until separately authorized setup
+## Automatic dev and gated production
 
-Each GitHub environment (`dev` and `production`) has its own `DEPLOY_ENABLED` variable. The controller makes **no provider request or deployment mutation** unless the selected environment's value is exactly `true`. Keep both absent/false while drafting, publishing, or setting up; do not define a repository/organization-wide fallback. Source selection and credential-free checks may run while deployment is disabled; the switch is checked inside the environment-bound delivery job, after native protection rules. Production also requires a new manual dispatch, native environment approval and the recovery prerequisites below. Do not enable deployment as an incidental part of merging. Enabling dev makes later successful main CI runs eligible to mutate dev, without enabling production; production never deploys automatically.
+Dev delivery has no `DEPLOY_ENABLED` opt-in: absent/false values do not prevent deployment after successful main verification. Complete dev configuration before merging. Missing credentials/configuration fail delivery rather than producing a successful disabled no-op. Production still requires its environment's `DEPLOY_ENABLED=true`, a new manual dispatch, native environment approval and the recovery prerequisites below; production never deploys automatically.
 
-The old repository-level delivery switches are no longer read. Migrating remote settings is separately authorized setup: configure each environment's `DEPLOY_ENABLED=false`, verify there is no same-name repository/organization fallback, then separately authorize dev activation. Do not copy an old shared enabled value into both environments.
+The old repository-level delivery switches are no longer read. Remote settings changes require separate authorization. Do not copy a shared enabled value into production; retain its environment-scoped opt-in and native approval.
 
 Provisioning, environment/secret configuration, workflow dispatch, deployment, publication and merging are separately authorized operations. An assistant implementing this milestone does not perform deployment or rollback mutations.
 
@@ -52,8 +55,8 @@ Provisioning, environment/secret configuration, workflow dispatch, deployment, p
 5. Create GitHub environments `dev` and `production`, with deployment branch policies allowing branch `main` only (not a tag or wildcard). For production set required reviewer `benhammoush`, allow self-review, disable administrator bypass. Read settings back. Do not rely on automatic environment creation by a job: that has no approval protection.
 6. Put a distinct project-scoped `VERCEL_TOKEN` in each environment, never a repository-wide secret: dev's token is limited to `dripperz-dev`, production's to `dripperz-production`. Production needs no dev-verification credential: the owner reviews dev acceptance and recovery before native approval. Vercel project tokens grant project read/write access, not provider-enforced read-only access. Do not substitute team/full-account tokens. Choose explicit expirations and record rotation ownership without values. Use password-manager labels `<project>-<environment>-<provider>-<purpose>`, for example `dripperz-production-vercel-deploy`; GitHub still uses `VERCEL_TOKEN`. Create tokens through the owner's secure dashboard interaction. Inventory consumers before separately authorized obsolete-token cleanup; this source change does not revoke anything. No token values or credential paths belong in source, artifacts or evidence.
    No additional GitHub personal access token is required. Workflow source ancestry/freshness checks use the built-in read-only `GITHUB_TOKEN`; it is not used for administration readback. Keep the owner's broader CLI login local for authorized setup/readiness inspection; never copy it into Actions secrets as a substitute. The contract's policy validators support read-only setup checks, not automatic policy enforcement by the controller.
-7. Verify actual provider settings, Git trigger disconnection and native environment/approval enforcement; do not call a target operational because variables exist. Retain dated, non-secret main/environment policy evidence and recheck before authorizing enablement or promotion and after any policy/access change. Missing/uncertain evidence blocks authorization; if drift is discovered, keep delivery disabled pending separately authorized correction. Do not cancel an active mutation. The controller cannot enforce this operator prerequisite or detect weakened/deleted/recreated GitHub environments; native gates are only as strong as their current settings. Record each target independently as not configured, partial, configured-unverified, or operationally verified.
-8. Separately authorize setting `DEPLOY_ENABLED=true` in `dev` and a selected dev candidate run. Keep production's variable absent/false until its own activation is separately authorized after acceptance/recovery prerequisites below are complete. For an empty production target, explicitly acknowledge the no-predecessor limitation before native approval; source selection does not prove dev acceptance or a completed rehearsal.
+7. Verify actual provider settings, Git trigger disconnection and native environment/approval enforcement; do not call a target operational because variables exist. Retain dated, non-secret main/environment policy evidence and recheck before merging or production promotion and after any policy/access change. Missing/uncertain evidence blocks authorization; if drift is discovered, do not merge dev-affecting changes, and keep production disabled pending separately authorized correction. Do not cancel an active mutation. The controller cannot enforce this operator prerequisite or detect weakened/deleted/recreated GitHub environments; native gates are only as strong as their current settings. Record each target independently as not configured, partial, configured-unverified, or operationally verified.
+8. A successful main run automatically delivers to dev without setting an enable flag. Keep production's variable absent/false until its own activation is separately authorized after acceptance/recovery prerequisites below are complete. For an empty production target, explicitly acknowledge the no-predecessor limitation before native approval; source selection does not prove dev acceptance or a completed rehearsal.
 
 ## Identity, concurrency and failure handling
 
