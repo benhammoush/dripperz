@@ -5,10 +5,21 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { verifiedArchive } from '../../scripts/check-workflows.mjs';
 
 const { scripts } = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url)),
 );
+
+test('workflow lint stays in CI quality and rejects altered executable archives', () => {
+  assert.ok(scripts['ci:quality'].includes('npm run lint:workflows'));
+  assert.equal(scripts['lint:workflows'], 'node scripts/check-workflows.mjs');
+  const bytes = Buffer.from('abc');
+  const digest =
+    'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
+  assert.equal(verifiedArchive(bytes, digest), bytes);
+  assert.throws(() => verifiedArchive(Buffer.from('changed'), digest));
+});
 
 test('the full gate invokes each prerequisite once and delegates type/version guards to build', () => {
   const check = scripts.check.split(' && ');
