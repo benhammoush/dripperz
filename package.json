@@ -9,6 +9,10 @@
   },
   "packageManager": "npm@11.19.0",
   "scripts": {
+    "ci:quality": "npm run check && npm run lint:workflows && npm audit --audit-level=high",
+    "lint:workflows": "node scripts/check-workflows.mjs",
+    "ci:browser": "playwright test && playwright test --config playwright.hero.config.ts",
+    "ci:prepare": "node scripts/ci-prepare.mjs",
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
     "lint": "eslint . --max-warnings 0",
@@ -20,8 +24,8 @@
     "test:unit": "vitest run",
     "build": "npm run check:version && npm run typecheck && vite build",
     "test:browser": "npm run build && playwright test",
-    "test:hero": "playwright test --config playwright.hero.config.ts",
-    "check": "npm run check:version && npm run lint && npm run format:check && npm run typecheck && npm run test:rules && npm run test:unit && npm run build"
+    "test:hero": "npm run build && playwright test --config playwright.hero.config.ts",
+    "check": "npm run lint && npm run format:check && npm run test:rules && npm run test:unit && npm run build"
   },
   "dependencies": {
     "@react-three/fiber": "9.8.2",
