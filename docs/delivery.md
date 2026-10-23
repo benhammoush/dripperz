@@ -12,8 +12,10 @@ invocations below; existing transport, identity, acceptance and recovery guards
 remain mandatory. Historical sources without versioned hooks fail closed; inspect
 eligible immutable recovery artifacts rather than weakening checks.
 
-All Ubuntu jobs use `ubuntu-24.04`. Quality builds once; browser and hero suites
-consume that output sequentially. Artifact integrity is checked before deployment.
+All Ubuntu jobs use `ubuntu-24.04`. Quality builds once; `ci:browser` runs browser
+and hero suites against that output sequentially without rebuilding. Standalone
+`test:browser` and `test:hero` build first so they also work on a clean checkout.
+Artifact integrity is checked before deployment.
 The adapter retains the bounded controller and original evidence fields, adding
 the shared versioned release-record fields. Failed/uncertain records cannot
 authorize promotion. Existing required-check names remain compatibility gates for

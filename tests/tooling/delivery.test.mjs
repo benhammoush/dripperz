@@ -795,6 +795,16 @@ test('historical sources skip only the later hero suite while hero markers requi
     assert.equal(await heroRequired(), true);
     await rm('public', { recursive: true });
     assert.equal(await heroRequired(), true);
+    await writeFile(
+      'package.json',
+      JSON.stringify({
+        scripts: {
+          'test:hero':
+            'npm run build && playwright test --config playwright.hero.config.ts',
+        },
+      }),
+    );
+    assert.equal(await heroRequired(), true);
   });
 });
 

@@ -37,11 +37,11 @@ test('the full gate invokes each prerequisite once and delegates type/version gu
   assert.equal(build.at(-1), 'vite build');
 });
 
-test('both browser suites consume the shared verification build without rebuilding', () => {
-  assert.equal(scripts['test:browser'], 'playwright test');
+test('standalone browser commands build first while CI consumes the shared verified build', () => {
+  assert.equal(scripts['test:browser'], 'npm run build && playwright test');
   assert.equal(
     scripts['test:hero'],
-    'playwright test --config playwright.hero.config.ts',
+    'npm run build && playwright test --config playwright.hero.config.ts',
   );
   const workflow = readFileSync(
     new URL('../../.github/workflows/ci.yml', import.meta.url),
@@ -53,7 +53,7 @@ test('both browser suites consume the shared verification build without rebuildi
   );
   assert.equal(
     scripts['ci:browser'],
-    'npm run test:browser && npm run test:hero',
+    'playwright test && playwright test --config playwright.hero.config.ts',
   );
   assert.ok(scripts['ci:quality'].startsWith('npm run check'));
   const hero = readFileSync(

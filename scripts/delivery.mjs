@@ -226,8 +226,10 @@ export async function heroRequired() {
   }
   if (present)
     requireDelivery(
-      metadata.scripts?.['test:hero'] ===
+      [
         'playwright test --config playwright.hero.config.ts',
+        'npm run build && playwright test --config playwright.hero.config.ts',
+      ].includes(metadata.scripts?.['test:hero']),
       'Hero candidate must retain the built-hero verification command',
     );
   return present;
