@@ -451,24 +451,18 @@ test('manual selection uses the shared target and exact sha inputs', async () =>
   });
 });
 
-test('controller rejects stale automatic, unmerged, drifted, tampered and disabled deliveries before POST', async () => {
+test('controller rejects stale automatic, unmerged, drifted, tampered and unconfigured deliveries before POST', async () => {
   for (const scenario of [
     'superseded',
     'unmerged',
     'drift',
     'tampered',
-    'production-missing-enable',
     'missing-config',
     'missing-github',
-    'production-disabled',
   ]) {
     await withController(scenario, async ({ requests }) => {
       if (scenario === 'tampered')
         await writeFile('dist/index.html', 'tampered');
-      if (scenario === 'production-disabled')
-        process.env.DEPLOY_ENABLED = 'false';
-      if (scenario.endsWith('missing-enable'))
-        delete process.env.DEPLOY_ENABLED;
       if (scenario === 'missing-config')
         delete process.env.VERCEL_DEV_PROJECT_ID;
       if (scenario === 'missing-github') delete process.env.GH_TOKEN;
@@ -477,18 +471,10 @@ test('controller rejects stale automatic, unmerged, drifted, tampered and disabl
         unmerged: /not an ancestor/,
         drift: /static project settings/,
         tampered: /bundle identity or content mismatch/,
-        'production-missing-enable': /Delivery remains disabled/,
         'missing-config': /Missing VERCEL_DEV_PROJECT_ID/,
         'missing-github': /Missing GH_TOKEN/,
-        'production-disabled': /Delivery remains disabled/,
       };
       await assert.rejects(deploy, expected[scenario]);
-      if (
-        ['production-disabled', 'production-missing-enable'].includes(scenario)
-      )
-        assert.ok(
-          requests.every((request) => !request.url.includes('api.vercel.com')),
-        );
       assert.equal(
         requests.filter((request) => request.method === 'POST').length,
         0,
@@ -508,6 +494,29 @@ test('dev deploys without an opt-in even when the old toggle is false', async ()
         requests.filter((request) => request.method === 'POST').length,
         1,
       );
+    });
+});
+
+test('production deploys without an opt-in but rejects automatic dispatch and reruns before requests', async () => {
+  for (const enabled of [undefined, 'false', 'true'])
+    await withController('production-success', async ({ requests }) => {
+      if (enabled === undefined) delete process.env.DEPLOY_ENABLED;
+      else process.env.DEPLOY_ENABLED = enabled;
+      await deploy();
+      assert.equal(
+        requests.filter((request) => request.method === 'POST').length,
+        1,
+      );
+    });
+  for (const patch of [
+    { GITHUB_EVENT_NAME: 'push' },
+    { GITHUB_EVENT_NAME: 'pull_request' },
+    { GITHUB_RUN_ATTEMPT: '2' },
+  ])
+    await withController('production-success', async ({ requests }) => {
+      Object.assign(process.env, patch);
+      await assert.rejects(deploy, /new manual dispatch and native approval/);
+      assert.equal(requests.length, 0);
     });
 });
 
@@ -1154,7 +1163,7 @@ test('workflow keeps native production gating without a custom promotion manifes
   assert.ok(!workflow.includes('PROMOTION_EVIDENCE'));
   assert.ok(!workflow.includes('DELIVERY_ENABLED'));
   const config = JSON.parse(await readFile('.github/ci-cd.json', 'utf8'));
-  assert.ok(config.deploymentVariables.includes('DEPLOY_ENABLED'));
+  assert.ok(!config.deploymentVariables.includes('DEPLOY_ENABLED'));
   const beforeDeploy = workflow.slice(
     0,
     workflow.indexOf('\n  deploy_production:'),
