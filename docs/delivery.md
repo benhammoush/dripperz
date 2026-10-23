@@ -1,5 +1,25 @@
 # Dev → production delivery foundation
 
+## Versioned CI/CD entry points
+
+The [shared contract](https://github.com/benhammoush/ci-cd-workflows/blob/main/docs/contract.md)
+is pinned by immutable SHA in `.github/ci-cd.json`. Generated `ci.yml` verifies
+PRs/main and delivers only successful exact main commits to enabled dev. Separate
+manual `deploy-production.yml` selects a full merged `sha`, verifies retained dev
+delivery and the candidate, then waits for native approval. CI dispatch is the
+exact-SHA manual dev recovery path. These supersede older Delivery-workflow
+invocations below; existing transport, identity, acceptance and recovery guards
+remain mandatory. Historical sources without versioned hooks fail closed; inspect
+eligible immutable recovery artifacts rather than weakening checks.
+
+All Ubuntu jobs use `ubuntu-24.04`. Quality builds once; browser and hero suites
+consume that output sequentially. Artifact integrity is checked before deployment.
+The adapter retains the bounded controller and original evidence fields, adding
+the shared versioned release-record fields. Failed/uncertain records cannot
+authorize promotion. Existing required-check names remain compatibility gates for
+shared checks. This migration changes no enablement, credentials or provider
+settings; passing PR checks does not establish live deployment acceptance.
+
 This is the PR 2 delivery contract, **not evidence of configured environments or an operational showcase**. Local development remains unchanged. There is no staging target. Legacy Drip, Netlify, domains and other projects must remain untouched.
 
 ## Agreed ownership and triggers

@@ -1126,14 +1126,24 @@ test('provider READY state must match project, target, source, version and both 
 });
 
 test('workflow keeps native production gating without a custom promotion manifest or dev secret', async () => {
-  const workflow = await readFile('.github/workflows/delivery.yml', 'utf8');
-  assert.ok(workflow.includes('name: ${{ needs.select.outputs.target }}'));
+  const workflow = await readFile(
+    '.github/workflows/deploy-production.yml',
+    'utf8',
+  );
+  assert.ok(workflow.includes('environment: production'));
+  assert.ok(workflow.includes('needs: verify_release'));
+  assert.match(
+    workflow,
+    /ci-cd-workflows\/\.github\/workflows\/deploy-web.yml@[a-f0-9]{40}/,
+  );
   assert.ok(!workflow.includes('VERCEL_DEV_VERIFICATION_TOKEN'));
   assert.ok(!workflow.includes('PROMOTION_EVIDENCE'));
   assert.ok(!workflow.includes('DELIVERY_ENABLED'));
-  assert.ok(workflow.includes('DEPLOY_ENABLED: ${{ vars.DEPLOY_ENABLED }}'));
-  // Environment variables are available only inside the selected target job,
-  // never in the source-selection job's condition or credential-free checks.
-  const beforeDeliver = workflow.slice(0, workflow.indexOf('\n  deliver:'));
-  assert.ok(!beforeDeliver.includes('DEPLOY_ENABLED'));
+  const config = JSON.parse(await readFile('.github/ci-cd.json', 'utf8'));
+  assert.ok(config.deploymentVariables.includes('DEPLOY_ENABLED'));
+  const beforeDeploy = workflow.slice(
+    0,
+    workflow.indexOf('\n  deploy_production:'),
+  );
+  assert.ok(!beforeDeploy.includes('secrets.'));
 });
