@@ -25,10 +25,10 @@ jobs:
   # including three-engine core flows and the focused Chromium hero/WebGL suite.
   # This is the same safety path as dev, not a lighter production test shortcut.
   verify_release:
-    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@1d73e4b1124ca2a065cf748d52747ffb63a014e9
     with:
       # Shared: full immutable pin matches the reusable workflow implementation.
-      automation_sha: 1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+      automation_sha: 1d73e4b1124ca2a065cf748d52747ffb63a014e9
       source_sha: ${{ inputs.sha }}
       # Shared: select declared production build inputs, not a user-defined target.
       environment: production
@@ -45,9 +45,9 @@ jobs:
   deploy_production:
     needs: verify_release
     if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
-    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@1d73e4b1124ca2a065cf748d52747ffb63a014e9
     with:
-      automation_sha: 1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+      automation_sha: 1d73e4b1124ca2a065cf748d52747ffb63a014e9
       source_sha: ${{ inputs.sha }}
       environment: production
       node_version: 24.21.0
