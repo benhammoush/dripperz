@@ -33,10 +33,10 @@ jobs:
   # tests (playwright.hero.config.ts, tests/hero/) against that existing build.
   # Project: ci:prepare adds static-output identity; browser tests do not rebuild.
   verify:
-    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@37151e604a66c0dbb68b5631534c7124d4d95798
     with:
       # Shared pin: implementation checkout must match the reusable workflow SHA.
-      automation_sha: 1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+      automation_sha: 37151e604a66c0dbb68b5631534c7124d4d95798
       # Shared: dispatch selects its SHA; PR/push use the event's exact revision.
       source_sha: ${{ inputs.sha || github.sha }}
       environment: dev
@@ -51,9 +51,9 @@ jobs:
   deploy_dev:
     needs: verify
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@37151e604a66c0dbb68b5631534c7124d4d95798
     with:
-      automation_sha: 1d4b201fc53f05c53de2fdc37ab9b184b676a1be
+      automation_sha: 37151e604a66c0dbb68b5631534c7124d4d95798
       source_sha: ${{ inputs.sha || github.sha }}
       environment: dev
       node_version: 24.21.0
