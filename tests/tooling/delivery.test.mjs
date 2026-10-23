@@ -457,8 +457,6 @@ test('controller rejects stale automatic, unmerged, drifted, tampered and disabl
     'unmerged',
     'drift',
     'tampered',
-    'disabled',
-    'missing-enable',
     'production-missing-enable',
     'missing-config',
     'missing-github',
@@ -467,7 +465,7 @@ test('controller rejects stale automatic, unmerged, drifted, tampered and disabl
     await withController(scenario, async ({ requests }) => {
       if (scenario === 'tampered')
         await writeFile('dist/index.html', 'tampered');
-      if (scenario === 'disabled' || scenario === 'production-disabled')
+      if (scenario === 'production-disabled')
         process.env.DEPLOY_ENABLED = 'false';
       if (scenario.endsWith('missing-enable'))
         delete process.env.DEPLOY_ENABLED;
@@ -479,8 +477,6 @@ test('controller rejects stale automatic, unmerged, drifted, tampered and disabl
         unmerged: /not an ancestor/,
         drift: /static project settings/,
         tampered: /bundle identity or content mismatch/,
-        disabled: /Delivery remains disabled/,
-        'missing-enable': /Delivery remains disabled/,
         'production-missing-enable': /Delivery remains disabled/,
         'missing-config': /Missing VERCEL_DEV_PROJECT_ID/,
         'missing-github': /Missing GH_TOKEN/,
@@ -488,12 +484,7 @@ test('controller rejects stale automatic, unmerged, drifted, tampered and disabl
       };
       await assert.rejects(deploy, expected[scenario]);
       if (
-        [
-          'disabled',
-          'production-disabled',
-          'missing-enable',
-          'production-missing-enable',
-        ].includes(scenario)
+        ['production-disabled', 'production-missing-enable'].includes(scenario)
       )
         assert.ok(
           requests.every((request) => !request.url.includes('api.vercel.com')),
@@ -505,6 +496,19 @@ test('controller rejects stale automatic, unmerged, drifted, tampered and disabl
       );
     });
   }
+});
+
+test('dev deploys without an opt-in even when the old toggle is false', async () => {
+  for (const enabled of [undefined, 'false', 'true'])
+    await withController('success', async ({ requests }) => {
+      if (enabled === undefined) delete process.env.DEPLOY_ENABLED;
+      else process.env.DEPLOY_ENABLED = enabled;
+      await deploy();
+      assert.equal(
+        requests.filter((request) => request.method === 'POST').length,
+        1,
+      );
+    });
 });
 
 test('successful controller uses one POST and retains exact immutable and prior identity', async () => {

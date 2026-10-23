@@ -33,27 +33,27 @@ jobs:
   # tests (playwright.hero.config.ts, tests/hero/) against that existing build.
   # Project: ci:prepare adds static-output identity; browser tests do not rebuild.
   verify:
-    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@37151e604a66c0dbb68b5631534c7124d4d95798
+    uses: benhammoush/ci-cd-workflows/.github/workflows/verify-web.yml@d7d0c297f0b4038e9815349fd16f79bb92d77ceb
     with:
       # Shared pin: implementation checkout must match the reusable workflow SHA.
-      automation_sha: 37151e604a66c0dbb68b5631534c7124d4d95798
+      automation_sha: d7d0c297f0b4038e9815349fd16f79bb92d77ceb
       # Shared: dispatch selects its SHA; PR/push use the event's exact revision.
       source_sha: ${{ inputs.sha || github.sha }}
       environment: dev
       # Project: preserve Dripperz's supported Node version, not a shared default.
       node_version: 24.21.0
   # Shared: verification must succeed; only main push/manual dev runs can deploy.
-  # The called job binds dev, checks enablement/artifact integrity/freshness and
-  # serializes mutations without cancelling active delivery. Disabled stays off.
+  # The called job binds dev, checks artifact integrity/freshness without an opt-in and
+  # serializes mutations without cancelling active delivery. Production stays gated.
   # Project: scripts/ci-deploy.mjs retains the bounded static delivery controller,
   # isolated Vercel projects, upload guards, identity/routing smoke and evidence.
   # Production is a separate manual entry point in deploy-production.yml.
   deploy_dev:
     needs: verify
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@37151e604a66c0dbb68b5631534c7124d4d95798
+    uses: benhammoush/ci-cd-workflows/.github/workflows/deploy-web.yml@d7d0c297f0b4038e9815349fd16f79bb92d77ceb
     with:
-      automation_sha: 37151e604a66c0dbb68b5631534c7124d4d95798
+      automation_sha: d7d0c297f0b4038e9815349fd16f79bb92d77ceb
       source_sha: ${{ inputs.sha || github.sha }}
       environment: dev
       node_version: 24.21.0

@@ -349,11 +349,11 @@ export async function deploy() {
       env.GITHUB_REF === 'refs/heads/main',
     'Delivery controller must run from repository main',
   );
-  requireDelivery(env.DEPLOY_ENABLED === 'true', 'Delivery remains disabled');
   const revision = sourceRevision(required('DELIVERY_REVISION'));
   const target = required('DELIVERY_TARGET');
   const name = projectName(target);
   if (target === 'production') {
+    requireDelivery(env.DEPLOY_ENABLED === 'true', 'Delivery remains disabled');
     requireDelivery(
       env.GITHUB_EVENT_NAME === 'workflow_dispatch' &&
         env.GITHUB_RUN_ATTEMPT === '1',
