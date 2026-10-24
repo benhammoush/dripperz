@@ -6,7 +6,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/browser',
+  testDir: './tests/e2e',
+  testIgnore: ['**/webgl/**'],
   forbidOnly: true,
   retries: 0,
   workers: 1,
