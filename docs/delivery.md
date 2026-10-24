@@ -2,9 +2,20 @@
 
 ## Versioned CI/CD entry points
 
-Automation 3.0 removes production deployment opt-ins; dev remains automatic.
-The verified immutable v3.0.0 release is pinned below. Delete obsolete live
-deployment flags only after this consumer adoption is merged and verified.
+Automation 4.0 retains flag-free delivery and adds consistent job names and weekly
+vulnerability audits. The published immutable shared revision is pinned in
+`.github/ci-cd.json`; source adoption does not change live settings.
+
+Prepared job naming replaces the old verification aliases with standalone `Verify`.
+Existing required-check settings below remain live until the owner approves the
+[coordinated check-name migration](https://github.com/benhammoush/ci-cd-workflows/blob/main/docs/contract.md#canonical-job-names-and-required-check-migration).
+Do not merge the naming change under unchanged protections. Workflow comments are
+limited to two header lines; this runbook and the shared contract own the detail.
+
+The `.github/workflows/weekly-vuln-audit.yml` caller uses the same published shared
+SHA as release workflows and runs weekly or manually after adoption on main.
+It checks vulnerabilities without updating dependencies or deploying. See the
+[shared audit contract](https://github.com/benhammoush/ci-cd-workflows/blob/64b5e00a3d2895a8cba05b040f0d5a0415613d9e/docs/contract.md#weekly-vulnerability-audits).
 
 The [shared contract](https://github.com/benhammoush/ci-cd-workflows/blob/main/docs/contract.md)
 is pinned by immutable SHA in `.github/ci-cd.json`. Generated `ci.yml` verifies
@@ -50,7 +61,7 @@ Provisioning, environment/secret configuration, workflow dispatch, deployment, p
 
 ### Setup checklist for the authorized operator
 
-1. Read back main protection using the owner's authenticated CLI/API. Existing baseline: required checks `Quality and build` / `Browser smoke`, bound to GitHub Actions, strict up-to-date checks, administrator enforcement, force-push/deletion disabled, conversations resolved. Recorded solo policy has zero required approving PR reviews; do not silently substitute another review policy. This is an operator readiness prerequisite, not an automated delivery preflight check; contribution review requirements still apply.
+1. Read back main protection using the owner's authenticated CLI/API. Require app-bound `Verify` (GitHub Actions) and `CodeRabbit` after the coordinated check-name migration, with strict up-to-date checks, administrator enforcement, force-push/deletion disabled and conversations resolved. Preserve at least one approving review, stale-review dismissal and independent last-push approval, as read back on October 24, 2026. This is an operator readiness prerequisite, not an automated delivery preflight check; contribution review requirements still apply.
 2. Create the two approved projects in the agreed team, with no Git integration. Do not connect the repository and merely assume that Git auto-deployment is disabled. Preflight rejects any linked repository.
 3. Configure dedicated static hosting: framework **Other/null**, build and install commands explicitly empty, output directory `.`, root directory unset, Node `24.x`, no project environment variables. Only the default `<project>.vercel.app` domain is supported. Do not import legacy credentials or redirect/migrate Netlify domains. Hosted smoke expects publicly readable static content; decide access changes explicitly and revalidate.
 4. Record the actual team ID and two distinct project IDs as repository variables `VERCEL_TEAM_ID`, `VERCEL_DEV_PROJECT_ID`, `VERCEL_PRODUCTION_PROJECT_ID`. IDs are not tokens. Never guess them from slugs.
