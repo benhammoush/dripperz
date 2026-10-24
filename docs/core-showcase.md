@@ -14,6 +14,33 @@ usable reference captures remain outstanding. No 3D, rarity implementation,
 treasury figures, terminal, audio, wallet, minting or blockchain requests belong
 to this milestone. Legacy sources and hosting remain untouched.
 
+## Visual baseline and branding
+
+The owner agreed provisional source-first layout/identity review criteria on
+2026-10-16, targeting 1440×900, 768×1024 and 390×844. Agreement on those criteria
+does not establish pixel-exact fidelity or responsive owner acceptance, which
+remains pending.
+Legacy desktop inspection stayed on “Loading Experience” with failed resources;
+the mobile capture was an unrelated page. Usable reference captures remain
+outstanding. Sources were legacy `src/Phase_3.tsx`, `src/Phase_3_Mb.tsx` and
+`src/theme.tsx`: black `#000000`, cyan `#0694c1`, white, Goldman typography,
+cyan glows, rounded desktop/full-width mobile panels and magenta mobile glitch
+accents.
+
+Shared semantic navigation and normal document flow replace absolute positioning.
+Review responsive bounds, keyboard/skip-link focus, mobile Escape, pause/resume
+and reduced motion. Effects pause offscreen/while hidden, clean up on unmount and
+fall back to static content without observer support. Assets stay local; legacy
+secrets, service integrations and unverified promises are not copied.
+
+- `public/branding/dripperz-mark.png` is unchanged legacy `src/md/unknown.png`.
+  The owner's 2026-10-16 logo/branding publication approval does not extend to
+  collection artwork, models or private documents.
+- `public/fonts/Goldman-Regular.ttf` is unmodified Goldman regular, obtained
+  2026-10-16 from <https://github.com/google/fonts/tree/main/ofl/goldman>.
+  Copyright 2018 The Goldman Project Authors; SIL Open Font License 1.1 is
+  retained alongside the font in `public/fonts/OFL.txt`.
+
 ## Local artwork provenance
 
 Sources are under legacy `src/md/`. All are 2000×2000. Originals total 11,959,313
