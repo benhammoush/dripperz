@@ -14,8 +14,12 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test('manual navigation wraps and changes image, title and description together', () => {
-  render(
+/**
+ * Render the character gallery with its production timing for isolated interactions.
+ * @returns The mounted gallery and its cleanup controls.
+ */
+function renderCharacterGallery() {
+  return render(
     <Gallery
       id="characters"
       title="Characters"
@@ -23,6 +27,10 @@ test('manual navigation wraps and changes image, title and description together'
       intervalMs={8000}
     />,
   );
+}
+
+test('manual navigation wraps and changes image, title and description together', () => {
+  renderCharacterGallery();
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[0]!.src,
   );
@@ -46,14 +54,7 @@ test('manual navigation wraps and changes image, title and description together'
 });
 
 test('a failed artwork leaves the caption and navigation usable', () => {
-  render(
-    <Gallery
-      id="characters"
-      title="Characters"
-      slides={CHARACTER_SLIDES}
-      intervalMs={8000}
-    />,
-  );
+  renderCharacterGallery();
   fireEvent.error(screen.getByRole('img'));
   expect(
     screen.getByRole('img', { name: /Artwork unavailable/ }),
@@ -116,14 +117,7 @@ test('autoplay stops in a hidden tab and releases its timer and subscriptions', 
   );
   const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
   const remove = vi.spyOn(document, 'removeEventListener');
-  const { unmount } = render(
-    <Gallery
-      id="characters"
-      title="Characters"
-      slides={CHARACTER_SLIDES}
-      intervalMs={8000}
-    />,
-  );
+  const { unmount } = renderCharacterGallery();
   expect(screen.queryByRole('button')).toBeNull();
   // jsdom does not model a real pointer position; browser tests cover hover.
   vi.spyOn(screen.getByRole('region'), 'matches').mockReturnValue(false);
