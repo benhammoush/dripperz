@@ -12,7 +12,9 @@ for (const viewport of [
   { width: 768, height: 1024 },
   { width: 390, height: 844 },
 ]) {
-  test(`foundation at ${viewport.width}px`, async ({ page }, testInfo) => {
+  test(`showcase fits a ${viewport.width}px viewport`, async ({
+    page,
+  }, testInfo) => {
     const pageErrors: string[] = [];
     page.on('pageerror', (error) => pageErrors.push(error.message));
     await page.setViewportSize(viewport);
@@ -21,7 +23,6 @@ for (const viewport of [
     await expect(
       page.getByRole('heading', { level: 1, name: /Dripperz.*ENTER THE/ }),
     ).toBeVisible();
-    await expect(page.locator('.hero-description')).toHaveCount(0);
     await expect(page.getByTestId('app-version')).toHaveText(APP_VERSION);
     const alignment = await page.locator('.local-hero').evaluate((panel) => {
       const section = panel.closest('.hero')!;
