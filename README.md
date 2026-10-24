@@ -1,19 +1,32 @@
 # Dripperz
 
-A cyberpunk showcase for the Dripperz collection, with an animated 3D hero,
+A cyberpunk showcase for the Dripperz collection, combining animated artwork,
 collection galleries, an offline rarity explorer and an interactive terminal.
-No wallet connection, minting or blockchain-data integration is required.
 
-## Tech stack and system design
+## Tech stack
 
-| Layer               | Tools                               |
+| Layer               | Technology                          |
 | ------------------- | ----------------------------------- |
 | Interface and build | React, TypeScript, Vite             |
 | 3D rendering        | Three.js, React Three Fiber         |
 | Collection data     | Local JSON and layered artwork      |
 | Testing             | Vitest, Testing Library, Playwright |
 
-The site is a static frontend with no application backend. Collection data and
-artwork are served with the site; rarity lookups do not query a blockchain or
-external API. The optional 3D hero loads separately, with a static alternative
-that keeps the rest of the showcase accessible without WebGL.
+## Features
+
+- Explore the collection through galleries and an animated 3D introduction.
+- Look up collection traits and rarity using bundled data.
+- Browse the cybermap, collection information and FAQ.
+- Use a local command-driven terminal to explore the showcase.
+- Continue without 3D when graphics support or model loading is unavailable.
+
+## Boundaries and integration
+
+Dripperz is a static frontend with no application backend. Artwork, models and
+collection data are served with the site; rarity lookups do not query a blockchain
+or external API.
+
+The showcase does not connect wallets, mint tokens or move funds. Treasury content
+is historical, not a live balance feed or financial commitment. The optional 3D
+experience has a static alternative so the rest of the site remains accessible
+without WebGL.

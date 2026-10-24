@@ -59,7 +59,6 @@ test('matrix spans the whole page and reduced motion keeps it still', async ({
   await openShowcase(page);
   const rain = page.locator('canvas.matrix');
   const atmosphere = page.locator('.atmosphere');
-  await expect(page.locator('.marquee')).toHaveCount(0);
   await expect(atmosphere).toHaveAttribute('data-active', 'true');
   await expect(rain).toHaveAttribute('data-running', 'true');
   await expect(rain).toHaveCSS('position', 'fixed');

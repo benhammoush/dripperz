@@ -6,7 +6,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/hero',
+  testDir: './tests/e2e/webgl',
   forbidOnly: true,
   retries: 0,
   workers: 1,
