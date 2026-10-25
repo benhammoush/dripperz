@@ -4,15 +4,13 @@
 
 **Status: accepted by the user, 2026-10-14.** This document consolidates accepted planning scope; it does not claim implementation or deployment. Section 7's unresolved decisions remain open.
 
-The user authorized drafting this specification and then explicitly selected “Accept specification”. Acceptance does not authorize execution. Application implementation, branch preparation, staging, commits, pushes, PR creation, repository governance changes, provider provisioning and deployment remain separately authorized actions. An Accepted board card is direction approval, not permission to execute it.
+The user authorized drafting this specification and then explicitly selected “Accept specification”. Acceptance does not authorize execution. Application implementation, branch preparation, staging, commits, pushes, PR creation, repository governance changes, provider provisioning and deployment remain separately authorized actions. Historical board-card acceptance is direction approval, not permission to execute it.
 
-This is the canonical product-specification location selected by the user. Requirements changes must be reflected here. Board cards track delivery and evidence; operational memory tracks verified state, not a second requirements backlog.
+This is the canonical product-specification location selected by the user. Requirements changes must be reflected here. The workspace backlog (`C:/Work/planning/BACKLOG.md`) owns current delivery tracking; repository release records own deployment and acceptance evidence. Historical board cards below are not current work instructions.
 
 ### Sources
 
-- Product board: <https://github.com/users/benhammoush/projects/4>.
-- Product direction: [Roadmap](https://github.com/users/benhammoush/projects/4/views/1).
-- Execution entry point: [Delivery by outcome](https://github.com/users/benhammoush/projects/4/views/5).
+- Historical planning source: GitHub Project 4, deleted on 2026-10-21. Its former board and views are no longer delivery entry points.
 - New source repository: <https://github.com/benhammoush/Dripperz>.
 - Deployed visual reference: <https://dripperzcyberclub.netlify.app/>.
 - Legacy reference only: `C:/Work/Drip/src/Phase_3.tsx`, `Phase_3_Mb.tsx` and related components/assets. Do not copy private material or generated builds into the new source repository.
