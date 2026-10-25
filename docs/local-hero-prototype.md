@@ -92,7 +92,8 @@ specified in [delivery](delivery.md). Scoped-token binary upload support still
 requires an authorized hosted run; mocks are not provider verification.
 
 `npm run check` covers strict lint/documentation, formatting, types, asset
-integrity, tooling/unit tests and the production build. `npm run test:browser`
+integrity, tooling/unit tests, workflow lint, dependency audits and the production
+build. `npm run test:e2e` (also available as `npm run test:browser`)
 checks native loading, keyboard/static continuation and the rest of the page
 across three engines, including delayed continuation and immediate Escape,
 holding the renderer chunk while exercising the real static escape path.
