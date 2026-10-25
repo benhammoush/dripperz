@@ -22,6 +22,9 @@ collection galleries, an offline rarity explorer and an interactive terminal.
 
 ## Boundaries and integration
 
+Shared tokens and reusable visual presentation are organized in the
+[Dripperz design system](src/design-system/README.md).
+
 Dripperz is a static frontend with no application backend. Artwork, models and
 collection data are served with the site; rarity lookups do not query a blockchain
 or external API.
