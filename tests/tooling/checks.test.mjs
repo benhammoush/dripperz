@@ -7,9 +7,14 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { verifiedArchive } from '../../scripts/check-workflows.mjs';
 
-const { scripts } = JSON.parse(
+const { scripts, engines, packageManager } = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url)),
 );
+
+test('preserves the selected exact npm toolchain', () => {
+  assert.equal(engines.npm, '11.19.0');
+  assert.equal(packageManager, `npm@${engines.npm}`);
+});
 
 test('quality rejects every advisory severity in full and runtime dependency trees', () => {
   assert.equal(scripts['ci:quality'], 'npm run check');
