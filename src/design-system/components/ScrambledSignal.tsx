@@ -1,5 +1,5 @@
 /**
- * Decorative cycling glyphs with stable accessible text and visibility-aware CSS playback.
+ * Reusable decorative glyphs with stable accessible text and visibility-aware playback.
  * @packageDocumentation
  */
 

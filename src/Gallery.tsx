@@ -5,7 +5,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { GallerySlide } from './showcaseContent';
-import { ScrambledSignal } from './ScrambledSignal';
+import { ScrambledSignal } from './design-system';
 
 /** Configuration for one independently controlled, nonempty local gallery. */
 interface GalleryProps {
