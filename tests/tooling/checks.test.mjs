@@ -12,7 +12,8 @@ const { scripts } = JSON.parse(
 );
 
 test('quality rejects every advisory severity in full and runtime dependency trees', () => {
-  assert.ok(scripts['ci:quality'].includes('npm run audit:dependencies'));
+  assert.equal(scripts['ci:quality'], 'npm run check');
+  assert.ok(scripts.check.includes('npm run audit:dependencies'));
   assert.equal(
     scripts['audit:dependencies'],
     'npm audit && npm audit --omit=dev',
@@ -21,7 +22,7 @@ test('quality rejects every advisory severity in full and runtime dependency tre
 });
 
 test('workflow lint stays in CI quality and rejects altered executable archives', () => {
-  assert.ok(scripts['ci:quality'].includes('npm run lint:workflows'));
+  assert.ok(scripts.check.includes('npm run lint:workflows'));
   assert.equal(scripts['lint:workflows'], 'node scripts/check-workflows.mjs');
   const bytes = Buffer.from('abc');
   const digest =
@@ -58,6 +59,8 @@ test('the full gate invokes each prerequisite once and delegates type/version gu
 });
 
 test('standalone browser commands build first while CI consumes the shared verified build', () => {
+  assert.equal(scripts.test, 'npm run test:rules && npm run test:unit');
+  assert.equal(scripts['test:e2e'], 'npm run test:browser');
   assert.equal(scripts['test:browser'], 'npm run build && playwright test');
   assert.equal(
     scripts['test:hero'],
