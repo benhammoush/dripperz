@@ -11,6 +11,15 @@ const { scripts } = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url)),
 );
 
+test('quality rejects every advisory severity in full and runtime dependency trees', () => {
+  assert.ok(scripts['ci:quality'].includes('npm run audit:dependencies'));
+  assert.equal(
+    scripts['audit:dependencies'],
+    'npm audit && npm audit --omit=dev',
+  );
+  assert.doesNotMatch(scripts['ci:quality'], /audit-level/);
+});
+
 test('workflow lint stays in CI quality and rejects altered executable archives', () => {
   assert.ok(scripts['ci:quality'].includes('npm run lint:workflows'));
   assert.equal(scripts['lint:workflows'], 'node scripts/check-workflows.mjs');

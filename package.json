@@ -9,7 +9,8 @@
   },
   "packageManager": "npm@11.19.0",
   "scripts": {
-    "ci:quality": "npm run check && npm run lint:workflows && npm audit --audit-level=high",
+    "ci:quality": "npm run check && npm run lint:workflows && npm run audit:dependencies",
+    "audit:dependencies": "npm audit && npm audit --omit=dev",
     "lint:workflows": "node scripts/check-workflows.mjs",
     "ci:browser": "playwright test && playwright test --config playwright.hero.config.ts",
     "ci:prepare": "node scripts/ci-prepare.mjs",
