@@ -183,7 +183,7 @@ async function withController(scenario, run) {
           event: 'push',
           head_branch: 'main',
           head_repository: { full_name: 'benhammoush/dripperz' },
-          path: '.github/workflows/ci.yml',
+          path: '.github/workflows/verify-and-deploy-dev.yml',
           head_sha: identity.revision,
         },
       }),
@@ -1150,7 +1150,7 @@ test('provider READY state must match project, target, source, version and both 
 
 test('workflow keeps native production gating without a custom promotion manifest or dev secret', async () => {
   const workflow = await readFile(
-    '.github/workflows/deploy-production.yml',
+    '.github/workflows/verify-and-deploy-prod.yml',
     'utf8',
   );
   assert.ok(workflow.includes('environment: production'));

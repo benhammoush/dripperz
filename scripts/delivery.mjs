@@ -143,7 +143,10 @@ export async function select() {
         run.event === 'push' &&
         run.head_branch === 'main' &&
         run.head_repository?.full_name === REPOSITORY &&
-        run.path === '.github/workflows/ci.yml',
+        [
+          '.github/workflows/verify-and-deploy-dev.yml',
+          '.github/workflows/ci.yml',
+        ].includes(run.path),
       'Only successful repository main CI pushes can deploy automatically',
     );
     revision = run.head_sha;

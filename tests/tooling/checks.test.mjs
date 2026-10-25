@@ -72,7 +72,7 @@ test('standalone browser commands build first while CI consumes the shared verif
     'npm run build && playwright test --config playwright.hero.config.ts',
   );
   const workflow = readFileSync(
-    new URL('../../.github/workflows/ci.yml', import.meta.url),
+    new URL('../../.github/workflows/verify-pr.yml', import.meta.url),
     'utf8',
   );
   assert.match(
