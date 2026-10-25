@@ -30,3 +30,6 @@ The showcase does not connect wallets, mint tokens or move funds. Treasury conte
 is historical, not a live balance feed or financial commitment. The optional 3D
 experience has a static alternative so the rest of the site remains accessible
 without WebGL.
+
+See [the showcase specification](docs/spec/dripperz.md) for the product scope and
+[collection provenance](docs/core-showcase.md) for artwork and content boundaries.
