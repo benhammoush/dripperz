@@ -86,39 +86,38 @@ export const CHARACTER_SLIDES: readonly GallerySlide[] = [
 
 export const ARCHIVED_ROADMAP = [
   {
-    title: 'Investigation',
+    title: 'INVESTIGATION',
     description:
-      'The original roadmap introduced the Cyberclub through an interactive story.',
+      'Introduction to the CyberClub through a short interactive story.',
   },
   {
-    title: 'Expand the club',
-    description:
-      'The original plan invited visitors to a whitelist and social communities. Those invitations are not current offers.',
+    title: 'EXPAND THE CLUB',
+    description: 'Get your chance to be whitelisted by joining us now !',
   },
   {
-    title: 'Presale',
+    title: 'PRESALE',
     description:
-      'A presale was described in the original roadmap. This showcase does not offer minting or purchases.',
+      'Will take place on our website\nStart 24H before public sale\nPrice : 0.12 ETH\nMetamask wallet needed\nwhitelisted only',
   },
   {
-    title: 'Public sale',
+    title: 'PUBLIC SALE',
     description:
-      'The original roadmap described a public sale and metadata reveal. No sale or reveal schedule is announced here.',
+      'Will take place on our website\nPrice : 0.15 ETH\nMetamask wallet needed\nMetadatas reveal 48h later',
   },
   {
-    title: 'Treasury / Community wallet',
+    title: 'TREASURY',
     description:
-      'The original plan described a community wallet, committee elections and voting. These plans do not confirm implementation or current governance.',
+      'Multi-sig committee election\nVote and proposals on Snapshot\n20% of sales + 1 unique NFT\n100% of the royalties (3.5% of every secondary market sale on OpenSea)',
   },
   {
-    title: 'Community building',
+    title: 'COMMUNITY BUILDING',
     description:
-      'Partnerships, giveaways, events and community website features appeared in the original plan. They are not current commitments.',
+      'Partnerships, giveaways, events, website updates with community features',
   },
   {
-    title: 'Expanding the Cyberclub universe',
+    title: 'EXPANDING CYBERCLUB UNIVERSE',
     description:
-      'The original plan proposed a play-to-earn studio, spin-off collections and future-project access. These ideas are not current announcements.',
+      'P2E studio creation (fundraising with private investors)\nWL for spin off collections and beta access for future projects',
   },
 ] as const;
 

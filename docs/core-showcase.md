@@ -89,10 +89,22 @@ actual deployment records; future bundle changes require a fresh calculation.
 
 ## Historical content and links
 
-The cybermap preserves the seven-stage original order, but every stage is an
-archived proposal. Legacy strike-through styling does not prove completion.
-Old prices, sales calls to action, funding/royalty percentages and benefits are
-not republished as current claims. No completion dates are fabricated.
+The cybermap preserves the seven-stage original order. On 2026-10-26 the owner
+approved restoring the full original wording as historical quotations rather than
+the earlier summaries. Text comes from legacy `src/Phase_3.tsx:718–823`, checked
+read-only against `src/Phase_3_Mb.tsx:560–661`. Desktop wording is canonical:
+the mobile source instead uses “Dripperz Cyber Club”, “public mint”, “COMMUNITY
+WALLET”, “1 unique Dripperz” and “EXPANDING DCC UNIVERSE”, and omits “on OpenSea”.
+Preserve desktop wording, spelling, figures and textual line breaks; normalize
+only JSX whitespace. Discord/Twitter button labels and behavior are not roadmap
+copy and are not restored.
+
+One shared notice identifies the quoted wording as not current offers or
+commitments. Prices, wallet requirements, funding/royalty percentages and proposed
+benefits are quoted source content, not active sales, financial commitments or
+verified achievements. No sales links, wallet controls or live requests are added.
+Legacy strike-through styling does not prove completion and is not restored.
+No completion dates are fabricated.
 
 The FAQ explains the historical showcase, no-wallet behavior, gallery controls,
 archived roadmap, absence of visitor rights grants and deferred features. It

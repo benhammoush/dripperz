@@ -485,6 +485,10 @@ h2 {
 .cybermap p {
   font-size: 0.85rem;
   color: var(--color-text-secondary);
+  white-space: pre-line;
+}
+.cybermap blockquote {
+  margin: 0;
 }
 .faq-list details {
   border-top: 1px solid var(--line);

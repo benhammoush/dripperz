@@ -3,7 +3,13 @@
  * @packageDocumentation
  */
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import type { GallerySlide } from './showcaseContent';
 import { ScrambledSignal } from './design-system';
 
@@ -18,11 +24,34 @@ interface GalleryProps {
 }
 
 /**
+ * Follow the same small-screen breakpoint as the stacked character gallery.
+ * @returns Whether only one artwork fits the current viewport comfortably.
+ */
+function isSmallViewport() {
+  return window.matchMedia?.('(max-width: 48rem)').matches ?? false;
+}
+
+/**
+ * Update artwork count when resizing or rotating, and release the media listener on unmount.
+ * @param notify - React's external-store change callback.
+ * @returns Cleanup for the viewport subscription.
+ */
+function subscribeViewport(notify: () => void) {
+  const media = window.matchMedia?.('(max-width: 48rem)');
+  media?.addEventListener('change', notify);
+  return () => media?.removeEventListener('change', notify);
+}
+
+/**
  * Keep one selected slide for artwork and description; never change keyboard focus automatically.
  * @param props - Unique accessible identity, nonempty ordered slides and autoplay interval.
  * @returns The local gallery, keyboard navigation, image fallback and automatic slideshow.
  */
 export function Gallery(props: GalleryProps) {
+  const smallViewport = useSyncExternalStore(
+    subscribeViewport,
+    isSmallViewport,
+  );
   const [selection, setSelection] = useState({
     index: 0,
     previous: 0,
@@ -35,7 +64,10 @@ export function Gallery(props: GalleryProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const slide = props.slides[index]!;
   const count = props.slides.length;
-  const visibleCount = Math.min(props.visibleSlides ?? 1, count);
+  const visibleCount = Math.min(
+    smallViewport ? 1 : (props.visibleSlides ?? 1),
+    count,
+  );
   const visibleSlides = Array.from(
     { length: visibleCount + (visibleCount > 1 ? 1 : 0) },
     (_, offset) =>
@@ -235,27 +267,29 @@ export function Gallery(props: GalleryProps) {
               />
             )}
           </div>
-          <figcaption>
-            <p className="eyebrow">
-              {props.id === 'characters'
-                ? 'Character profile'
-                : 'Original collection artwork'}
-            </p>
-            <h4>
-              {slide.scrambled ? (
-                <ScrambledSignal label={slide.title} />
-              ) : (
-                slide.title
-              )}
-            </h4>
-            <p>
-              {slide.scrambled ? (
-                <ScrambledSignal label={slide.description} multiline />
-              ) : (
-                slide.description
-              )}
-            </p>
-          </figcaption>
+          {!props.compact && (
+            <figcaption>
+              <p className="eyebrow">
+                {props.id === 'characters'
+                  ? 'Character profile'
+                  : 'Original collection artwork'}
+              </p>
+              <h4>
+                {slide.scrambled ? (
+                  <ScrambledSignal label={slide.title} />
+                ) : (
+                  slide.title
+                )}
+              </h4>
+              <p>
+                {slide.scrambled ? (
+                  <ScrambledSignal label={slide.description} multiline />
+                ) : (
+                  slide.description
+                )}
+              </p>
+            </figcaption>
+          )}
         </figure>
       )}
     </div>
