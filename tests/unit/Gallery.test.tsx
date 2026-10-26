@@ -92,6 +92,54 @@ test('strip retains its track and exposes the selected window in both directions
   ).toEqual(COLLECTION_SLIDES.slice(0, 3).map((slide) => slide.src));
 });
 
+test('featured artwork count follows viewport changes without losing selection', () => {
+  let notify: (() => void) | undefined;
+  const media = {
+    matches: true,
+    addEventListener: vi.fn((_event: string, listener: () => void) => {
+      notify = listener;
+    }),
+    removeEventListener: vi.fn(),
+  };
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn(() => media),
+  );
+  const { unmount } = render(
+    <Gallery
+      id="featured"
+      title="Featured collection"
+      slides={COLLECTION_SLIDES}
+      intervalMs={3000}
+      visibleSlides={3}
+      compact
+    />,
+  );
+  expect(screen.getAllByRole('img')).toHaveLength(1);
+  expect(screen.queryByText('Original collection artwork')).toBeNull();
+  fireEvent.keyDown(screen.getByRole('region'), { key: 'ArrowRight' });
+  expect(screen.getByRole('img').getAttribute('src')).toBe(
+    COLLECTION_SLIDES[1]!.src,
+  );
+  act(() => {
+    media.matches = false;
+    notify?.();
+  });
+  expect(screen.getAllByRole('img')).toHaveLength(3);
+  expect(screen.getAllByRole('img')[0]!.getAttribute('src')).toBe(
+    COLLECTION_SLIDES[1]!.src,
+  );
+  act(() => {
+    media.matches = true;
+    notify?.();
+  });
+  expect(screen.getByRole('img').getAttribute('src')).toBe(
+    COLLECTION_SLIDES[1]!.src,
+  );
+  unmount();
+  expect(media.removeEventListener).toHaveBeenCalledWith('change', notify);
+});
+
 test('autoplay stops in a hidden tab and releases its timer and subscriptions', () => {
   vi.useFakeTimers();
   let notify: IntersectionObserverCallback | undefined;

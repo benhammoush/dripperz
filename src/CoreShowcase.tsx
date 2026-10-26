@@ -33,11 +33,12 @@ export function Collection() {
 
 /**
  * Preserve original stage order without interpreting old strike-through styling as completion evidence.
- * @returns An ordered archive with explicit historical-proposal and noncommitment labels.
+ * @returns Original roadmap quotations with a shared noncommitment notice.
  */
 export function Cybermap() {
   return (
     <>
+      <p>Original roadmap wording—not current offers or commitments.</p>
       <ol className="cybermap">
         {ARCHIVED_ROADMAP.map((stage, index) => (
           <li key={stage.title}>
@@ -46,7 +47,9 @@ export function Cybermap() {
             </span>
             <div>
               <h3>{stage.title}</h3>
-              <p>{stage.description}</p>
+              <blockquote>
+                <p>{stage.description}</p>
+              </blockquote>
             </div>
           </li>
         ))}

@@ -6,6 +6,7 @@
 import { expect, test } from '@playwright/test';
 import { openShowcase } from './openShowcase';
 import {
+  ARCHIVED_ROADMAP,
   CHARACTER_SLIDES,
   PUBLIC_LINKS,
   SHOWCASE_FAQ,
@@ -57,13 +58,13 @@ for (const viewport of [
       featured.getByRole('heading', { name: 'Featured collection' }),
     ).toHaveClass('sr-only');
     await expect(featured.locator('.gallery-heading > span')).toHaveCount(0);
-    await expect(
-      featured.locator('.gallery-artwork[aria-hidden="false"]'),
-    ).toHaveCount(3);
-    await expect(featured.getByRole('img')).toHaveCount(3);
-    await expect(featured.locator('.gallery-strip-track')).toHaveCSS(
-      'animation-name',
-      'none',
+    const visibleCount = viewport.width <= 768 ? 1 : 3;
+    await expect(featured.getByRole('img')).toHaveCount(visibleCount);
+    await expect(featured.locator('figcaption')).toHaveCount(0);
+    const artworkBox = await featured.getByRole('img').first().boundingBox();
+    const galleryBox = await featured.boundingBox();
+    expect(artworkBox!.width).toBeGreaterThan(
+      Math.min(galleryBox!.width * (visibleCount === 1 ? 0.8 : 0.25), 500),
     );
     await expect(featured).toHaveAttribute('data-playing', 'true');
     expect(
@@ -117,6 +118,21 @@ for (const viewport of [
     const cybermap = page.locator('#cybermap');
     await expect(cybermap.getByRole('listitem')).toHaveCount(7);
     await expect(cybermap.getByText(/Archived roadmap/)).toHaveCount(0);
+    await expect(
+      cybermap.getByText(
+        'Original roadmap wording—not current offers or commitments.',
+      ),
+    ).toBeVisible();
+    for (const [index, stage] of ARCHIVED_ROADMAP.entries()) {
+      const item = cybermap.getByRole('listitem').nth(index);
+      await expect(item.getByRole('heading')).toHaveText(stage.title);
+      await expect(item.locator('blockquote p')).toHaveText(stage.description);
+      await expect(item.locator('blockquote p')).toHaveCSS(
+        'white-space',
+        'pre-line',
+      );
+    }
+    await expect(cybermap.locator('a, button, del, s')).toHaveCount(0);
     const treasury = page.getByRole('region', {
       name: 'Decentralized Autonomous Organization',
     });
@@ -197,6 +213,57 @@ for (const viewport of [
     ).toBe(true);
   });
 }
+
+test('featured carousel resizes between one and three artworks while retaining selection', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openShowcase(page);
+  const gallery = page.getByRole('region', { name: 'Featured collection' });
+  await gallery.scrollIntoViewIfNeeded();
+  await gallery.focus();
+  await expect(gallery.getByRole('img')).toHaveCount(1);
+  await page.keyboard.press('ArrowRight');
+  await expect(gallery.getByRole('img')).toHaveAttribute(
+    'src',
+    '/artwork/showcase-02.jpg',
+  );
+  await expect(gallery.locator('.character-entering')).toHaveCSS(
+    'animation-name',
+    'none',
+  );
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(gallery.getByRole('img')).toHaveCount(3);
+  await expect(gallery.getByRole('img').first()).toHaveAttribute(
+    'src',
+    '/artwork/showcase-02.jpg',
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(gallery.getByRole('img')).toHaveCount(1);
+  await expect(gallery.getByRole('img')).toHaveAttribute(
+    'src',
+    '/artwork/showcase-02.jpg',
+  );
+  await page.keyboard.press('ArrowLeft');
+  await expect(gallery.getByRole('img')).toHaveAttribute(
+    'src',
+    '/artwork/showcase-01.jpg',
+  );
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.keyboard.press('ArrowRight');
+  await expect(gallery.locator('.character-entering')).toHaveCSS(
+    'animation-name',
+    'character-enter',
+  );
+  await page.locator('#faq summary').first().focus();
+  await gallery.scrollIntoViewIfNeeded();
+  await expect(gallery).toHaveAttribute('data-playing', 'true');
+  await expect(gallery.getByRole('img')).toHaveAttribute(
+    'src',
+    '/artwork/showcase-03.jpg',
+  );
+});
 
 test('slideshow advances quickly on hover and pauses for focus, reduced motion and offscreen', async ({
   page,
