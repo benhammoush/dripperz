@@ -12,7 +12,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
-$manifestPath = Join-Path $ProjectRoot 'docs/rarity-source-manifest.json'
+$manifestPath = Join-Path $ProjectRoot 'rarity-source-manifest.json'
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 if ($manifest.schema -ne 1 -or $manifest.assets.Count -ne 128) { throw 'Invalid approved manifest' }
 $outputRoot = Join-Path $ProjectRoot 'public/rarity'

@@ -90,7 +90,7 @@ async function withController(scenario, run) {
   if (scenario.includes('rarity-')) {
     const manifest = JSON.parse(
       await readFile(
-        new URL('../../docs/rarity-source-manifest.json', import.meta.url),
+        new URL('../../rarity-source-manifest.json', import.meta.url),
         'utf8',
       ),
     );
