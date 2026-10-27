@@ -14,7 +14,7 @@ test('rarity data preserves every legacy score/rank, approved fixture and bounde
   const bytes = await readFile(new URL('public/rarity/collection.json', root));
   const data = JSON.parse(bytes);
   const manifest = JSON.parse(
-    await readFile(new URL('docs/rarity-source-manifest.json', root), 'utf8'),
+    await readFile(new URL('rarity-source-manifest.json', root), 'utf8'),
   );
   assert.equal(
     manifest.sourceRaritySha256,

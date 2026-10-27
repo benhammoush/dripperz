@@ -98,7 +98,7 @@ def prepare(legacy, project):
     output = project / 'public/rarity'
     output.mkdir(parents=True, exist_ok=True)
     (output / 'collection.json').write_bytes(encoded)
-    (project / 'docs/rarity-source-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+    (project / 'rarity-source-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     print(f'Validated {total} tokens and {len(traits)} traits; compact collection: {len(encoded)} bytes')
 
 
