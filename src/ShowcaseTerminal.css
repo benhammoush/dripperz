@@ -1,4 +1,4 @@
-/* Always-visible transparent archive prompt with the owner's smaller type size. */
+/* Transparent archive prompt, hidden on phones to keep page controls accessible. */
 .showcase-terminal {
   position: fixed;
   z-index: 4;
@@ -66,5 +66,10 @@
   }
   .terminal-form input {
     min-height: 44px;
+  }
+}
+@media (max-width: 37.5rem) {
+  .showcase-terminal {
+    display: none;
   }
 }

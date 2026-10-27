@@ -23,6 +23,8 @@ for (const width of [1440, 768, 390]) {
         metadata.push(request.url());
     });
     await page.setViewportSize({ width, height: width === 390 ? 844 : 1024 });
+    // Test lookup/composition with a static backdrop; motion has dedicated browser coverage.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await openShowcase(page);
     expect(metadata).toEqual([]);
     const region = page.locator('#rarity');
@@ -74,6 +76,7 @@ for (const width of [1440, 768, 390]) {
     ).toBe(true);
     await region.screenshot({
       path: testInfo.outputPath('rarity-explorer.png'),
+      animations: 'disabled',
     });
   });
 }

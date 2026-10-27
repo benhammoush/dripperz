@@ -53,16 +53,20 @@ no visible section heading, bordered card or Run button. The dock remains inside
 the loading screen's inert shell and below header/menu controls. Narrow screens
 use a viewport-bounded dock and a 44px input target. The owner subsequently
 removed the minimize control and selected the former minimized label's 0.7rem
-font size throughout, including the input on mobile. The prompt stays visible;
-history/output remain bounded. Native browser zoom is not disabled.
+font size throughout. The prompt stays visible on tablet/desktop, but is hidden
+entirely at widths up to 37.5rem (600px at the default font size) so it cannot
+obstruct phone content or keyboard navigation. History/output remain bounded.
+Native browser zoom is not disabled.
 
 After hosted review the owner requested white text, a persistent `Terminal/`
 prompt with input immediately beside it, no welcome message and no white input
 focus box. The owner then also removed the underline: input focus uses the
 native text caret, preserving other controls' keyboard focus indicators.
-Initial loading completion focuses the command input with
-`preventScroll`; subsequent 3D reload completions return focus to main rather than
-repeatedly stealing it. Nothing focuses an inert input behind the loading dialog.
+Initial loading completion focuses the command input with `preventScroll` on
+tablet/desktop, or main content when the terminal is hidden on phones. Subsequent
+3D reload completions return focus to main rather than repeatedly stealing it.
+Resizing does not automatically focus the terminal. Nothing focuses an inert
+input behind the loading dialog.
 
 The output is a labelled, keyboard-scrollable live log. Input retains normal Tab
 navigation, has an accessible label with visible `Terminal/` prompt and supports

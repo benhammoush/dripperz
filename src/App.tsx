@@ -108,7 +108,11 @@ export function App() {
     if (heroLoading && !dialog.open) dialog.showModal();
     if (!heroLoading && dialog.open) {
       dialog.close();
-      const target = terminalFocused.current ? 'main' : 'terminal-command';
+      const target =
+        terminalFocused.current ||
+        window.matchMedia?.('(max-width: 37.5rem)').matches
+          ? 'main'
+          : 'terminal-command';
       document.getElementById(target)?.focus({ preventScroll: true });
       terminalFocused.current = true;
     }
