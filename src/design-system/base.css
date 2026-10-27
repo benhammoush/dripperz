@@ -12,7 +12,7 @@
   background: var(--color-background);
   font-synthesis: none;
   color-scheme: dark;
-  scrollbar-color: var(--color-plum) var(--color-background);
+  scrollbar-color: var(--color-text-purple) var(--color-background);
   scrollbar-width: thin;
 }
 ::-webkit-scrollbar {
@@ -23,7 +23,7 @@
   background: var(--color-background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-plum);
+  background: var(--color-text-purple);
   border-radius: 1rem;
 }
 * {

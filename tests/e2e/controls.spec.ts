@@ -21,6 +21,7 @@ for (const width of [1440, 768, 390]) {
       await page.getByRole('button', { name: 'Menu', exact: true }).click();
     await motion.click();
     await expect(motion).toHaveText('Resume effects');
+    await expect(motion).not.toHaveAttribute('aria-pressed');
     await motion.click();
     await expect(motion).toHaveText('Pause effects');
     if (width <= 1024) await page.keyboard.press('Escape');

@@ -249,7 +249,7 @@ export function Gallery(props: GalleryProps) {
             {visibleSlides.map((visibleSlide, offset) => (
               <button
                 type="button"
-                aria-label="Next slide"
+                aria-label={`Next slide: ${visibleSlide.alt}`}
                 onClick={(event) => {
                   if (event.detail === 0 || !swiped.current) move(1);
                 }}
@@ -294,7 +294,9 @@ export function Gallery(props: GalleryProps) {
           <button
             className="gallery-artwork"
             type="button"
-            aria-label="Next slide"
+            aria-label={
+              props.compact ? `Next slide: ${slide.alt}` : 'Next slide'
+            }
             onClick={(event) => {
               if (event.detail === 0 || !swiped.current) move(1);
             }}

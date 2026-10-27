@@ -42,7 +42,7 @@ for (const viewport of [
       page,
     }) => {
       await expect(
-        page.getByRole('link', { name: /Explore the club/ }),
+        page.getByRole('link', { name: 'ENTER THE CYBERCLUB', exact: true }),
       ).toHaveCSS('border-bottom-style', 'none');
       await expect(
         page.getByText('Cyberpunk style. Individuality without limits.', {

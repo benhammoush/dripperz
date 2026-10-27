@@ -225,7 +225,6 @@ export function App() {
             <button
               className="action-button motion-toggle"
               type="button"
-              aria-pressed={effectsPaused}
               onClick={() => setEffectsPaused((paused) => !paused)}
             >
               {effectsPaused ? 'Resume effects' : 'Pause effects'}
@@ -270,11 +269,7 @@ export function App() {
               </div>
             </div>
             <div className="enter-section motion-region">
-              <a
-                className="enter-link"
-                href="#collection"
-                aria-label="Explore the club"
-              >
+              <a className="enter-link" href="#collection">
                 <GlitchText text="ENTER THE CYBERCLUB" />
               </a>
             </div>

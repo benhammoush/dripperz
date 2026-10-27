@@ -16,6 +16,33 @@ for (const width of [390, 1440]) {
     );
     await expect(page.locator('body')).toHaveCSS('color', 'rgb(255, 255, 255)');
     await expect(page.locator('body')).toHaveCSS('font-family', /Goldman/);
+    if (
+      await page.evaluate(() => CSS.supports('scrollbar-color', 'red black'))
+    ) {
+      await expect(page.locator('html')).toHaveCSS(
+        'scrollbar-color',
+        'rgb(209, 139, 232) rgb(0, 0, 0)',
+      );
+    } else {
+      expect(
+        await page
+          .locator('html')
+          .evaluate(
+            (element) =>
+              getComputedStyle(element, '::-webkit-scrollbar-thumb')
+                .backgroundColor,
+          ),
+      ).toBe('rgb(209, 139, 232)');
+      expect(
+        await page
+          .locator('html')
+          .evaluate(
+            (element) =>
+              getComputedStyle(element, '::-webkit-scrollbar-track')
+                .backgroundColor,
+          ),
+      ).toBe('rgb(0, 0, 0)');
+    }
     await expect(page.locator('.site-header')).toHaveCSS(
       'border-bottom-color',
       'rgb(6, 148, 193)',

@@ -102,6 +102,8 @@ test('shell assets load locally without remote integrations', async ({
         (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
       ),
   ).toBe(true);
-  await page.getByRole('link', { name: /Explore the club/ }).click();
+  await page
+    .getByRole('link', { name: 'ENTER THE CYBERCLUB', exact: true })
+    .click();
   expect(externalRequests).toEqual([]);
 });

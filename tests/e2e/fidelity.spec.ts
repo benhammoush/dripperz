@@ -13,6 +13,11 @@ for (const width of [1440, 768, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openShowcase(page);
+    const featured = page.getByRole('region', { name: 'Featured collection' });
+    for (const artwork of await featured.getByRole('button').all()) {
+      const alt = await artwork.locator('img').getAttribute('alt');
+      await expect(artwork).toHaveAccessibleName(`Next slide: ${alt}`);
+    }
     const collection = page.locator('#collection');
     const characters = page.getByRole('region', {
       name: 'Character gallery',

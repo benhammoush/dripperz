@@ -113,7 +113,9 @@ for (const width of [390, 600]) {
     await expect(page.locator('#terminal')).toBeHidden();
     await expect(page.locator('#main')).toBeFocused();
     await expect(page.getByRole('textbox', { name: 'Command' })).toHaveCount(0);
-    await page.getByRole('link', { name: /Explore the club/ }).click();
+    await page
+      .getByRole('link', { name: 'ENTER THE CYBERCLUB', exact: true })
+      .click();
     await expect(page).toHaveURL(/#collection$/);
     await page.setViewportSize({ width: 768, height: 1024 });
     await expect(page.locator('#terminal')).toBeVisible();
