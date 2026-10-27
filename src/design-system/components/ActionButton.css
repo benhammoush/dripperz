@@ -1,0 +1,28 @@
+/* Original action-button treatment, retaining a 44px minimum touch target. */
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: var(--radius-button);
+  background: var(--color-button-background);
+  color: var(--color-button-text);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: center;
+  box-shadow: none;
+  cursor: pointer;
+}
+.action-button:enabled:hover {
+  background: transparent;
+  color: var(--color-accent);
+}
+.action-button:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}

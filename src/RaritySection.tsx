@@ -79,7 +79,7 @@ export function RaritySection() {
       ) : (
         <>
           <p>
-            Explore the collection by token ID using its original traits and
+            Explore the collection by Dripperz ID using its original traits and
             rarity data.
           </p>
           <button

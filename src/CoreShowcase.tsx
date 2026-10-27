@@ -3,52 +3,91 @@
  * @packageDocumentation
  */
 
-import { Gallery } from './Gallery';
-import {
-  ARCHIVED_ROADMAP,
-  CHARACTER_SLIDES,
-  SHOWCASE_FAQ,
-} from './showcaseContent';
+import { ARCHIVED_ROADMAP, SHOWCASE_FAQ } from './showcaseContent';
 
 /**
- * Display character lore without duplicating artwork already shown in the hero carousel.
- * @returns The shared collection introduction and character gallery.
+ * Introduce the fashion universe in a standalone panel before the character carousel.
+ * @returns Collection lore with the original colored and underlined emphasis.
  */
 export function Collection() {
   return (
     <>
-      <p className="collection-intro">
-        Cyberclub brings individuality and cyberpunk style together in a world
-        of its own.
-      </p>
-      <Gallery
-        id="characters"
-        title="Meet the characters"
-        slides={CHARACTER_SLIDES}
-        intervalMs={3500}
-      />
+      <div className="collection-intro">
+        <p>
+          <span className="accent-cyan">Cyberclub</span> is a fashion universe
+          developed by <span className="accent-purple">The Creator.</span>
+        </p>
+        <p>
+          His belief that differences are the{' '}
+          <span className="lore-underline">key to freedom</span> gives every
+          Dripperz a unique identity.
+        </p>
+        <p className="lore-underline">
+          Above all, it’s about your style in the metaverse.
+        </p>
+      </div>
     </>
   );
 }
 
+const ROADMAP_ICONS = [
+  'M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14M15 15l6 6',
+  'M9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6M3 21v-4a6 6 0 0 1 12 0v4M17 4a3 3 0 0 1 0 6M21 21v-4a6 6 0 0 0-3-5',
+  'M3 7h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V7M8 7V4h8v3',
+  'M3 7h18l-2 14H5L3 7M8 7V5a4 4 0 0 1 8 0v2',
+  'M3 9l9-6 9 6H3M5 10v8M10 10v8M14 10v8M19 10v8M3 21h18',
+  'M12 3v18M3 12h18M5 5l14 14M19 5L5 19',
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18',
+] as const;
+
+const ROADMAP_EMPHASIS =
+  /(Price : 0\.(?:12|15) ETH|CyberClub|whitelisted|Snapshot|20%|100%|P2E)/g;
+
 /**
  * Preserve original stage order without interpreting old strike-through styling as completion evidence.
- * @returns Original roadmap quotations with a shared noncommitment notice.
+ * @returns The original roadmap quotations and illustrated stage markers.
  */
 export function Cybermap() {
   return (
     <>
-      <p>Original roadmap wording—not current offers or commitments.</p>
       <ol className="cybermap">
         {ARCHIVED_ROADMAP.map((stage, index) => (
           <li key={stage.title}>
             <span className="timeline-marker" aria-hidden="true">
-              0{index + 1}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d={ROADMAP_ICONS[index]} />
+              </svg>
             </span>
-            <div>
+            <div className="timeline-copy">
               <h3>{stage.title}</h3>
               <blockquote>
-                <p>{stage.description}</p>
+                <p>
+                  {stage.description
+                    .split(ROADMAP_EMPHASIS)
+                    .map((text, index) =>
+                      index % 2 ? (
+                        <span
+                          key={index}
+                          className={
+                            text.startsWith('Price')
+                              ? 'accent-purple'
+                              : 'accent-cyan'
+                          }
+                        >
+                          {text}
+                        </span>
+                      ) : (
+                        text
+                      ),
+                    )}
+                </p>
               </blockquote>
             </div>
           </li>
@@ -117,9 +156,15 @@ export function HistoricalTreasury() {
             </dd>
             <dt>Choices</dt>
             <dd className="treasury-choices">
-              <span>XXXX</span>
-              <span>XXXX</span>
-              <span>XXXX</span>
+              <button className="action-button" type="button" disabled>
+                XXXX
+              </button>
+              <button className="action-button" type="button" disabled>
+                XXXX
+              </button>
+              <button className="action-button" type="button" disabled>
+                XXXX
+              </button>
             </dd>
             <dt>Record date</dt>
             <dd>XXXX-XX-XX</dd>

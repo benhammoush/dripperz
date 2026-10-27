@@ -24,7 +24,7 @@ for (const width of [1440, 768, 601]) {
     await region.scrollIntoViewIfNeeded();
     const input = region.getByRole('textbox', { name: 'Command' });
     await expect(input).toBeFocused();
-    await expect(input).toHaveCSS('color', 'rgb(255, 255, 255)');
+    await expect(input).toHaveCSS('color', 'rgb(57, 255, 20)');
     await expect(input).toHaveCSS('outline-style', 'none');
     await expect(input).toHaveCSS('box-shadow', 'none');
     await expect(region.locator('label [aria-hidden="true"]')).toHaveText(
@@ -113,7 +113,9 @@ for (const width of [390, 600]) {
     await expect(page.locator('#terminal')).toBeHidden();
     await expect(page.locator('#main')).toBeFocused();
     await expect(page.getByRole('textbox', { name: 'Command' })).toHaveCount(0);
-    await page.getByRole('link', { name: /Explore the club/ }).click();
+    await page
+      .getByRole('link', { name: 'ENTER THE CYBERCLUB', exact: true })
+      .click();
     await expect(page).toHaveURL(/#collection$/);
     await page.setViewportSize({ width: 768, height: 1024 });
     await expect(page.locator('#terminal')).toBeVisible();

@@ -39,13 +39,21 @@ test('built interim hero renders on black without HDR controls or requests', asy
   );
   await expect(preview.locator('canvas')).toBeVisible();
   await expect(preview).toHaveAttribute('data-playing', 'true');
+  await page
+    .getByRole('button', { name: 'Pause effects', exact: true })
+    .click();
+  await expect(preview).toHaveAttribute('data-playing', 'false');
+  await page
+    .getByRole('button', { name: 'Resume effects', exact: true })
+    .click();
+  await expect(preview).toHaveAttribute('data-playing', 'true');
   expect(
     assets.filter((url) => url.endsWith('/hero/wattson.glb')),
   ).toHaveLength(1);
   await expect(preview.getByRole('checkbox')).toHaveCount(0);
-  await expect(
-    page.getByRole('button', { name: /Pause effects|Static view/ }),
-  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Static view/ })).toHaveCount(
+    0,
+  );
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(preview).toHaveAttribute('data-playing', 'false');
   await page.emulateMedia({ reducedMotion: 'no-preference' });

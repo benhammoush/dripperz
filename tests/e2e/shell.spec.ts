@@ -62,7 +62,7 @@ test('matrix spans the whole page and reduced motion keeps it still', async ({
   await expect(atmosphere).toHaveAttribute('data-active', 'true');
   await expect(rain).toHaveAttribute('data-running', 'true');
   await expect(rain).toHaveCSS('position', 'fixed');
-  await page.locator('.site-footer').scrollIntoViewIfNeeded();
+  await page.locator('#faq').scrollIntoViewIfNeeded();
   await expect(atmosphere).toHaveAttribute('data-active', 'true');
   await expect(rain).toHaveAttribute('data-running', 'true');
   const canvasHeight = await rain.evaluate(
@@ -71,7 +71,10 @@ test('matrix spans the whole page and reduced motion keeps it still', async ({
   expect(canvasHeight).toBeCloseTo(await page.evaluate(() => innerHeight), 0);
   expect(canvasHeight).toBeGreaterThan(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(page.locator('.glitch')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.glitch-layer').first()).toHaveCSS(
+    'animation-name',
+    'none',
+  );
   await expect(rain).toHaveAttribute('data-running', 'false');
   await page.locator('#home').scrollIntoViewIfNeeded();
   await expect(atmosphere).toHaveAttribute('data-active', 'true');
@@ -99,6 +102,8 @@ test('shell assets load locally without remote integrations', async ({
         (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
       ),
   ).toBe(true);
-  await page.getByRole('link', { name: /Explore the club/ }).click();
+  await page
+    .getByRole('link', { name: 'ENTER THE CYBERCLUB', exact: true })
+    .click();
   expect(externalRequests).toEqual([]);
 });

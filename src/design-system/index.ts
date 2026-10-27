@@ -4,3 +4,4 @@
  */
 
 export { ScrambledSignal } from './components/ScrambledSignal';
+export { GlitchText } from './components/GlitchText';

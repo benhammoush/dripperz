@@ -16,17 +16,44 @@ for (const width of [390, 1440]) {
     );
     await expect(page.locator('body')).toHaveCSS('color', 'rgb(255, 255, 255)');
     await expect(page.locator('body')).toHaveCSS('font-family', /Goldman/);
+    if (
+      await page.evaluate(() => CSS.supports('scrollbar-color', 'red black'))
+    ) {
+      await expect(page.locator('html')).toHaveCSS(
+        'scrollbar-color',
+        'rgb(209, 139, 232) rgb(0, 0, 0)',
+      );
+    } else {
+      expect(
+        await page
+          .locator('html')
+          .evaluate(
+            (element) =>
+              getComputedStyle(element, '::-webkit-scrollbar-thumb')
+                .backgroundColor,
+          ),
+      ).toBe('rgb(209, 139, 232)');
+      expect(
+        await page
+          .locator('html')
+          .evaluate(
+            (element) =>
+              getComputedStyle(element, '::-webkit-scrollbar-track')
+                .backgroundColor,
+          ),
+      ).toBe('rgb(0, 0, 0)');
+    }
     await expect(page.locator('.site-header')).toHaveCSS(
       'border-bottom-color',
       'rgb(6, 148, 193)',
     );
     await expect(page.locator('.content-panel').first()).toHaveCSS(
       'border-radius',
-      width < 600 ? '0px' : '48px',
+      width < 600 ? '32px' : '48px',
     );
     await expect(page.locator('.content-panel').first()).toHaveCSS(
       'background-color',
-      width < 600 ? 'rgba(3, 9, 12, 0.6)' : 'rgba(3, 9, 12, 0.8)',
+      'rgba(0, 0, 0, 0.6)',
     );
     expect(
       await page.evaluate(

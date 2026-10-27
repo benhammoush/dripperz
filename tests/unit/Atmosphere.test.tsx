@@ -25,7 +25,9 @@ test('visibility changes pause the decoration and unmount releases its resources
   );
   const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
   const remove = vi.spyOn(document, 'removeEventListener');
-  const { container, unmount } = render(<Atmosphere>Test hero</Atmosphere>);
+  const { container, unmount, rerender } = render(
+    <Atmosphere>Test hero</Atmosphere>,
+  );
   const region = container.firstElementChild!;
   expect(observe).toHaveBeenCalledWith(region);
   expect(region.getAttribute('data-active')).toBe('false');
@@ -35,6 +37,11 @@ test('visibility changes pause the decoration and unmount releases its resources
       {} as IntersectionObserver,
     ),
   );
+  expect(region.getAttribute('data-active')).toBe('true');
+  rerender(<Atmosphere paused>Test hero</Atmosphere>);
+  expect(region.getAttribute('data-active')).toBe('false');
+  expect(region.getAttribute('data-paused')).toBe('true');
+  rerender(<Atmosphere>Test hero</Atmosphere>);
   expect(region.getAttribute('data-active')).toBe('true');
   hidden.mockReturnValue(true);
   act(() => {

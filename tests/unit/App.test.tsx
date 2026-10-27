@@ -89,9 +89,18 @@ test('renders the shell and runtime version without claiming feature completion'
   });
   fireEvent.click(screen.getByRole('button', { name: 'Continue without 3D' }));
   expect(
-    screen.getByRole('heading', { level: 1, name: /Dripperz.*ENTER THE/ }),
+    screen.getByRole('heading', { level: 1, name: /Dripperz.*CYBERCLUB/ }),
   ).toBeInTheDocument();
-  expect(screen.getByTestId('app-version')).toHaveTextContent(APP_VERSION);
+  expect(
+    document.querySelector('.shell')?.getAttribute('data-app-version'),
+  ).toBe(APP_VERSION);
+  expect(document.querySelector('footer')).toBeNull();
+  expect(screen.queryByText('Meet the characters')).toBeNull();
+  expect(
+    screen.getByRole('region', { name: 'Character gallery' }),
+  ).toBeInTheDocument();
+  for (const choice of screen.getAllByRole('button', { name: 'XXXX' }))
+    expect(choice.hasAttribute('disabled')).toBe(true);
   expect(screen.queryByText('Not yet implemented')).toBeNull();
   expect(
     screen.queryByText(

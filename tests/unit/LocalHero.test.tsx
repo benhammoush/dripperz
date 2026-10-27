@@ -76,7 +76,7 @@ test('visibility and reduced motion gate playback and unmount removes subscripti
   );
   const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
   const remove = vi.spyOn(document, 'removeEventListener');
-  const { unmount } = render(<LocalHero enabled {...callbacks} />);
+  const { unmount, rerender } = render(<LocalHero enabled {...callbacks} />);
   const preview = screen.getByRole('figure');
   act(() =>
     notify?.(
@@ -84,6 +84,10 @@ test('visibility and reduced motion gate playback and unmount removes subscripti
       {} as IntersectionObserver,
     ),
   );
+  expect(preview.getAttribute('data-playing')).toBe('true');
+  rerender(<LocalHero enabled paused {...callbacks} />);
+  expect(preview.getAttribute('data-playing')).toBe('false');
+  rerender(<LocalHero enabled {...callbacks} />);
   expect(preview.getAttribute('data-playing')).toBe('true');
   hidden.mockReturnValue(true);
   act(() => {

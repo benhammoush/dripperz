@@ -123,37 +123,38 @@ export const ARCHIVED_ROADMAP = [
 
 export const SHOWCASE_FAQ = [
   {
-    question: 'What is this site?',
+    question: 'What is Dripperz Cyberclub?',
     answer:
-      'A personal, non-commercial showcase of Dripperz artwork and its fictional universe. It is not a mint or sales website.',
+      'A fashion universe developed by The Creator, built around individuality, cyberpunk characters and personal style in the metaverse. The collection contains 5,555 unique Dripperz.',
   },
   {
-    question: 'Do I need a wallet?',
+    question: 'Who are the characters?',
     answer:
-      'No. This showcase has no wallet connection, minting or live blockchain integration. You can explore the artwork without signing in.',
+      'DRIP-X, C1V1L-X, A1M-X and L1L-X are characters from the Cyberclub universe, with their own roles and stories. Meet them in the Cyberclub section; some parts of their stories remain redacted.',
   },
   {
-    question: 'How do the galleries work?',
+    question: 'What makes a Dripperz unique?',
     answer:
-      'Slides advance automatically, and images and descriptions stay together. Focus a gallery and press Left or Right to explore. Automatic motion pauses while focused, hidden or offscreen; reduced-motion preferences keep slides still.',
+      'Each Dripperz combines a class, body and background with optional clothes, headwear, neckwear and accessories. The rarity catalog shows all 128 traits and how often each appears in the collection.',
   },
   {
-    question: 'Is the cybermap a current roadmap?',
+    question: 'How can I check rarity?',
     answer:
-      'No. It records proposals from the original roadmap, not verified completion or new commitments. No dates, investment opportunities or future benefits are promised.',
+      'Enter a Dripperz ID from 1 to 5,555 in the rarity explorer to see its artwork, traits, rank and score. Open the rarity catalog to browse or search individual traits. Ranks and scores use the original collection snapshot, not current prices or market value.',
   },
   {
-    question: 'Does this site grant artwork rights?',
+    question: 'What is the Cybermap?',
     answer:
-      'No artwork license or ownership rights are granted by viewing this showcase. It makes no claim about the rights associated with any token.',
+      'The Cybermap is the original seven-stage roadmap, from the first investigation into the Cyberclub to plans for a wider universe. Its sale prices and proposed benefits are historical, not current offers or promises.',
   },
   {
-    question: 'Are treasury and rarity features available?',
+    question: 'What was the community treasury?',
     answer:
-      'The treasury and rarity sections show locally presented information. Neither feature requests live balances, ownership or prices.',
+      'The original project used a multisignature Safe treasury and Snapshot proposals for community governance. This site preserves the layout with masked values; live balances, proposals and voting are disconnected.',
   },
-] as const;
-
-export const PUBLIC_LINKS = [
-  { label: 'Dripperz on X', href: 'https://twitter.com/DripperzCC' },
+  {
+    question: 'Can I mint or buy here?',
+    answer:
+      'No. This is a non-commercial collection showcase, with no mint, sale or wallet connection. Viewing the artwork does not grant ownership or a license to use it.',
+  },
 ] as const;

@@ -12,6 +12,19 @@
   background: var(--color-background);
   font-synthesis: none;
   color-scheme: dark;
+  scrollbar-color: var(--color-text-purple) var(--color-background);
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-purple);
+  border-radius: 1rem;
 }
 * {
   box-sizing: border-box;

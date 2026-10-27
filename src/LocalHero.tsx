@@ -21,6 +21,7 @@ const Scene = lazy(() => import('./LocalHeroScene'));
 /** Model loading state, lifecycle callbacks and actual transfer progress. */
 interface LocalHeroProps {
   enabled: boolean;
+  paused?: boolean;
   /** Reveal the application after the renderer samples a completed frame. */
   onReady: () => void;
   /** Reveal the application after a handled model or graphics failure. */
@@ -147,7 +148,7 @@ export function LocalHero(props: LocalHeroProps) {
     browserPlayback,
     staticPlayback,
   );
-  const playing = inView && browserAllowsMotion;
+  const playing = inView && browserAllowsMotion && !props.paused;
 
   /**
    * Retain local evidence and reveal the experience only after a completed frame sample.

@@ -7,7 +7,7 @@ export const SECTIONS = [
   {
     id: 'collection',
     label: 'Cyberclub',
-    title: 'The collection',
+    title: 'Cyberclub',
     detail:
       'Original collection artwork and fictional characters from Phase 3.',
   },
@@ -19,8 +19,8 @@ export const SECTIONS = [
   },
   {
     id: 'treasury',
-    label: 'Governance',
-    title: 'Decentralized Autonomous Organization',
+    label: 'Treasury',
+    title: 'Treasury',
     detail:
       'Original treasury and governance references, with a dated source review. No live balances are requested.',
   },
@@ -35,7 +35,6 @@ export const SECTIONS = [
     id: 'faq',
     label: 'FAQ',
     title: 'Frequently asked questions',
-    detail:
-      'Answers about this historical showcase and its local-only interactions.',
+    detail: 'The collection, its characters, traits and original universe.',
   },
 ] as const;
