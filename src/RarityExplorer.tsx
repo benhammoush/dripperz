@@ -14,6 +14,7 @@ import {
   type RarityToken,
 } from './rarityData';
 import './RarityExplorer.css';
+import { RarityCatalog } from './RarityCatalog';
 
 /** Current validated snapshot and selected record used by the keyed artwork mount. */
 interface ArtworkProps {
@@ -56,7 +57,8 @@ function TokenArtwork(props: ArtworkProps) {
       </div>
       {failed ? (
         <p className="rarity-art-status" role="status">
-          Artwork unavailable. Traits, score and rank are still accessible.
+          Artwork unavailable. Submit Find Dripperz to retry; traits, score and
+          rank remain accessible.
         </p>
       ) : (
         !ready && (
@@ -91,6 +93,7 @@ export default function RarityExplorer() {
   const [selected, setSelected] = useState(1);
   const [error, setError] = useState('');
   const [artAttempt, setArtAttempt] = useState(0);
+  const [catalogOpen, setCatalogOpen] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -133,7 +136,7 @@ export default function RarityExplorer() {
     event.preventDefault();
     const id = parseTokenId(input);
     if (id === null) {
-      setError('Enter a whole token ID from 1 to 5555.');
+      setError('Enter a whole Dripperz ID from 1 to 5555.');
       return;
     }
     setSelected(id);
@@ -161,7 +164,7 @@ export default function RarityExplorer() {
   return (
     <div className="rarity-explorer">
       <form className="rarity-search" onSubmit={submit} noValidate>
-        <label htmlFor="rarity-token-id">Token ID</label>
+        <label htmlFor="rarity-token-id">Dripperz ID</label>
         <input
           id="rarity-token-id"
           value={input}
@@ -172,7 +175,9 @@ export default function RarityExplorer() {
           aria-invalid={Boolean(error)}
           aria-describedby="rarity-id-help rarity-id-error"
         />
-        <button type="submit">Find token</button>
+        <button className="action-button" type="submit">
+          Find Dripperz
+        </button>
         <span id="rarity-id-help">1–{RARITY_TOTAL}</span>
       </form>
       <p
@@ -189,13 +194,6 @@ export default function RarityExplorer() {
             data={data}
             token={token}
           />
-          <button
-            className="rarity-image-retry"
-            type="button"
-            onClick={() => setArtAttempt((value) => value + 1)}
-          >
-            Reload artwork
-          </button>
         </div>
         <div className="rarity-facts">
           <h3 aria-live="polite">{rarityName(token.id)}</h3>
@@ -234,6 +232,18 @@ export default function RarityExplorer() {
             </tbody>
           </table>
         </div>
+      </div>
+      <button
+        className="action-button rarity-catalog-toggle"
+        type="button"
+        aria-expanded={catalogOpen}
+        aria-controls="rarity-catalog"
+        onClick={() => setCatalogOpen((open) => !open)}
+      >
+        {catalogOpen ? 'Hide rarity catalog' : 'Display rarity catalog'}
+      </button>
+      <div id="rarity-catalog" hidden={!catalogOpen}>
+        {catalogOpen && <RarityCatalog data={data} />}
       </div>
     </div>
   );

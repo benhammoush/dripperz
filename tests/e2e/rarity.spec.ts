@@ -39,7 +39,7 @@ for (const width of [1440, 768, 390]) {
     await expect(
       region.getByRole('img', { name: 'Dripperz #0001 composed artwork' }),
     ).toHaveAttribute('aria-busy', 'false');
-    const input = region.getByRole('textbox', { name: 'Token ID' });
+    const input = region.getByRole('textbox', { name: 'Dripperz ID' });
     for (const [id, rank, score] of [
       ['2940', '1 / 5555', '3019.8'],
       ['5555', '2988 / 5555', '111.4'],
@@ -63,7 +63,7 @@ for (const width of [1440, 768, 390]) {
     ).toHaveAttribute('aria-busy', 'false');
     await input.fill('5556');
     await input.press('Enter');
-    await expect(region.getByRole('alert')).toContainText('whole token ID');
+    await expect(region.getByRole('alert')).toContainText('whole Dripperz ID');
     await expect(
       region.getByRole('heading', { name: 'Dripperz #0054' }),
     ).toBeVisible();
@@ -78,6 +78,57 @@ for (const width of [1440, 768, 390]) {
       path: testInfo.outputPath('rarity-explorer.png'),
       animations: 'disabled',
     });
+    const toggle = region.getByRole('button', {
+      name: /^(Display|Hide) rarity catalog$/,
+    });
+    await expect(region.locator('.rarity-catalog img')).toHaveCount(0);
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    const catalog = region.locator('.rarity-catalog');
+    await expect(catalog.getByRole('listitem')).toHaveCount(128);
+    const search = catalog.getByRole('searchbox', {
+      name: 'Search by trait name',
+    });
+    await search.fill('kartier');
+    await expect(catalog.getByRole('listitem')).toHaveCount(1);
+    await expect(catalog.getByText('2777.5', { exact: true })).toBeVisible();
+    await expect(catalog.getByText('2 / 5555', { exact: true })).toBeVisible();
+    const preview = catalog.getByRole('img', { name: 'HEAD: Kartier' });
+    await preview.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() =>
+        preview.evaluate(
+          (image: HTMLImageElement) =>
+            image.complete && image.naturalWidth === 1000,
+        ),
+      )
+      .toBe(true);
+    await catalog
+      .getByRole('combobox', { name: 'Category' })
+      .selectOption('BODY');
+    await expect(catalog.getByText('0 of 128 traits')).toBeVisible();
+    await expect(catalog.getByText(/No matching traits/)).toBeVisible();
+    await search.fill('');
+    await expect(catalog.getByRole('listitem')).toHaveCount(6);
+    await catalog.screenshot({
+      path: testInfo.outputPath('rarity-catalog.png'),
+      animations: 'disabled',
+    });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(region.locator('.rarity-catalog img')).toHaveCount(0);
+    await expect(
+      region.getByRole('heading', { name: 'Dripperz #0054' }),
+    ).toBeVisible();
+    expect(metadata).toHaveLength(1);
+    expect(external).toEqual([]);
   });
 }
 

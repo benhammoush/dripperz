@@ -11,14 +11,14 @@ test('glitch characters cycle, pause offscreen and honor reduced motion', async 
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await openShowcase(page);
-  const gallery = page.getByRole('region', { name: 'Meet the characters' });
+  const gallery = page.getByRole('region', { name: 'Character gallery' });
   await gallery.focus();
   await page.keyboard.press('ArrowRight');
   await expect(
     gallery.getByRole('heading', { name: 'Glitching signal', exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/were redacted in the original/)).toHaveCount(0);
-  const decoration = gallery.locator('h4 .scrambled-signal');
+  const decoration = gallery.locator('.gallery-title .scrambled-signal');
   await decoration.scrollIntoViewIfNeeded();
   await expect(decoration).toHaveAttribute('aria-hidden', 'true');
   await expect(decoration).toHaveAttribute('data-active', 'true');
@@ -58,7 +58,10 @@ test('glitch characters cycle, pause offscreen and honor reduced motion', async 
   ).toBeVisible();
   const body = gallery.locator('p .scrambled-signal');
   await expect(body).toHaveAttribute('aria-hidden', 'true');
-  for (const selector of ['h4 .scrambled-signal', 'p .scrambled-signal']) {
+  for (const selector of [
+    '.gallery-title .scrambled-signal',
+    'p .scrambled-signal',
+  ]) {
     expect(
       await gallery.locator(selector).evaluate((element) => {
         const style = getComputedStyle(element, '::after');

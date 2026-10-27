@@ -21,38 +21,62 @@ for (const viewport of [
     await openShowcase(page);
     await expect(page).toHaveTitle('Dripperz Cyberclub');
     await expect(
-      page.getByRole('heading', { level: 1, name: /Dripperz.*ENTER THE/ }),
+      page.getByRole('heading', { level: 1, name: /Dripperz.*CYBERCLUB/ }),
     ).toBeVisible();
-    await expect(page.getByTestId('app-version')).toHaveText(APP_VERSION);
+    await expect(page.locator('.shell')).toHaveAttribute(
+      'data-app-version',
+      APP_VERSION,
+    );
+    await expect(page.getByRole('contentinfo')).toHaveCount(0);
     const alignment = await page.locator('.local-hero').evaluate((panel) => {
       const section = panel.closest('.hero')!;
       const hero = section.getBoundingClientRect();
       const box = panel.getBoundingClientRect();
+      const title = document
+        .getElementById('hero-title')!
+        .getBoundingClientRect();
       return {
         horizontal: Math.abs(
           box.left + box.width / 2 - hero.left - hero.width / 2,
         ),
-        titleBottom: document
-          .getElementById('hero-title')!
-          .getBoundingClientRect().bottom,
+        titleBottom: title.bottom,
+        titleCenter: title.y + title.height / 2,
+        heroCenter: hero.y + hero.height / 2,
         modelTop: box.top,
         stageHeight: panel
           .querySelector('.local-hero-stage')!
           .getBoundingClientRect().height,
         heroHeight: hero.height,
         heroBottom: hero.bottom,
-        exploreBottom: section
-          .querySelector('.enter-link')!
+        titleSize: parseFloat(
+          getComputedStyle(document.getElementById('hero-title')!).fontSize,
+        ),
+        enterTop: document
+          .querySelector('.enter-section')!
+          .getBoundingClientRect().top,
+        scrollCueBottom: section
+          .querySelector('.hero-scroll-link')!
           .getBoundingClientRect().bottom,
       };
     });
     expect(alignment.horizontal).toBeLessThan(2);
-    expect(alignment.modelTop).toBeGreaterThanOrEqual(alignment.titleBottom);
-    expect(alignment.stageHeight).toBeGreaterThanOrEqual(viewport.height * 0.5);
-    expect(alignment.heroHeight).toBeGreaterThanOrEqual(viewport.height - 55);
-    expect(alignment.heroBottom - alignment.exploreBottom).toBeLessThanOrEqual(
-      32,
+    expect(Math.abs(alignment.titleCenter - alignment.heroCenter)).toBeLessThan(
+      1,
     );
+    expect(alignment.modelTop).toBeLessThan(alignment.titleBottom);
+    expect(alignment.stageHeight).toBeGreaterThanOrEqual(
+      viewport.height * 0.85,
+    );
+    expect(alignment.titleSize).toBeGreaterThan(
+      viewport.width > 1000 ? 180 : 45,
+    );
+    expect(alignment.heroHeight).toBeGreaterThanOrEqual(viewport.height - 55);
+    expect(alignment.enterTop).toBeGreaterThanOrEqual(alignment.heroBottom);
+    expect(alignment.heroBottom - alignment.scrollCueBottom).toBeCloseTo(40, 0);
+    await expect(page.locator('.enter-section .scroll-hint')).toHaveCount(0);
+    await expect(
+      page.getByRole('link', { name: 'Scroll to Cyberclub' }),
+    ).toHaveAttribute('href', '#collection');
     expect(pageErrors).toEqual([]);
     expect(
       await page.evaluate(

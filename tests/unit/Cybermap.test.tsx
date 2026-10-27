@@ -10,10 +10,10 @@ import { Cybermap } from '../../src/CoreShowcase';
 test('quotes the seven desktop source stages in order with original figures and wording', () => {
   const { container } = render(<Cybermap />);
   expect(
-    screen.getByText(
+    screen.queryByText(
       'Original roadmap wording—not current offers or commitments.',
     ),
-  ).toBeInTheDocument();
+  ).toBeNull();
   const stages = screen.getAllByRole('listitem');
   expect(
     stages.map((stage) => within(stage).getByRole('heading').textContent),

@@ -8,8 +8,15 @@ identity. It does not share a palette, package or theme runtime with Iris.
   `--magenta` names are aliases, not a second palette.
 - `base.css` owns the Goldman font, global defaults, focus and screen-reader utility.
 - `styles.css` loads shared CSS before product rules in `src/styles.css`.
+- `components/ActionButton.css` owns the pale, rounded action treatment. Apply
+  `.action-button` only to the controls using this variant; normal-size labels
+  use a darker cyan for contrast and retain a 44px minimum touch target.
 - `components/ScrambledSignal.*` owns the reusable decorative signal. Use the
   public `index.ts` export; its caller provides stable meaning and visual size.
+- `components/GlitchText.*` owns layered neon heading typography. Its real label
+  remains readable and its visual copies are inaccessible decoration. The product
+  supplies visible `.motion-region` containers and the atmosphere's playback gate;
+  reduced-motion preferences always disable the layers.
 
 Galleries, rarity, terminal behavior, content and page layout remain product-owned.
 The Matrix canvas, 3D scene and their calibrated animation/renderer constants stay

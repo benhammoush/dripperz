@@ -51,6 +51,12 @@ test('manual navigation wraps and changes image, title and description together'
   expect(screen.getByRole('img').getAttribute('src')).toBe(
     CHARACTER_SLIDES[4]!.src,
   );
+  fireEvent.keyDown(gallery, { key: 'ArrowDown' });
+  expect(screen.getByRole('heading', { name: 'DRIP-X' })).toBeInTheDocument();
+  expect(gallery.getAttribute('data-direction')).toBe('next');
+  fireEvent.keyDown(gallery, { key: 'ArrowUp' });
+  expect(screen.getByRole('heading', { name: 'L1L-X' })).toBeInTheDocument();
+  expect(gallery.getAttribute('data-direction')).toBe('previous');
 });
 
 test('a failed artwork leaves the caption and navigation usable', () => {
@@ -166,7 +172,7 @@ test('autoplay stops in a hidden tab and releases its timer and subscriptions', 
   const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
   const remove = vi.spyOn(document, 'removeEventListener');
   const { unmount } = renderCharacterGallery();
-  expect(screen.queryByRole('button')).toBeNull();
+  expect(screen.getAllByRole('button')).toHaveLength(1);
   // jsdom does not model a real pointer position; browser tests cover hover.
   vi.spyOn(screen.getByRole('region'), 'matches').mockReturnValue(false);
   act(() => {

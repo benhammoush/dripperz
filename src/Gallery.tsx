@@ -21,6 +21,7 @@ interface GalleryProps {
   intervalMs: number;
   visibleSlides?: number;
   compact?: boolean;
+  paused?: boolean;
 }
 
 /**
@@ -62,8 +63,11 @@ export function Gallery(props: GalleryProps) {
   const [failedSrc, setFailedSrc] = useState('');
   const regionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const swiped = useRef(false);
   const slide = props.slides[index]!;
   const count = props.slides.length;
+  const TitleTag = props.id === 'characters' ? 'h3' : 'h4';
   const visibleCount = Math.min(
     smallViewport ? 1 : (props.visibleSlides ?? 1),
     count,
@@ -97,7 +101,13 @@ export function Gallery(props: GalleryProps) {
     function updateTimer() {
       clearInterval(timer);
       timer = undefined;
-      if (inView && !document.hidden && !media.matches && !hasFocus) {
+      if (
+        inView &&
+        !document.hidden &&
+        !media.matches &&
+        !hasFocus &&
+        !props.paused
+      ) {
         timer = setInterval(() => {
           setAnimateStrip(true);
           setSelection((current) => ({
@@ -145,13 +155,14 @@ export function Gallery(props: GalleryProps) {
       document.removeEventListener('visibilitychange', updateTimer);
       media.removeEventListener('change', updateTimer);
     };
-  }, [count, props.intervalMs]);
+  }, [count, props.intervalMs, props.paused]);
 
   /**
    * Navigate with wraparound while leaving automatic playback enabled.
    * @param offset - Signed number of slides to move from the current selection.
    */
   function move(offset: number) {
+    regionRef.current?.focus({ preventScroll: true });
     setAnimateStrip(true);
     setSelection((current) => ({
       index: (current.index + offset + count) % count,
@@ -163,35 +174,72 @@ export function Gallery(props: GalleryProps) {
   return (
     <div
       className="gallery"
+      id={props.id}
       data-playing="false"
       data-visible="false"
+      data-direction={direction > 0 ? 'next' : 'previous'}
       ref={regionRef}
       role="region"
       aria-roledescription="carousel"
-      aria-labelledby={`${props.id}-heading`}
+      aria-label={props.id === 'characters' ? props.title : undefined}
+      aria-labelledby={
+        props.id === 'characters' ? undefined : `${props.id}-heading`
+      }
       tabIndex={0}
+      onPointerDown={(event) => {
+        swiped.current = false;
+        touchStart.current =
+          event.pointerType === 'touch' &&
+          event.target instanceof Element &&
+          event.target.closest('.gallery-artwork')
+            ? { x: event.clientX, y: event.clientY }
+            : null;
+      }}
+      onPointerUp={(event) => {
+        const start = touchStart.current;
+        touchStart.current = null;
+        if (!start) return;
+        const dx = event.clientX - start.x;
+        const dy = event.clientY - start.y;
+        if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) {
+          swiped.current = true;
+          move(dx < 0 ? 1 : -1);
+        }
+      }}
+      onPointerCancel={() => {
+        touchStart.current = null;
+      }}
       onKeyDown={(event) => {
-        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        if (
+          event.key === 'ArrowRight' ||
+          event.key === 'ArrowLeft' ||
+          (props.id === 'characters' &&
+            (event.key === 'ArrowDown' || event.key === 'ArrowUp'))
+        ) {
           event.preventDefault();
-          move(event.key === 'ArrowRight' ? 1 : -1);
+          move(
+            event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1,
+          );
         }
       }}
     >
-      <div className="gallery-heading">
-        <h3
-          className={props.compact ? 'sr-only' : undefined}
-          id={`${props.id}-heading`}
-        >
-          {props.title}
-        </h3>
-        {!props.compact && (
-          <span>
-            {visibleCount > 1
-              ? `${index + 1}–${((index + visibleCount - 1) % count) + 1} / ${count}`
-              : `${index + 1} / ${count}`}
-          </span>
-        )}
-      </div>
+      {props.id !== 'characters' && (
+        <div className="gallery-heading">
+          <h3
+            className={props.compact ? 'sr-only' : undefined}
+            id={`${props.id}-heading`}
+          >
+            {props.title}
+          </h3>
+          {!props.compact && (
+            <span>
+              {visibleCount > 1
+                ? `${index + 1}–${((index + visibleCount - 1) % count) + 1} / ${count}`
+                : `${index + 1} / ${count}`}
+            </span>
+          )}
+        </div>
+      )}
       {visibleCount > 1 ? (
         <div className="gallery-strip" aria-live="off">
           <div
@@ -199,8 +247,18 @@ export function Gallery(props: GalleryProps) {
             ref={trackRef}
           >
             {visibleSlides.map((visibleSlide, offset) => (
-              <div
+              <button
+                type="button"
+                aria-label="Next slide"
+                onClick={(event) => {
+                  if (event.detail === 0 || !swiped.current) move(1);
+                }}
                 aria-hidden={
+                  animateStrip && direction > 0
+                    ? offset === 0
+                    : offset >= visibleCount
+                }
+                inert={
                   animateStrip && direction > 0
                     ? offset === 0
                     : offset >= visibleCount
@@ -209,13 +267,13 @@ export function Gallery(props: GalleryProps) {
                 key={visibleSlide.src}
               >
                 {failedSrc === visibleSlide.src ? (
-                  <div
+                  <span
                     className="artwork-unavailable"
                     role="img"
                     aria-label={`${visibleSlide.alt}. Artwork unavailable.`}
                   >
                     Artwork unavailable
-                  </div>
+                  </span>
                 ) : (
                   <img
                     src={visibleSlide.src}
@@ -227,13 +285,20 @@ export function Gallery(props: GalleryProps) {
                     onError={() => setFailedSrc(visibleSlide.src)}
                   />
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </div>
       ) : (
         <figure aria-live="off" aria-atomic="true">
-          <div className="gallery-artwork">
+          <button
+            className="gallery-artwork"
+            type="button"
+            aria-label="Next slide"
+            onClick={(event) => {
+              if (event.detail === 0 || !swiped.current) move(1);
+            }}
+          >
             {animateStrip && (
               <img
                 className="character-previous"
@@ -246,13 +311,13 @@ export function Gallery(props: GalleryProps) {
               />
             )}
             {failedSrc === slide.src ? (
-              <div
+              <span
                 className="artwork-unavailable"
                 role="img"
                 aria-label={`${slide.alt}. Artwork unavailable.`}
               >
                 Artwork unavailable
-              </div>
+              </span>
             ) : (
               <img
                 key={slide.src}
@@ -266,21 +331,21 @@ export function Gallery(props: GalleryProps) {
                 onError={() => setFailedSrc(slide.src)}
               />
             )}
-          </div>
+          </button>
           {!props.compact && (
-            <figcaption>
+            <figcaption key={slide.src} data-animated={animateStrip}>
               <p className="eyebrow">
                 {props.id === 'characters'
                   ? 'Character profile'
                   : 'Original collection artwork'}
               </p>
-              <h4>
+              <TitleTag className="gallery-title">
                 {slide.scrambled ? (
                   <ScrambledSignal label={slide.title} />
                 ) : (
                   slide.title
                 )}
-              </h4>
+              </TitleTag>
               <p>
                 {slide.scrambled ? (
                   <ScrambledSignal label={slide.description} multiline />

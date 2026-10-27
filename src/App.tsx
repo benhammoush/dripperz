@@ -5,6 +5,7 @@
 
 import { APP_VERSION } from './appVersion';
 import {
+  Fragment,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -19,7 +20,8 @@ import {
   HistoricalTreasury,
   ShowcaseFaq,
 } from './CoreShowcase';
-import { PUBLIC_LINKS } from './showcaseContent';
+import { CHARACTER_SLIDES } from './showcaseContent';
+import { GlitchText } from './design-system';
 import { LocalHero } from './LocalHero';
 import { HERO_MODEL_BYTES } from './heroAsset';
 import { RaritySection } from './RaritySection';
@@ -33,6 +35,7 @@ import { COLLECTION_SLIDES } from './showcaseContent';
  */
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [effectsPaused, setEffectsPaused] = useState(false);
   const [heroEnabled, setHeroEnabled] = useState(true);
   const [heroLoading, setHeroLoading] = useState(true);
   const [skipAvailable, setSkipAvailable] = useState(false);
@@ -83,17 +86,20 @@ export function App() {
   }, [heroLoading]);
 
   useEffect(() => {
-    const panels = document.querySelectorAll<HTMLElement>('.content-panel');
+    const panels = document.querySelectorAll<HTMLElement>('.motion-region');
     if (!('IntersectionObserver' in window)) {
-      panels.forEach((panel) => (panel.dataset.revealed = 'true'));
+      panels.forEach((panel) => {
+        panel.dataset.revealed = 'true';
+        panel.dataset.visible = 'true';
+      });
       return;
     }
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          (entry.target as HTMLElement).dataset.revealed = 'true';
-          observer.unobserve(entry.target);
+          const panel = entry.target as HTMLElement;
+          panel.dataset.visible = String(entry.isIntersecting);
+          if (entry.isIntersecting) panel.dataset.revealed = 'true';
         }
       },
       { threshold: 0.08 },
@@ -158,7 +164,7 @@ export function App() {
           )}
         </div>
       </dialog>
-      <div className="shell" inert={heroLoading}>
+      <div className="shell" inert={heroLoading} data-app-version={APP_VERSION}>
         <a className="skip-link" href="#main" tabIndex={0}>
           Skip to content
         </a>
@@ -216,77 +222,122 @@ export function App() {
                 {section.label}
               </a>
             ))}
+            <button
+              className="action-button motion-toggle"
+              type="button"
+              aria-pressed={effectsPaused}
+              onClick={() => setEffectsPaused((paused) => !paused)}
+            >
+              {effectsPaused ? 'Resume effects' : 'Pause effects'}
+            </button>
           </nav>
         </header>
-        <Atmosphere paused={heroLoading}>
+        <Atmosphere paused={heroLoading || effectsPaused}>
           <main id="main" tabIndex={-1}>
-            <section className="hero" id="home" aria-labelledby="hero-title">
+            <section
+              className="hero motion-region"
+              id="home"
+              aria-labelledby="hero-title"
+            >
               <h1 id="hero-title">
-                <span className="sr-only">Dripperz — </span>ENTER THE{' '}
-                <span className="glitch">CYBERCLUB</span>
+                <span className="sr-only">Dripperz — </span>
+                <GlitchText text="CYBERCLUB" />
               </h1>
               <LocalHero
                 enabled={heroEnabled}
+                paused={effectsPaused}
                 onReady={finishHero}
                 onUnavailable={finishHero}
                 onLoad={loadHero}
                 onDownload={reportDownload}
               />
-              <a className="enter-link" href="#collection" tabIndex={0}>
-                Explore the club <span aria-hidden="true">↓</span>
+              <a
+                className="hero-scroll-link"
+                href="#collection"
+                aria-label="Scroll to Cyberclub"
+              >
+                <span className="scroll-hint" aria-hidden="true" />
               </a>
             </section>
+            <div className="welcome-strip motion-region" aria-hidden="true">
+              <div className="welcome-track">
+                {[0, 1].map((copy) => (
+                  <span key={copy}>
+                    WELCOME TO THE CYBERCLUB — WELCOME TO THE CYBERCLUB —
+                    WELCOME TO THE CYBERCLUB —
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="enter-section motion-region">
+              <a
+                className="enter-link"
+                href="#collection"
+                aria-label="Explore the club"
+              >
+                <GlitchText text="ENTER THE CYBERCLUB" />
+              </a>
+            </div>
             <div className="hero-carousel">
               <Gallery
                 id="hero-carousel"
                 title="Featured collection"
                 slides={COLLECTION_SLIDES}
-                intervalMs={3000}
+                intervalMs={5000}
                 visibleSlides={3}
                 compact
+                paused={effectsPaused}
               />
             </div>
             <div className="sections">
-              {SECTIONS.map((section, index) => (
-                <section
-                  className="content-panel"
-                  id={section.id}
-                  tabIndex={-1}
-                  key={section.id}
-                  aria-labelledby={`${section.id}-title`}
-                >
-                  <p className="eyebrow">
-                    0{index + 1} / {section.label}
-                  </p>
-                  <h2 id={`${section.id}-title`}>{section.title}</h2>
-                  {section.id === 'collection' ? (
-                    <Collection />
-                  ) : section.id === 'cybermap' ? (
-                    <Cybermap />
-                  ) : section.id === 'faq' ? (
-                    <ShowcaseFaq />
-                  ) : section.id === 'rarity' ? (
-                    <RaritySection />
-                  ) : (
-                    <HistoricalTreasury />
+              {SECTIONS.map((section) => (
+                <Fragment key={section.id}>
+                  <section
+                    className="content-panel motion-region"
+                    id={section.id}
+                    tabIndex={-1}
+                    aria-labelledby={`${section.id}-title`}
+                  >
+                    <h2 id={`${section.id}-title`}>
+                      <GlitchText text={section.title} />
+                    </h2>
+                    {section.id === 'collection' ? (
+                      <Collection />
+                    ) : section.id === 'cybermap' ? (
+                      <Cybermap />
+                    ) : section.id === 'faq' ? (
+                      <ShowcaseFaq />
+                    ) : section.id === 'rarity' ? (
+                      <RaritySection />
+                    ) : (
+                      <HistoricalTreasury />
+                    )}
+                  </section>
+                  {section.id === 'collection' && (
+                    <>
+                      <div className="collection-headlines motion-region">
+                        <p>
+                          <GlitchText text="5555 Uniques NFTS" />
+                        </p>
+                        <p>
+                          <GlitchText text="Powered by Ethereum" />
+                        </p>
+                      </div>
+                      <div className="character-showcase motion-region">
+                        <Gallery
+                          id="characters"
+                          title="Character gallery"
+                          slides={CHARACTER_SLIDES}
+                          intervalMs={8000}
+                          paused={effectsPaused}
+                        />
+                      </div>
+                    </>
                   )}
-                </section>
+                </Fragment>
               ))}
             </div>
           </main>
-          <footer className="site-footer">
-            <a href="#home" tabIndex={0}>
-              Dripperz Cyber Club ↑
-            </a>
-            {PUBLIC_LINKS.map((link) => (
-              <a key={link.href} href={link.href} tabIndex={0}>
-                {link.label} ↗
-              </a>
-            ))}
-            <p>
-              Version <span data-testid="app-version">{APP_VERSION}</span>
-            </p>
-          </footer>
         </Atmosphere>
         <ShowcaseTerminal />
       </div>

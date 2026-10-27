@@ -8,7 +8,6 @@ import { openShowcase } from './openShowcase';
 import {
   ARCHIVED_ROADMAP,
   CHARACTER_SLIDES,
-  PUBLIC_LINKS,
   SHOWCASE_FAQ,
 } from '../../src/showcaseContent';
 
@@ -61,9 +60,10 @@ for (const viewport of [
           { exact: true },
         ),
       ).toHaveCount(0);
-      await expect(page.locator('.marquee')).toHaveCount(0);
-      await expect(page.locator('body')).not.toContainText(
-        'WELCOME TO THE CYBERCLUB / DRIPPERZ',
+      await expect(page.locator('.welcome-strip')).toBeVisible();
+      await expect(page.locator('.welcome-strip')).toHaveAttribute(
+        'aria-hidden',
+        'true',
       );
       const featured = page.getByRole('region', {
         name: 'Featured collection',
@@ -87,12 +87,10 @@ for (const viewport of [
         (await page.locator('.site-header').boundingBox())?.height,
       ).toBeLessThanOrEqual(70);
       await expect(
-        page.getByRole('button', {
-          name: /Pause effects|Resume effects|Static view/,
-        }),
+        page.getByRole('button', { name: /Static view/ }),
       ).toHaveCount(0);
       const characters = page.getByRole('region', {
-        name: 'Meet the characters',
+        name: 'Character gallery',
       });
       await characters.scrollIntoViewIfNeeded();
       await characters.focus();
@@ -126,7 +124,7 @@ for (const viewport of [
       await page.keyboard.press('ArrowLeft');
       await expect(characters.locator('.character-entering')).toHaveCSS(
         'animation-name',
-        'character-enter',
+        'character-vertical-enter',
       );
       await expect(
         characters.getByRole('heading', { name: 'L1L-X', exact: true }),
@@ -143,7 +141,7 @@ for (const viewport of [
         cybermap.getByText(
           'Original roadmap wording—not current offers or commitments.',
         ),
-      ).toBeVisible();
+      ).toHaveCount(0);
       for (const [index, stage] of ARCHIVED_ROADMAP.entries()) {
         const item = cybermap.getByRole('listitem').nth(index);
         await expect(item.getByRole('heading')).toHaveText(stage.title);
@@ -157,7 +155,7 @@ for (const viewport of [
       }
       await expect(cybermap.locator('a, button, del, s')).toHaveCount(0);
       const treasury = page.getByRole('region', {
-        name: 'Decentralized Autonomous Organization',
+        name: 'Treasury',
       });
       await treasury.scrollIntoViewIfNeeded();
       await expect(
@@ -190,13 +188,17 @@ for (const viewport of [
           'XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX',
         ),
       ).toBeVisible();
-      await expect(treasury.locator('.treasury-choices span')).toHaveCount(3);
+      await expect(treasury.locator('.treasury-choices button')).toHaveCount(3);
+      for (const choice of await treasury
+        .locator('.treasury-choices button')
+        .all())
+        await expect(choice).toBeDisabled();
       await expect(treasury).not.toContainText(
         '0xaad0102aed9213c09af3e7a1dfa4b8a055845e1c',
       );
       await expect(treasury).not.toContainText('dripperzcyberclub.eth');
       await expect(treasury.getByRole('link')).toHaveCount(0);
-      await expect(treasury.getByRole('button')).toHaveCount(0);
+      await expect(treasury.getByRole('button')).toHaveCount(3);
       await expect(page.locator('body')).not.toContainText(/archive/i);
       // Measure layout only after the panel's scroll-reveal transform has settled.
       await expect(treasury).toHaveCSS('transform', 'none');
@@ -220,7 +222,7 @@ for (const viewport of [
       );
     });
 
-    test('FAQ and footer remain keyboard accessible with approved links', async ({
+    test('FAQ remains keyboard accessible without a footer', async ({
       page,
     }) => {
       for (const item of SHOWCASE_FAQ) {
@@ -232,10 +234,8 @@ for (const viewport of [
           page.getByText(item.answer, { exact: true }),
         ).toBeVisible();
       }
-      await expect(
-        page.getByRole('link', { name: /Dripperz on X/ }),
-      ).toHaveAttribute('href', PUBLIC_LINKS[0].href);
-      await expect(page.locator('a[href^="https://"]')).toHaveCount(1);
+      await expect(page.getByRole('contentinfo')).toHaveCount(0);
+      await expect(page.locator('a[href^="https://"]')).toHaveCount(0);
       await expect(page.getByText(/Guillaume|AMMOUCHE/)).toHaveCount(0);
     });
   });
@@ -244,6 +244,8 @@ for (const viewport of [
 test('featured carousel resizes between one and three artworks while retaining selection', async ({
   page,
 }) => {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 60_000));
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 390, height: 844 });
   await openShowcase(page);
@@ -286,13 +288,14 @@ test('featured carousel resizes between one and three artworks while retaining s
   await page.locator('#faq summary').first().focus();
   await gallery.scrollIntoViewIfNeeded();
   await expect(gallery).toHaveAttribute('data-playing', 'true');
+  await page.clock.fastForward(5100);
   await expect(gallery.getByRole('img')).toHaveAttribute(
     'src',
     '/artwork/showcase-03.jpg',
   );
 });
 
-test('slideshow advances quickly on hover and pauses for focus, reduced motion and offscreen', async ({
+test('slideshow advances on schedule and pauses for focus, reduced motion and offscreen', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -311,12 +314,15 @@ test('slideshow advances quickly on hover and pauses for focus, reduced motion a
       items.map((item) => item.getAttribute('src')),
     );
   await gallery.scrollIntoViewIfNeeded();
-  await expect(gallery.getByRole('button')).toHaveCount(0);
+  await expect(gallery.locator('.gallery-controls')).toHaveCount(0);
+  await expect(gallery.getByRole('button', { name: 'Next slide' })).toHaveCount(
+    3,
+  );
   await page.mouse.move(0, 0);
   await page.evaluate(() => (document.activeElement as HTMLElement).blur());
   await expect(gallery).toHaveAttribute('data-playing', 'true');
   const beforeAdvance = await sources();
-  await page.clock.fastForward(2999);
+  await page.clock.fastForward(4999);
   expect(await sources()).toEqual(beforeAdvance);
   await page.clock.fastForward(1);
   await expect(images.first()).not.toHaveAttribute('src', beforeAdvance[0]!);
@@ -327,12 +333,12 @@ test('slideshow advances quickly on hover and pauses for focus, reduced motion a
   await gallery.hover();
   await expect(gallery).toHaveAttribute('data-playing', 'true');
   const whileHovered = await sources();
-  await page.clock.fastForward(3100);
+  await page.clock.fastForward(5100);
   await expect(images.first()).not.toHaveAttribute('src', whileHovered[0]!);
   await page.mouse.move(0, 0);
   await gallery.focus();
   const whileFocused = await sources();
-  await page.clock.fastForward(4000);
+  await page.clock.fastForward(6000);
   expect(await sources()).toEqual(whileFocused);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   // Media emulation reaches WebKit asynchronously; observe it before ticking timers.
@@ -350,7 +356,7 @@ test('slideshow advances quickly on hover and pauses for focus, reduced motion a
   await page.evaluate(() => (document.activeElement as HTMLElement).blur());
   await expect(gallery).toHaveAttribute('data-playing', 'false');
   const reducedMotionSources = await sources();
-  await page.clock.fastForward(4000);
+  await page.clock.fastForward(6000);
   expect(await sources()).toEqual(reducedMotionSources);
   await page.locator('#faq').scrollIntoViewIfNeeded();
   // IntersectionObserver updates asynchronously, outside the mocked clock.
@@ -358,13 +364,13 @@ test('slideshow advances quickly on hover and pauses for focus, reduced motion a
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect(gallery).toHaveAttribute('data-playing', 'false');
   const offscreenSources = await sources();
-  await page.clock.fastForward(4000);
+  await page.clock.fastForward(6000);
   expect(await sources()).toEqual(offscreenSources);
   await gallery.scrollIntoViewIfNeeded();
   await page.mouse.move(0, 0);
   await expect(gallery).toHaveAttribute('data-playing', 'true');
   const afterResume = await sources();
-  await page.clock.fastForward(3100);
+  await page.clock.fastForward(5100);
   await expect(images.first()).not.toHaveAttribute('src', afterResume[0]!);
   await gallery.focus();
   const beforeKeyboard = await sources();

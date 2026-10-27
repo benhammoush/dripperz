@@ -1,0 +1,62 @@
+/* Keep the real label readable; only small decorative slices move or change color. */
+.glitch {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  isolation: isolate;
+}
+.glitch-label {
+  position: relative;
+  z-index: 1;
+}
+.glitch-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  text-shadow: none;
+  animation: signal-displace 8s steps(1, end) infinite paused;
+}
+.glitch-layer::before {
+  content: attr(data-text);
+}
+.glitch-layer--green {
+  color: var(--color-signal-green);
+  clip-path: polygon(0 20%, 100% 20%, 100% 38%, 0 38%);
+}
+.glitch-layer--purple {
+  color: var(--magenta);
+  clip-path: polygon(0 60%, 100% 60%, 100% 78%, 0 78%);
+  animation-direction: reverse;
+}
+.atmosphere[data-active='true']
+  .motion-region[data-visible='true']
+  .glitch-layer {
+  animation-play-state: running;
+}
+@keyframes signal-displace {
+  0%,
+  35%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+  10% {
+    opacity: 0.8;
+    transform: translate(-0.045em, 0.015em);
+  }
+  20% {
+    opacity: 0.65;
+    transform: translate(0.04em, -0.025em);
+  }
+  30% {
+    opacity: 0.45;
+    transform: translate(-0.02em, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glitch-layer {
+    animation: none;
+    opacity: 0;
+  }
+}

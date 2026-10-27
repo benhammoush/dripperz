@@ -24,7 +24,7 @@ for (const width of [1440, 768, 601]) {
     await region.scrollIntoViewIfNeeded();
     const input = region.getByRole('textbox', { name: 'Command' });
     await expect(input).toBeFocused();
-    await expect(input).toHaveCSS('color', 'rgb(255, 255, 255)');
+    await expect(input).toHaveCSS('color', 'rgb(57, 255, 20)');
     await expect(input).toHaveCSS('outline-style', 'none');
     await expect(input).toHaveCSS('box-shadow', 'none');
     await expect(region.locator('label [aria-hidden="true"]')).toHaveText(

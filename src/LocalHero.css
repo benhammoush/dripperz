@@ -42,15 +42,16 @@
   overflow: hidden;
 }
 .local-hero {
-  position: relative;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   width: 100%;
-  max-width: 64rem;
   margin: 0;
   text-align: center;
 }
 .local-hero-stage {
   background: transparent;
-  height: clamp(24rem, 60svh, 44rem);
+  height: calc(100svh - 54px);
   overflow: hidden;
   display: grid;
   align-items: center;

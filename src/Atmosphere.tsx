@@ -45,7 +45,12 @@ export function Atmosphere(props: AtmosphereProps) {
   }, []);
 
   return (
-    <div className="atmosphere" ref={ref} data-active={active}>
+    <div
+      className="atmosphere"
+      ref={ref}
+      data-active={active && !props.paused}
+      data-paused={Boolean(props.paused)}
+    >
       <MatrixRain active={active && !props.paused} />
       {props.children}
     </div>
