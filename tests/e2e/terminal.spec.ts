@@ -1,12 +1,12 @@
 /**
- * Exercise terminal keyboard/mobile interactions without requesting external documents.
+ * Exercise tablet/desktop commands and phone hiding without requesting external documents.
  * @packageDocumentation
  */
 
 import { expect, test } from '@playwright/test';
 import { openShowcase } from './openShowcase';
 
-for (const width of [1440, 390]) {
+for (const width of [1440, 768, 601]) {
   test(`archive terminal at ${width}px stays local until a document link is followed`, async ({
     page,
     baseURL,
@@ -101,5 +101,24 @@ for (const width of [1440, 390]) {
     ).toBe(false);
     expect(external).toEqual([]);
     expect(popups).toEqual([]);
+  });
+}
+
+for (const width of [390, 600]) {
+  test(`terminal is hidden at ${width}px without blocking exploration`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await openShowcase(page);
+    await expect(page.locator('#terminal')).toBeHidden();
+    await expect(page.locator('#main')).toBeFocused();
+    await expect(page.getByRole('textbox', { name: 'Command' })).toHaveCount(0);
+    await page.getByRole('link', { name: /Explore the club/ }).click();
+    await expect(page).toHaveURL(/#collection$/);
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await expect(page.locator('#terminal')).toBeVisible();
+    await expect(page.locator('#terminal-command')).not.toBeFocused();
+    await page.setViewportSize({ width, height: 844 });
+    await expect(page.locator('#terminal')).toBeHidden();
   });
 }
