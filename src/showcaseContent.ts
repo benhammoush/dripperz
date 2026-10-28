@@ -148,13 +148,12 @@ export const SHOWCASE_FAQ = [
       'The Cybermap is the original seven-stage roadmap, from the first investigation into the Cyberclub to plans for a wider universe. Its sale prices and proposed benefits are historical, not current offers or promises.',
   },
   {
-    question: 'What was the community treasury?',
+    question: 'How does the community treasury work?',
     answer:
-      'The original project used a multisignature Safe treasury and Snapshot proposals for community governance. This site preserves the layout with masked values; live balances, proposals and voting are disconnected.',
+      'The community treasury is held in a Gnosis Safe multisignature wallet, with a connected Snapshot DAO where the community votes on how its funds should be managed.',
   },
   {
-    question: 'Can I mint or buy here?',
-    answer:
-      'No. This is a non-commercial collection showcase, with no mint, sale or wallet connection. Viewing the artwork does not grant ownership or a license to use it.',
+    question: 'Can I mint or buy a Dripperz?',
+    answer: 'Minting has ended. You can buy Dripperz on OpenSea.',
   },
 ] as const;
