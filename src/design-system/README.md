@@ -1,7 +1,6 @@
 # Dripperz design system
 
-This local module applies Iris's ownership structure with Dripperz's own visual
-identity. It does not share a palette, package or theme runtime with Iris.
+This module owns shared tokens, base styles and reusable components for Dripperz.
 
 - `tokens.css` owns shared color roles, font, spacing, surface treatments and the
   decorative signal duration. Existing `--cyan`, `--muted`, `--line` and
