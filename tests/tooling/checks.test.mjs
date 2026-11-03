@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { verifiedArchive } from '../../scripts/check-workflows.mjs';
 
-const { scripts, engines, packageManager } = JSON.parse(
+const { scripts, engines, packageManager, overrides } = JSON.parse(
   readFileSync(new URL('../../package.json', import.meta.url)),
 );
 
@@ -24,6 +24,21 @@ test('quality rejects every advisory severity in full and runtime dependency tre
     'npm audit && npm audit --omit=dev',
   );
   assert.doesNotMatch(scripts['ci:quality'], /audit-level/);
+});
+
+test('lint tooling resolves patched minimatch until upstream ranges support v11', () => {
+  // GHSA-g3hv-75wg-m249 affects v10; the audit gate must not be relaxed.
+  assert.equal(overrides.minimatch, '11.0.4');
+  const { packages } = JSON.parse(
+    readFileSync(new URL('../../package-lock.json', import.meta.url)),
+  );
+  const matches = Object.entries(packages).filter(([path]) =>
+    path.endsWith('node_modules/minimatch'),
+  );
+  assert.ok(matches.length > 0);
+  for (const [path, entry] of matches) {
+    assert.equal(entry.version, overrides.minimatch, path);
+  }
 });
 
 test('workflow lint stays in CI quality and rejects altered executable archives', () => {
